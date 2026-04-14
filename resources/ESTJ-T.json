@@ -1,0 +1,118 @@
+{
+  "mbti_type": "ESTJ-T",
+  "type_name": {
+    "en": "Executive (Turbulent)",
+    "zh": "总经理型（动荡型）"
+  },
+  "role": {
+    "name": "Sentinel",
+    "name_zh": "守护者",
+    "description": "Observant (S) and Judging (J) personality types, known for their focus on practicality, order, security and stability.",
+    "description_zh": "观察型(S)和判断型(J)人格类型，以注重实用性、秩序、安全和稳定著称。"
+  },
+  "strategy": {
+    "name": "Social Engagement",
+    "name_zh": "社交参与",
+    "description": "This strategy is adopted by sociable, energetic and success-driven types. Social Engagers tend to be restless, perfectionistic individuals, prone to experiencing both very positive and very negative emotions.",
+    "description_zh": "这种策略被善于社交、精力充沛和追求成功的人采用。社交参与者往往是不安分、完美主义的个体，容易经历非常积极和非常消极的情绪。"
+  },
+  "traits": {
+    "extraverted": {
+      "letter": "E",
+      "name": "Extraverted",
+      "name_zh": "外向",
+      "description": "Individuals prefer group activities and get energized by social interaction. They tend to be more enthusiastic and more easily excited than Introverts.",
+      "description_zh": "外向型个体喜欢团体活动，通过社交互动获得能量。他们往往比内向型更热情、更容易兴奋。"
+    },
+    "observant": {
+      "letter": "S",
+      "name": "Observant",
+      "name_zh": "观察",
+      "description": "Individuals are highly practical, pragmatic and down-to-earth. They tend to have strong habits and focus on what is happening or has already happened.",
+      "description_zh": "观察型个体非常务实、讲究实际且脚踏实地。他们往往有很强的习惯，专注于正在发生或已经发生的事物。"
+    },
+    "thinking": {
+      "letter": "T",
+      "name": "Thinking",
+      "name_zh": "思考",
+      "description": "Individuals focus on objectivity and rationality, prioritizing logic over emotions. They tend to hide their feelings and see efficiency as more important than cooperation.",
+      "description_zh": "思考型个体专注于客观性和理性，优先考虑逻辑而非情感。他们倾向于隐藏自己的感受，认为效率比合作更重要。"
+    },
+    "judging": {
+      "letter": "J",
+      "name": "Judging",
+      "name_zh": "判断",
+      "description": "Individuals are decisive, thorough and highly organized. They value clarity, predictability and closure, preferring structure and planning to spontaneity.",
+      "description_zh": "判断型个体果断、彻底且高度有条理。他们重视清晰、可预测性和完结，更喜欢结构和规划而非自发行为。"
+    },
+    "turbulent": {
+      "suffix": "-T",
+      "name": "Turbulent",
+      "name_zh": "动荡",
+      "description": "Individuals are self-conscious and sensitive to stress. They are likely to experience a wide range of emotions and to be success-driven, perfectionistic and eager to improve.",
+      "description_zh": "动荡型个体自我意识强且对压力敏感。他们可能会经历广泛的情感波动，以成功为驱动力，追求完美并渴望改进。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Dedicated",
+      "name_zh": "专注",
+      "description": "Seeing things to completion borders on an ethical obligation for Executives. Tasks aren't abandoned simply because they've become difficult or boring.",
+      "description_zh": "将事情完成对于总经理来说几乎是一种道德义务。任务不会因为变得困难或无聊就被放弃。"
+    },
+    {
+      "name": "Strong-willed",
+      "name_zh": "意志坚强",
+      "description": "A strong will makes this dedication possible, and Executives don't give up their beliefs because of simple opposition. They defend their ideas and principles relentlessly, and must be proven clearly and conclusively wrong for their stance to budge.",
+      "description_zh": "坚强的意志使这种奉献成为可能，总经理不会因为简单的反对而放弃自己的信念。他们不懈地捍卫自己的想法和原则，必须被明确而确凿地证明是错误的，他们的立场才会动摇。"
+    },
+    {
+      "name": "Direct and Honest",
+      "name_zh": "直接诚实",
+      "description": "Executives trust facts far more than abstract ideas or opinions. Clear statements and information are king, and Executives return the honesty.",
+      "description_zh": "总经理相信事实远胜于抽象的想法或观点。清晰的陈述和信息是王道，总经理也会回报诚实。"
+    },
+    {
+      "name": "Excellent Organizers",
+      "name_zh": "优秀的组织者",
+      "description": "This commitment to truth and clear standards makes Executives capable and confident leaders. They have no problem distributing tasks and responsibilities to others fairly and objectively.",
+      "description_zh": "这种对真理和明确标准的承诺使总经理成为有能力且自信的领导者。他们在公平客观地向他人分配任务和责任方面没有问题。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Inflexible and Stubborn",
+      "name_zh": "不灵活且固执",
+      "description": "The problem with being so fixated on what works is that Executives too often dismiss what might work better. They are reluctant to give untested ideas a chance.",
+      "description_zh": "过于执着于有效方法的问题在于，总经理往往忽视了可能更好的方法。他们不愿给未经测试的想法一个机会。"
+    },
+    {
+      "name": "Judgmental",
+      "name_zh": "爱评判",
+      "description": "Executives have strong convictions about what is right, wrong, and socially acceptable. Executives' compulsion to create order often extends to all things and everyone.",
+      "description_zh": "总经理对于什么是对的、错的以及社会上可接受的有着强烈的信念。总经理创造秩序的强迫症往往延伸到所有事物和每个人。"
+    },
+    {
+      "name": "Too Focused on Social Status",
+      "name_zh": "过于关注社会地位",
+      "description": "Executives take pride in the respect of their friends, colleagues and community and while difficult to admit, are very concerned with public opinion.",
+      "description_zh": "总经理以朋友、同事和社区的尊重为荣，虽然难以承认，但他们非常在意公众舆论。"
+    },
+    {
+      "name": "Difficulty Expressing Emotion",
+      "name_zh": "难以表达情感",
+      "description": "Executives often get so caught up in the facts and most effective methods that they forget to think of what makes others happy, or of their sensitivity.",
+      "description_zh": "总经理常常过于沉迷于事实和最有效的方法，以至于忘记思考什么能让他人快乐，或者忘记考虑他们的敏感性。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Turbulent Executives are the most likely personality type to believe the best way to lead is with a firm hand.",
+    "content_zh": "动荡型总经理是最有可能相信最好的领导方式是用坚定的手腕的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

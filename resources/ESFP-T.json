@@ -1,0 +1,118 @@
+{
+  "mbti_type": "ESFP-T",
+  "type_name": {
+    "en": "Entertainer (Turbulent)",
+    "zh": "表演者型（动荡型）"
+  },
+  "role": {
+    "name": "Explorer",
+    "name_zh": "探索者",
+    "description": "Observant (S) and Prospecting (P) personality types, known for their spontaneity, ingenuity, and ability to live in the moment.",
+    "description_zh": "观察型(S)和探索型(P)人格类型，以自发性、独创性和活在当下能力著称。"
+  },
+  "strategy": {
+    "name": "Social Engagement",
+    "name_zh": "社交参与",
+    "description": "This strategy is adopted by sociable, energetic and success-driven types. Social Engagers tend to be restless, perfectionistic individuals, prone to experiencing both very positive and very negative emotions.",
+    "description_zh": "这种策略被善于社交、精力充沛和追求成功的人采用。社交参与者往往是不安分、完美主义的个体，容易经历非常积极和非常消极的情绪。"
+  },
+  "traits": {
+    "extraverted": {
+      "letter": "E",
+      "name": "Extraverted",
+      "name_zh": "外向",
+      "description": "Individuals prefer group activities and get energized by social interaction. They tend to be more enthusiastic and more easily excited than Introverts.",
+      "description_zh": "外向型个体喜欢团体活动，通过社交互动获得能量。他们往往比内向型更热情、更容易兴奋。"
+    },
+    "observant": {
+      "letter": "S",
+      "name": "Observant",
+      "name_zh": "观察",
+      "description": "Individuals are highly practical, pragmatic and down-to-earth. They tend to have strong habits and focus on what is happening or has already happened.",
+      "description_zh": "观察型个体非常务实、讲究实际且脚踏实地。他们往往有很强的习惯，专注于正在发生或已经发生的事物。"
+    },
+    "feeling": {
+      "letter": "F",
+      "name": "Feeling",
+      "name_zh": "情感",
+      "description": "Individuals are sensitive and emotionally expressive. They are more empathic and less competitive than Thinking types, and focus on social harmony and cooperation.",
+      "description_zh": "情感型个体敏感且善于表达情感。他们比思考型更有同理心、竞争性较低，关注社会和谐与合作。"
+    },
+    "prospecting": {
+      "letter": "P",
+      "name": "Prospecting",
+      "name_zh": "探索",
+      "description": "Individuals are very good at improvising and spotting opportunities. They tend to be flexible, relaxed nonconformists who prefer keeping their options open.",
+      "description_zh": "探索型个体非常擅长即兴发挥和发现机会。他们往往是灵活的、放松的非传统主义者，更喜欢保持选择的开放性。"
+    },
+    "turbulent": {
+      "suffix": "-T",
+      "name": "Turbulent",
+      "name_zh": "动荡",
+      "description": "Individuals are self-conscious and sensitive to stress. They are likely to experience a wide range of emotions and to be success-driven, perfectionistic and eager to improve.",
+      "description_zh": "动荡型个体自我意识强且对压力敏感。他们可能会经历广泛的情感波动，以成功为驱动力，追求完美并渴望改进。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Bold",
+      "name_zh": "大胆",
+      "description": "Entertainers aren't known for holding back. Wanting to experience everything there is to experience, they don't mind stepping out of their comfort zones when no one else is willing.",
+      "description_zh": "表演者不以退缩著称。想要体验一切可以体验的事物，当其他人不愿意时，他们不介意走出自己的舒适区。"
+    },
+    {
+      "name": "Original",
+      "name_zh": "独创",
+      "description": "Traditions and expectations are secondary to Entertainers, if a consideration at all. They love to experiment with new styles, and constantly find new ways to stick out in the crowd.",
+      "description_zh": "传统和期望对表演者来说居于次要地位，如果会考虑的话。他们喜欢尝试新风格，并不断找到在人群中脱颖而出的新方法。"
+    },
+    {
+      "name": "Aesthetics and Showmanship",
+      "name_zh": "审美与表演技巧",
+      "description": "Not stopping at mere outfits, Entertainers inject artistic creativity into their words and actions, too.",
+      "description_zh": "不仅仅是服装，表演者还将艺术创造力注入到他们的言语和行为中。"
+    },
+    {
+      "name": "Excellent People Skills",
+      "name_zh": "出色的人际交往能力",
+      "description": "More so than things though, Entertainers love to pay attention to people. They are talkative, witty, and almost never run out of things to discuss. For Entertainers, happiness and satisfaction stem from the time they spend with the people they enjoy being with.",
+      "description_zh": "比起事物，表演者更喜欢关注人。他们健谈、机智，几乎从不缺少讨论的话题。对于表演者来说，幸福和满意源于他们与自己享受相处的人一起度过的时间。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Sensitive",
+      "name_zh": "敏感",
+      "description": "Entertainers are strongly emotional, and very vulnerable to criticism – they can feel like they've been backed into a corner, sometimes reacting badly.",
+      "description_zh": "表演者情绪强烈，对批评非常脆弱——他们会感觉自己被逼入绝境，有时会反应糟糕。"
+    },
+    {
+      "name": "Easily Bored",
+      "name_zh": "容易厌倦",
+      "description": "Without constant excitement, Entertainers find ways to create it themselves. Risky behavior, self-indulgence, and the pleasures of the moment over long-term plans are all things Entertainers get into a little too often.",
+      "description_zh": "没有持续的刺激，表演者会找到自我创造刺激的方法。冒险行为、自我放纵以及享受当下的快感而非长期计划，这些都是表演者过于经常陷入的事情。"
+    },
+    {
+      "name": "Conflict-Averse",
+      "name_zh": "回避冲突",
+      "description": "Entertainers sometimes ignore and avoid conflict entirely. They may say and do what's needed to get out of such situations, then move on to something more fun.",
+      "description_zh": "表演者有时会完全忽视和避免冲突。他们可能会说出和做出摆脱此类处境所需的事情，然后转向更有趣的事情。"
+    },
+    {
+      "name": "Unfocused",
+      "name_zh": "缺乏专注",
+      "description": "Anything that requires long-term dedication and focus is a particular challenge for Entertainers.",
+      "description_zh": "任何需要长期奉献和专注的事情对表演者来说都是一个特别的挑战。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Turbulent Entertainers are the least likely personality type to feel comfortable just sitting in silence with other people.",
+    "content_zh": "动荡型表演者是最不可能在与其他人一起静坐时感到舒适的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "mbti_type": "ISFJ-A",
+  "type_name": {
+    "en": "Defender (Assertive)",
+    "zh": "守卫者型（果断型）"
+  },
+  "role": {
+    "name": "Sentinel",
+    "name_zh": "哨兵",
+    "description": "Observant (S) and Judging (J) personality types, known for their focus on practicality, order, security and stability.",
+    "description_zh": "观察型(S)和判断型(J)人格类型，以注重实用性、秩序、安全和稳定著称。"
+  },
+  "strategy": {
+    "name": "Confident Individualism",
+    "name_zh": "自信个人主义",
+    "description": "These personality types prefer to do things by themselves, choosing to rely on their own skills and instincts instead of seeking help from others. They are confident, even-tempered and resistant to stress. They refuse to worry too much and do not push themselves too hard when it comes to achieving goals.",
+    "description_zh": "这些人格类型喜欢独自做事，选择依靠自己的技能和本能，而不是寻求他人帮助。他们自信、情绪稳定且抗压力强。他们拒绝过度担忧，在追求目标时不会过分逼迫自己。"
+  },
+  "traits": {
+    "introverted": {
+      "letter": "I",
+      "name": "Introverted",
+      "name_zh": "内向",
+      "description": "Individuals prefer solitary activities and get exhausted by social interaction. They tend to be quite sensitive to external stimulation (e.g. sound, sight or smell) in general.",
+      "description_zh": "内向型个体偏好独处活动，社交互动后容易感到疲惫。他们通常对外部刺激（如声音、视觉或气味）相当敏感。"
+    },
+    "observant": {
+      "letter": "S",
+      "name": "Observant",
+      "name_zh": "观察",
+      "description": "Individuals are highly practical, pragmatic and down-to-earth. They tend to have strong habits and focus on what is happening or has already happened.",
+      "description_zh": "观察型个体非常务实、讲求实际且脚踏实地。他们往往有强烈的习惯，专注于正在发生或已经发生的事物。"
+    },
+    "feeling": {
+      "letter": "F",
+      "name": "Feeling",
+      "name_zh": "情感",
+      "description": "Individuals are sensitive and emotionally expressive. They are more empathic and less competitive than Thinking types, and focus on social harmony and cooperation.",
+      "description_zh": "情感型个体敏感且善于表达情感。他们比思考型更有同理心、竞争性较低，关注社会和谐与合作。"
+    },
+    "judging": {
+      "letter": "J",
+      "name": "Judging",
+      "name_zh": "判断",
+      "description": "Individuals are decisive, thorough and highly organized. They value clarity, predictability and closure, preferring structure and planning to spontaneity.",
+      "description_zh": "判断型个体果断、彻底且高度有条理。他们重视清晰、可预测性和完结，更喜欢结构和规划而非自发性。"
+    },
+    "assertive": {
+      "suffix": "-A",
+      "name": "Assertive",
+      "name_zh": "果断",
+      "description": "Individuals are self-assured, even-tempered and resistant to stress. They refuse to worry too much and do not push themselves too hard when it comes to achieving goals.",
+      "description_zh": "果断型个体自信、情绪稳定且抗压力强。他们拒绝过度担忧，在追求目标时不会过分逼迫自己。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Supportive",
+      "name_zh": "乐于助人",
+      "description": "Defenders are universal helpers, sharing their knowledge, experience, time and energy with anyone who needs it.",
+      "description_zh": "守卫者是万能的帮助者，与任何需要的人分享他们的知识、经验、时间和精力。"
+    },
+    {
+      "name": "Reliable and Patient",
+      "name_zh": "可靠且耐心",
+      "description": "Rather than offering sporadic, exciting rushes of energy that leave things unfinished, Defenders are meticulous and careful, taking a steady approach and bending with the needs of the situation to accomplish their end goals.",
+      "description_zh": "守卫者不是提供零散的、令人兴奋的冲刺而留下未完成的事情，而是细致和谨慎，采取稳定的方法并根据情况的需要进行调整以完成最终目标。"
+    },
+    {
+      "name": "Enthusiastic",
+      "name_zh": "热情",
+      "description": "When the goal is right, Defenders apply all of their reliability and imagination to something they believe will make a tangible, positive impact on the lives of the people they care about.",
+      "description_zh": "当目标正确时，守卫者将他们所有的可靠性和想象力应用于他们相信会对他们关心的人的生活产生切实的、积极影响的事情。"
+    },
+    {
+      "name": "Loyal and Hard-Working",
+      "name_zh": "忠诚且勤奋",
+      "description": "Defenders tend to become attached to the ideas and organizations they've invested themselves in. Any job left undone or any shoddy work would be failing their own expectations.",
+      "description_zh": "守卫者往往与他们投入的想法和组织形成强烈的依恋。任何未完成的工作或任何劣质工作都将辜负他们自己的期望。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Humble and Shy",
+      "name_zh": "谦逊且害羞",
+      "description": "Defenders are so concerned with others' feelings that they often refuse to express their own thoughts, or to take any of the credit they're due for the contributions they've made, or even to downplay their successes entirely.",
+      "description_zh": "守卫者如此关心他人的感受，以至于他们经常拒绝表达自己的想法，或拒绝为他们所做的贡献获得任何应得的荣誉，甚至完全淡化他们的成功。"
+    },
+    {
+      "name": "Take Things Too Personally",
+      "name_zh": "过于个人化",
+      "description": "Defenders have trouble separating personal and impersonal situations – any resulting negativity from conflict or criticism carries over into their personal life, and vice versa.",
+      "description_zh": "守卫者难以将个人和非个人情况分开——来自冲突或批评的任何负面结果都会蔓延到他们的个人生活，反之亦然。"
+    },
+    {
+      "name": "Overload Themselves",
+      "name_zh": "过度负荷",
+      "description": "Their strong sense of duty and aversion to conflict, along with their perfectionism, makes it far too easy for Defenders to overload themselves – or to be overloaded by others.",
+      "description_zh": "他们强烈的责任感、对冲突的厌恶以及完美主义，使守卫者太容易过度负荷自己——或者被他人过度负荷。"
+    },
+    {
+      "name": "Reluctant to Change",
+      "name_zh": "不愿改变",
+      "description": "These challenges can be particularly hard to address for Defenders, given the heavy emphasis they place on tradition and history in their decision-making.",
+      "description_zh": "鉴于守卫者在决策中对传统和历史的高度重视，这些挑战对他们来说可能特别难以解决。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Assertive Defenders are the most likely personality type to stay humble in victory.",
+    "content_zh": "果断型守卫者是最有可能在胜利时保持谦逊的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

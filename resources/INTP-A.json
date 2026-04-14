@@ -1,0 +1,118 @@
+{
+  "mbti_type": "INTP-A",
+  "type_name": {
+    "en": "Logician (Assertive)",
+    "zh": "逻辑学家型（果断型）"
+  },
+  "role": {
+    "name": "Analyst",
+    "name_zh": "分析师",
+    "description": "Intuitive (N) and Thinking (T) personality types, known for their rationality, impartiality and intellectual excellence.",
+    "description_zh": "直觉型(N)和思考型(T)人格类型，以理性、公正和卓越智力著称。"
+  },
+  "strategy": {
+    "name": "Confident Individualism",
+    "name_zh": "自信个人主义",
+    "description": "These personality types prefer to do things by themselves, choosing to rely on their own skills and instincts instead of seeking help from others. They are confident, even-tempered and resistant to stress. They refuse to worry too much and do not push themselves too hard when it comes to achieving goals.",
+    "description_zh": "这些人格类型喜欢独自做事，选择依靠自己的技能和本能，而不是寻求他人帮助。他们自信、情绪稳定且抗压力强。他们拒绝过度担忧，在追求目标时不会过分逼迫自己。"
+  },
+  "traits": {
+    "introverted": {
+      "letter": "I",
+      "name": "Introverted",
+      "name_zh": "内向",
+      "description": "Individuals prefer solitary activities and get exhausted by social interaction. They tend to be quite sensitive to external stimulation (e.g. sound, sight or smell) in general.",
+      "description_zh": "内向型个体偏好独处活动，社交互动后容易感到疲惫。他们通常对外部刺激（如声音、视觉或气味）相当敏感。"
+    },
+    "intuitive": {
+      "letter": "N",
+      "name": "Intuitive",
+      "name_zh": "直觉",
+      "description": "Individuals are very imaginative, open-minded and curious. They prefer novelty over stability and focus on hidden meanings and future possibilities.",
+      "description_zh": "直觉型个体富有想象力、思想开放且充满好奇心。他们更喜欢新奇而非稳定，关注隐藏的含义和未来的可能性。"
+    },
+    "thinking": {
+      "letter": "T",
+      "name": "Thinking",
+      "name_zh": "思考",
+      "description": "Individuals focus on objectivity and rationality, prioritizing logic over emotions. They tend to hide their feelings and see efficiency as more important than cooperation.",
+      "description_zh": "思考型个体注重客观性和理性，优先考虑逻辑而非情感。他们往往隐藏自己的感受，将效率看得比合作更重要。"
+    },
+    "prospecting": {
+      "letter": "P",
+      "name": "Prospecting",
+      "name_zh": "展望",
+      "description": "Individuals are very good at improvising and spotting opportunities. They tend to be flexible, relaxed nonconformists who prefer keeping their options open.",
+      "description_zh": "展望型个体非常擅长即兴发挥和发现机会。他们往往是灵活、轻松的不墨守成规者，喜欢保持选择的开放性。"
+    },
+    "assertive": {
+      "suffix": "-A",
+      "name": "Assertive",
+      "name_zh": "果断",
+      "description": "Individuals are self-assured, even-tempered and resistant to stress. They refuse to worry too much and do not push themselves too hard when it comes to achieving goals.",
+      "description_zh": "果断型个体自信、情绪稳定且抗压力强。他们拒绝过度担忧，在追求目标时不会过分逼迫自己。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Analytical",
+      "name_zh": "分析能力强",
+      "description": "Logicians analyze everything that they come across, unearthing unexpected patterns and connections that other personality types might overlook.",
+      "description_zh": "逻辑学家分析他们遇到的一切，发现其他人格类型可能忽视的意外模式和联系。"
+    },
+    {
+      "name": "Original",
+      "name_zh": "富有创意",
+      "description": "Thanks to their unrelenting imagination, Logicians can come up with creative, counterintuitive ideas that other personality types might never have thought of.",
+      "description_zh": "由于他们无情的想象力，逻辑学家能够想出具有创造性、违反直觉的想法，这些是其他人格类型可能从未想到过的。"
+    },
+    {
+      "name": "Open-Minded",
+      "name_zh": "思想开放",
+      "description": "Logicians are driven by curiosity and an intense desire to learn. This personality type tends to be open-minded, especially when it comes to new ideas and ways of doing things.",
+      "description_zh": "逻辑学家受好奇心和强烈的学习欲望驱动。这种人格类型往往思想开放，特别是在涉及新想法和做事方式时。"
+    },
+    {
+      "name": "Objective",
+      "name_zh": "客观公正",
+      "description": "Logicians care about the truth. Rather than taking comfort in ideology or received ideas, they want to understand what's actually going on beneath the surface.",
+      "description_zh": "逻辑学家关心真相。他们不是从意识形态或既定观念中寻求安慰，而是想了解表面之下实际发生了什么。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Disconnected",
+      "name_zh": "疏离感",
+      "description": "Logicians can get lost in their own thoughts, even when they're with other people. This can make them seem disconnected from others, especially in large social gatherings.",
+      "description_zh": "逻辑学家可能陷入自己的思绪中，即使与他人在一起时也是如此。这可能让他们显得与他人疏离，特别是在大型社交聚会中。"
+    },
+    {
+      "name": "Insensitive",
+      "name_zh": "冷漠",
+      "description": "This personality type sees rationality as the key to a better, happier world. They may underestimate the importance of values such as empathy, courtesy, and tradition.",
+      "description_zh": "这种人格类型将理性视为通往更美好、更幸福世界的关键。他们可能低估同理心、礼貌和传统等价值观的重要性。"
+    },
+    {
+      "name": "Dissatisfied",
+      "name_zh": "不满现状",
+      "description": "Logicians can't help but imagine how things could be better than they are. This mindset can become overwhelming, with Logicians constantly trying to reinvent the wheel.",
+      "description_zh": "逻辑学家不禁想象事物如何能够比现状更好。这种心态可能变得压倒性，逻辑学家不断试图重新发明轮子。"
+    },
+    {
+      "name": "Perfectionistic",
+      "name_zh": "完美主义",
+      "description": "Logicians want to get things done, but their quest for perfection can get in the way. Sometimes, these personalities may get lost in analyzing various options to the point that they never make a decision or even give up on a project.",
+      "description_zh": "逻辑学家想要完成事情，但他们对完美的追求可能会阻碍他们。有时，这些人格可能陷入分析各种选项中，以至于永远无法做出决定甚至放弃项目。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Assertive Logicians are the most likely personality type to agree that it is best to default to skepticism.",
+    "content_zh": "果断型逻辑学家是最有可能同意\"最好默认持怀疑态度\"的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

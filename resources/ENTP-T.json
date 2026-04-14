@@ -1,0 +1,118 @@
+{
+  "mbti_type": "ENTP-T",
+  "type_name": {
+    "en": "Debater (Turbulent)",
+    "zh": "辩论家型（动荡型）"
+  },
+  "role": {
+    "name": "Analyst",
+    "name_zh": "分析师",
+    "description": "Intuitive (N) and Thinking (T) personality types, known for their rationality, impartiality, and intellectual excellence.",
+    "description_zh": "直觉型(N)和思考型(T)人格类型，以理性、公正和卓越的智慧著称。"
+  },
+  "strategy": {
+    "name": "Social Engagement",
+    "name_zh": "社交参与",
+    "description": "This strategy is adopted by sociable, energetic and success-driven types. Social Engagers tend to be restless, perfectionistic individuals, prone to experiencing both very positive and very negative emotions.",
+    "description_zh": "这种策略被善于社交、精力充沛和追求成功的人采用。社交参与者往往是不安分、完美主义的个体，容易经历非常积极和非常消极的情绪。"
+  },
+  "traits": {
+    "extraverted": {
+      "letter": "E",
+      "name": "Extraverted",
+      "name_zh": "外向",
+      "description": "Individuals prefer group activities and get energized by social interaction. They tend to be more enthusiastic and more easily excited than Introverts.",
+      "description_zh": "外向型个体喜欢团体活动，通过社交互动获得能量。他们往往比内向型更热情、更容易兴奋。"
+    },
+    "intuitive": {
+      "letter": "N",
+      "name": "Intuitive",
+      "name_zh": "直觉",
+      "description": "Individuals are very imaginative, open-minded and curious. They prefer novelty over stability and focus on hidden meanings and future possibilities.",
+      "description_zh": "直觉型个体富有想象力、思想开放且充满好奇心。他们更喜欢新奇而非稳定，关注隐藏的含义和未来的可能性。"
+    },
+    "thinking": {
+      "letter": "T",
+      "name": "Thinking",
+      "name_zh": "思考",
+      "description": "Individuals focus on objectivity and rationality, prioritizing logic over emotions. They tend to hide their feelings and see efficiency as more important than cooperation.",
+      "description_zh": "思考型个体专注于客观性和理性，优先考虑逻辑而非情感。他们倾向于隐藏自己的感受，认为效率比合作更重要。"
+    },
+    "prospecting": {
+      "letter": "P",
+      "name": "Prospecting",
+      "name_zh": "探索",
+      "description": "Individuals are very good at improvising and spotting opportunities. They tend to be flexible, relaxed nonconformists who prefer keeping their options open.",
+      "description_zh": "探索型个体非常擅长即兴发挥和发现机会。他们往往是灵活的、放松的非传统主义者，更喜欢保持选择的开放性。"
+    },
+    "turbulent": {
+      "suffix": "-T",
+      "name": "Turbulent",
+      "name_zh": "动荡",
+      "description": "Individuals are self-conscious and sensitive to stress. They are likely to experience a wide range of emotions and to be success-driven, perfectionistic and eager to improve.",
+      "description_zh": "动荡型个体自我意识强且对压力敏感。他们可能会经历广泛的情感波动，以成功为驱动力，追求完美并渴望改进。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Efficient",
+      "name_zh": "高效",
+      "description": "Debaters rarely pass up a good opportunity to learn new things, especially abstract concepts.",
+      "description_zh": "辩论家很少错过学习新事物的好机会，尤其是抽象概念。"
+    },
+    {
+      "name": "Quick Thinkers",
+      "name_zh": "思维敏捷",
+      "description": "Debaters have tremendously flexible minds, and are able to shift from idea to idea without effort, drawing on their knowledge to prove their points.",
+      "description_zh": "辩论家拥有极其灵活的头脑，能够毫不费力地从一个想法转移到另一个想法，利用他们的知识来证明自己的观点。"
+    },
+    {
+      "name": "Original",
+      "name_zh": "原创",
+      "description": "Debater personalities are able to discard existing systems and methods and pull together disparate ideas. If presented with chronic, systemic problems and given rein to solve them, Debaters respond with unabashed glee.",
+      "description_zh": "辩论家人格能够抛弃现有的系统和方法，并将不同的想法整合在一起。如果面临慢性、系统性问题并被赋予解决它们的自由，辩论家会以毫不掩饰的喜悦回应。"
+    },
+    {
+      "name": "Charismatic",
+      "name_zh": "有魅力",
+      "description": "People with the Debater personality type have a way with words and wit that others find intriguing. Their style of communication is charming, even entertaining, and informative at the same time.",
+      "description_zh": "辩论家人格类型的人有一种用词和机智的方式，让其他人觉得有趣。他们的沟通风格迷人，甚至有趣，同时又能提供信息。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Very Argumentative",
+      "name_zh": "过于好辩",
+      "description": "If there's anything Debaters enjoy, it's the mental exercise of debating an idea, and nothing is sacred. More consensus-oriented personality types rarely appreciate the vigor with which Debater personalities tear down their beliefs and methods.",
+      "description_zh": "如果有什么是辩论家喜欢的，那就是辩论一个想法的精神锻炼，没有什么神圣不可侵犯的。更注重共识的人格类型很少欣赏辩论家人格以何种活力撕毁他们的信仰和方法。"
+    },
+    {
+      "name": "Insensitive",
+      "name_zh": "缺乏敏感度",
+      "description": "Being so rational, Debaters often misjudge other people's feelings and push their debates well past others' tolerance levels.",
+      "description_zh": "如此理性，辩论家经常误判他人的感受，并将他们的辩论推到他人容忍水平之外。"
+    },
+    {
+      "name": "Can Find It Difficult to Focus",
+      "name_zh": "难以集中注意力",
+      "description": "The same flexibility that allows Debaters to come up with such original plans and ideas makes them readapt perfectly good ones far too often, or to even drop them entirely.",
+      "description_zh": "同样的灵活性使辩论家能够提出如此原创的计划和想法，也使他们过于频繁地重新调整完全好的计划，甚至完全放弃它们。"
+    },
+    {
+      "name": "Dislike Practical Matters",
+      "name_zh": "不喜欢务实事务",
+      "description": "Debaters are interested in what could be, not hard details and day-to-day execution, often with the consequence of their plans never seeing the light of day.",
+      "description_zh": "辩论家对可能发生的事情感兴趣，而不是艰难的细节和日常执行，往往导致他们的计划永远见不到天日。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Turbulent Debaters are the most likely personality type to feel insecure about their friendships.",
+    "content_zh": "动荡型辩论家是最有可能对他们的友谊感到不安全的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

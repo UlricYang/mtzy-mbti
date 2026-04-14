@@ -1,0 +1,118 @@
+{
+  "mbti_type": "INTJ-T",
+  "type_name": {
+    "en": "Architect (Turbulent)",
+    "zh": "建筑师型（动荡型）"
+  },
+  "role": {
+    "name": "Analyst",
+    "name_zh": "分析师",
+    "description": "Intuitive (N) and Thinking (T) personality types, known for their rationality, impartiality and intellectual excellence.",
+    "description_zh": "直觉型(N)和思考型(T)人格类型，以理性、公正和卓越智力著称。"
+  },
+  "strategy": {
+    "name": "Constant Improvement",
+    "name_zh": "持续改进",
+    "description": "Constant Improvers are quiet, individualistic people. They tend to be success-driven and often perfectionists, pouring a great deal of energy and time into their work.",
+    "description_zh": "持续改进者是安静、个人主义的人。他们往往追求成功，而且常常是完美主义者，在工作上花费大量时间和精力。"
+  },
+  "traits": {
+    "introverted": {
+      "letter": "I",
+      "name": "Introverted",
+      "name_zh": "内向",
+      "description": "Individuals prefer solitary activities and get exhausted by social interaction. They tend to be quite sensitive to external stimulation (e.g. sound, sight or smell) in general.",
+      "description_zh": "内向型个体偏好独处活动，社交互动后容易感到疲惫。他们通常对外部刺激（如声音、视觉或气味）相当敏感。"
+    },
+    "intuitive": {
+      "letter": "N",
+      "name": "Intuitive",
+      "name_zh": "直觉",
+      "description": "Individuals are very imaginative, open-minded and curious. They prefer novelty over stability and focus on hidden meanings and future possibilities.",
+      "description_zh": "直觉型个体富有想象力、思想开放且充满好奇心。他们更喜欢新奇而非稳定，关注隐藏的含义和未来的可能性。"
+    },
+    "thinking": {
+      "letter": "T",
+      "name": "Thinking",
+      "name_zh": "思考",
+      "description": "Individuals focus on objectivity and rationality, prioritizing logic over emotions. They tend to hide their feelings and see efficiency as more important than cooperation.",
+      "description_zh": "思考型个体注重客观性和理性，优先考虑逻辑而非情感。他们往往隐藏自己的感受，将效率看得比合作更重要。"
+    },
+    "judging": {
+      "letter": "J",
+      "name": "Judging",
+      "name_zh": "判断",
+      "description": "Individuals are decisive, thorough and highly organized. They value clarity, predictability and closure, preferring structure and planning to spontaneity.",
+      "description_zh": "判断型个体果断、彻底且高度有条理。他们重视清晰、可预测性和完结，更喜欢结构和规划而非自发性。"
+    },
+    "turbulent": {
+      "suffix": "-T",
+      "name": "Turbulent",
+      "name_zh": "动荡",
+      "description": "Individuals are self-conscious and sensitive to stress. They are likely to experience a wide range of emotions and to be success-driven, perfectionistic and eager to improve.",
+      "description_zh": "动荡型个体自我意识强且对压力敏感。他们可能会经历广泛的情绪，追求成功、追求完美且渴望改进。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Rational",
+      "name_zh": "理性",
+      "description": "Architects take pride in their minds. For them, nearly any situation can become an opportunity to expand their knowledge and hone their rational thinking skills.",
+      "description_zh": "建筑师以头脑为荣。对他们来说，几乎任何情况都可以成为扩展知识和磨练理性思维技能的机会。"
+    },
+    {
+      "name": "Independent",
+      "name_zh": "独立",
+      "description": "For these personality types, conformity is more or less synonymous with mediocrity. Creative and self-motivated, Architects strive to do things their own way.",
+      "description_zh": "对于这些人格类型，从众或多或少等同于平庸。富有创造力和自我激励，建筑师努力以自己的方式做事。"
+    },
+    {
+      "name": "Determined",
+      "name_zh": "坚定",
+      "description": "Architects are ambitious and goal-oriented. They have a clear vision of what success means to them, and few things can stop them from turning these visions into reality.",
+      "description_zh": "建筑师雄心勃勃、目标明确。他们对成功意味着什么有清晰的愿景，很少有事情能阻止他们将这些愿景变为现实。"
+    },
+    {
+      "name": "Curious",
+      "name_zh": "好奇",
+      "description": "Architects are open to new ideas – as long as they're backed by sound reasoning. They're particularly drawn to complex, nonconventional ideas. And when they're proven wrong, they may even be willing to change their minds.",
+      "description_zh": "建筑师对新思想持开放态度——只要它们有充分的理由支持。他们特别被复杂、非传统的想法所吸引。而且当事实证明他们错了时，他们甚至愿意改变主意。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Arrogant",
+      "name_zh": "傲慢",
+      "description": "Architects are knowledgeable, but they're not infallible. Their self-assurance can blind them to useful input from others – especially from those they consider to be intellectually inferior.",
+      "description_zh": "建筑师知识渊博，但并非万无一失。他们的自信可能使他们忽视他人的有用意见——特别是那些他们认为智力不如自己的人。"
+    },
+    {
+      "name": "Dismissive of Emotions",
+      "name_zh": "轻视情感",
+      "description": "For Architects, rationality is king. They may grow impatient with anyone who seems to value emotion over fact. This can be particularly problematic in personal relationships.",
+      "description_zh": "对建筑师来说，理性是王道。他们可能对任何似乎重视情感胜过事实的人变得不耐烦。这在个人关系中可能特别成问题。"
+    },
+    {
+      "name": "Combative",
+      "name_zh": "好争论",
+      "description": "Architects hate blindly following anything without understanding why. This personality type can get stuck in arguments over useless rules and regulations, which can create unnecessary conflict.",
+      "description_zh": "建筑师讨厌在不了解原因的情况下盲目遵循任何事物。这种人格类型可能陷入对无用规则和规定的争论中，这可能造成不必要的冲突。"
+    },
+    {
+      "name": "Romantically Clueless",
+      "name_zh": "浪漫方面迟钝",
+      "description": "Architects' relentless rationality can lead them to become frustrated with romance, particularly in the early stages of a relationship. They may have difficulty understanding what's going on and how they should act.",
+      "description_zh": "建筑师无情的理性可能导致他们对浪漫感到沮丧，特别是在关系的早期阶段。他们可能难以理解正在发生什么以及该如何表现。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Turbulent Architects are the most likely personality type to frequently feel misunderstood.",
+    "content_zh": "动荡型建筑师是最有可能经常感到被误解的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

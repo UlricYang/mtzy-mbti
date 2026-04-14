@@ -1,0 +1,118 @@
+{
+  "mbti_type": "ENTJ-T",
+  "type_name": {
+    "en": "Commander (Turbulent)",
+    "zh": "指挥官型（动荡型）"
+  },
+  "role": {
+    "name": "Analyst",
+    "name_zh": "分析师",
+    "description": "Intuitive (N) and Thinking (T) personality types, known for their rationality, impartiality, and intellectual excellence.",
+    "description_zh": "直觉型(N)和思考型(T)人格类型，以理性、公正和卓越的智慧著称。"
+  },
+  "strategy": {
+    "name": "People Mastery",
+    "name_zh": "人际精通",
+    "description": "People Masters seek social contact and tend to have very good communication skills. These types are confident in their abilities and don't hesitate to express their opinions.",
+    "description_zh": "人际精通者寻求社交联系，通常具有很好的沟通技巧。这些类型对自己的能力充满信心，毫不犹豫地表达自己的观点。"
+  },
+  "traits": {
+    "extraverted": {
+      "letter": "E",
+      "name": "Extraverted",
+      "name_zh": "外向",
+      "description": "Individuals prefer group activities and get energized by social interaction. They tend to be more enthusiastic and more easily excited than Introverts.",
+      "description_zh": "外向型个体喜欢团体活动，通过社交互动获得能量。他们往往比内向型更热情、更容易兴奋。"
+    },
+    "intuitive": {
+      "letter": "N",
+      "name": "Intuitive",
+      "name_zh": "直觉",
+      "description": "Individuals are very imaginative, open-minded and curious. They prefer novelty over stability and focus on hidden meanings and future possibilities.",
+      "description_zh": "直觉型个体富有想象力、思想开放且充满好奇心。他们更喜欢新奇而非稳定，关注隐藏的含义和未来的可能性。"
+    },
+    "thinking": {
+      "letter": "T",
+      "name": "Thinking",
+      "name_zh": "思考",
+      "description": "Individuals focus on objectivity and rationality, prioritizing logic over emotions. They tend to hide their feelings and see efficiency as more important than cooperation.",
+      "description_zh": "思考型个体专注于客观性和理性，优先考虑逻辑而非情感。他们倾向于隐藏自己的感受，认为效率比合作更重要。"
+    },
+    "judging": {
+      "letter": "J",
+      "name": "Judging",
+      "name_zh": "判断",
+      "description": "Individuals are decisive, thorough and highly organized. They value clarity, predictability and closure, preferring structure and planning to spontaneity.",
+      "description_zh": "判断型个体果断、彻底且高度有条理。他们重视清晰、可预测性和完结，更喜欢结构和规划而非自发行为。"
+    },
+    "turbulent": {
+      "suffix": "-T",
+      "name": "Turbulent",
+      "name_zh": "动荡",
+      "description": "Individuals are self-conscious and sensitive to stress. They are likely to experience a wide range of emotions and to be success-driven, perfectionistic and eager to improve.",
+      "description_zh": "动荡型个体自我意识强且对压力敏感。他们可能会经历广泛的情感波动，以成功为驱动力，追求完美并渴望改进。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Efficient",
+      "name_zh": "高效",
+      "description": "Commanders see inefficiency as something that pulls time and energy away from all their future goals, and will root out such behavior wherever they go.",
+      "description_zh": "指挥官将低效视为从他们所有未来目标中抽走时间和能量的东西，并会在任何他们发现这种行为的地方根除它。"
+    },
+    {
+      "name": "Self-Confident",
+      "name_zh": "自信",
+      "description": "Commanders trust their abilities, make known their opinions, and believe in their capacities as leaders.",
+      "description_zh": "指挥官信任自己的能力，明确表达自己的观点，并相信自己作为领导者的能力。"
+    },
+    {
+      "name": "Strong-Willed",
+      "name_zh": "意志坚强",
+      "description": "Commander personalities strive to achieve their goals, but really nothing is quite as satisfying to them as rising to the challenge of each obstacle in their run to the finish line.",
+      "description_zh": "指挥官型人格努力实现他们的目标，但对他们来说，没有什么比在冲向终点线的过程中迎接每一个障碍的挑战更令人满意的了。"
+    },
+    {
+      "name": "Charismatic",
+      "name_zh": "有魅力",
+      "description": "These qualities combine to create individuals who are able to inspire and invigorate others, and this in turn helps Commanders to accomplish their often ambitious goals.",
+      "description_zh": "这些品质结合在一起，创造出能够激励和鼓舞他人的人，这反过来又帮助指挥官完成他们通常雄心勃勃的目标。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Stubborn and Dominant",
+      "name_zh": "固执且强势",
+      "description": "Sometimes all this confidence and willpower can go too far, and Commanders are all too capable of digging in their heels, trying to win every single debate and pushing their vision, and theirs alone.",
+      "description_zh": "有时所有这些自信和意志力可能会走得太远，指挥官们太有能力固执己见，试图赢得每一场辩论，并推动他们的愿景，而且只是他们自己的愿景。"
+    },
+    {
+      "name": "Impatient",
+      "name_zh": "缺乏耐心",
+      "description": "Some people need more time to think than others, an intolerable delay to quick-thinking Commanders. They may often misinterpret this as stupidity or disinterest in their haste.",
+      "description_zh": "有些人需要比其他人更多的时间来思考，这对于思维敏捷的指挥官来说是无法忍受的延迟。他们可能会经常匆忙地将其误解为愚蠢或不感兴趣。"
+    },
+    {
+      "name": "Arrogant",
+      "name_zh": "傲慢",
+      "description": "Commander personalities respect quick thoughts and firm convictions, their own qualities, and look down on those who don't match up.",
+      "description_zh": "指挥官型人格尊重敏捷的思维和坚定的信念，他们自己的品质，并看不起那些不符合标准的人。"
+    },
+    {
+      "name": "Poor Handling of Emotions",
+      "name_zh": "情绪处理能力较差",
+      "description": "All this bluster, alongside the assumed supremacy of rationalism, makes Commanders distant from their own emotional expression and sometimes downright scornful of others'.",
+      "description_zh": "所有这些喧嚣，加上理性主义假设的至高无上，使指挥官与他们自己的情感表达保持距离，有时甚至对他人的情感表达完全蔑视。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Turbulent Commanders are the most likely personality type to have lost sleep at night thinking about their regrets.",
+    "content_zh": "动荡型指挥官是最有可能在晚上失眠思考他们的遗憾的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

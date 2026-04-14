@@ -1,6 +1,5 @@
 import { SparklesCore } from '@/components/ui/sparkles'
 import { AnimatedGradientText } from '@/components/ui/animated-gradient-text'
-import { BackgroundGradientAnimation } from '@/components/ui/background-gradient-animation'
 import { TextGenerateEffect } from '@/components/ui/text-generate-effect'
 import { motion } from 'framer-motion'
 import { Brain, Sparkles } from 'lucide-react'
@@ -16,25 +15,8 @@ export function HeroSection({ data }: HeroSectionProps) {
   const typeData = getMBTITypeData(data)
 
   return (
-    <section className="relative min-h-[480px] flex flex-col items-center justify-center overflow-hidden px-4 py-16">
-      <BackgroundGradientAnimation
-        gradientBackgroundStart="rgb(240, 240, 255)"
-        gradientBackgroundEnd="rgb(255, 240, 250)"
-        firstColor="102, 126, 234"
-        secondColor="240, 147, 251"
-        thirdColor="79, 172, 254"
-        fourthColor="245, 87, 108"
-        fifthColor="118, 75, 162"
-        pointerColor="102, 126, 234"
-        size="60%"
-        blendingValue="hard-light"
-        interactive={true}
-        containerClassName="opacity-60"
-      />
-
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-background z-[1]" />
-
-      <div className="absolute inset-0 z-[2]">
+    <section className="relative min-h-[420px] flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-[#667eea]/10 via-[#764ba2]/5 to-[#f093fb]/10 px-4 py-16">
+      <div className="absolute inset-0">
         <SparklesCore
           id="hero-sparkles"
           background="transparent"
@@ -45,6 +27,8 @@ export function HeroSection({ data }: HeroSectionProps) {
           particleColor="#667eea"
         />
       </div>
+
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-background z-[1]" />
 
       <div className="relative z-10 text-center max-w-2xl mx-auto">
         <motion.div

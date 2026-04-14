@@ -1,0 +1,118 @@
+{
+  "mbti_type": "ENFJ-A",
+  "type_name": {
+    "en": "Protagonist (Assertive)",
+    "zh": "主人公型（果断型）"
+  },
+  "role": {
+    "name": "Diplomat",
+    "name_zh": "外交官",
+    "description": "Intuitive (N) and Feeling (F) personality types, known for their focus on empathy, diplomacy and cooperation.",
+    "description_zh": "直觉型(N)和情感型(F)人格类型，以同理心、外交手腕和合作精神著称。"
+  },
+  "strategy": {
+    "name": "People Mastery",
+    "name_zh": "人际精通",
+    "description": "People Masters seek social contact and tend to have very good communication skills. These types are confident in their abilities and don't hesitate to express their opinions.",
+    "description_zh": "人际精通者寻求社交联系，通常具有很好的沟通技巧。这些类型对自己的能力充满信心，毫不犹豫地表达自己的观点。"
+  },
+  "traits": {
+    "extraverted": {
+      "letter": "E",
+      "name": "Extraverted",
+      "name_zh": "外向",
+      "description": "Individuals prefer group activities and get energized by social interaction. They tend to be more enthusiastic and more easily excited than Introverts.",
+      "description_zh": "外向型个体喜欢团体活动，通过社交互动获得能量。他们往往比内向型更热情、更容易兴奋。"
+    },
+    "intuitive": {
+      "letter": "N",
+      "name": "Intuitive",
+      "name_zh": "直觉",
+      "description": "Individuals are very imaginative, open-minded and curious. They prefer novelty over stability and focus on hidden meanings and future possibilities.",
+      "description_zh": "直觉型个体富有想象力、思想开放且充满好奇心。他们更喜欢新奇而非稳定，关注隐藏的含义和未来的可能性。"
+    },
+    "feeling": {
+      "letter": "F",
+      "name": "Feeling",
+      "name_zh": "情感",
+      "description": "Individuals are sensitive and emotionally expressive. They are more empathic and less competitive than Thinking types, and focus on social harmony and cooperation.",
+      "description_zh": "情感型个体敏感且善于表达情感。他们比思考型更有同理心、竞争性较低，关注社会和谐与合作。"
+    },
+    "judging": {
+      "letter": "J",
+      "name": "Judging",
+      "name_zh": "判断",
+      "description": "Individuals are decisive, thorough and highly organized. They value clarity, predictability and closure, preferring structure and planning to spontaneity.",
+      "description_zh": "判断型个体果断、彻底且高度有条理。他们重视清晰、可预测性和完结，更喜欢结构和规划而非自发行为。"
+    },
+    "assertive": {
+      "suffix": "-A",
+      "name": "Assertive",
+      "name_zh": "果断",
+      "description": "Individuals are self-assured, even-tempered and resistant to stress. They refuse to worry too much and do not push themselves too hard when it comes to achieving goals.",
+      "description_zh": "果断型个体自信、情绪稳定且抗压力强。他们拒绝过度担忧，在追求目标时不会过分逼迫自己。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Tolerant",
+      "name_zh": "宽容",
+      "description": "Protagonists are true team players, and they recognize that that means listening to other peoples' opinions, even when they contradict their own.",
+      "description_zh": "主人公是真正的团队合作者，他们认识到这意味着要倾听他人的意见，即使这些意见与自己的想法相矛盾。"
+    },
+    {
+      "name": "Reliable",
+      "name_zh": "可靠",
+      "description": "The one thing that galls Protagonists the most is the idea of letting down a person or cause they believe in. Protagonists can always be counted on to see it through.",
+      "description_zh": "最让主人公感到不安的是让他们相信的人或事业失望。主人公总是可以被信赖坚持到底。"
+    },
+    {
+      "name": "Charismatic",
+      "name_zh": "有魅力",
+      "description": "Charm and popularity are qualities Protagonists have in spades. They instinctively know how to capture an audience, and easily pick up on mood and motivation.",
+      "description_zh": "魅力和受欢迎是主人公大量拥有的品质。他们本能地知道如何吸引观众，并轻松捕捉到情绪和动机。"
+    },
+    {
+      "name": "Altruistic",
+      "name_zh": "利他",
+      "description": "Protagonists desire to do good in and for their communities, be it in their own home or the global stage. Protagonists genuinely believe that if they can just bring people together, they can do a world of good.",
+      "description_zh": "主人公渴望为自己的社区和更大的世界做好事，无论是在自己的家中还是在全球舞台上。主人公真诚地相信，如果他们能把人们团结在一起，他们就能创造巨大的美好。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Overly Idealistic",
+      "name_zh": "过于理想化",
+      "description": "Protagonists can be caught off guard as they find that, through circumstance or nature, or simple misunderstanding, people fight against them and defy the principles they've adopted, however well-intentioned they may be.",
+      "description_zh": "主人公可能会措手不及，因为他们发现，由于环境或天性，或简单的误解，人们会反对他们并违背他们所采纳的原则，无论他们的意图多么良好。"
+    },
+    {
+      "name": "Too Selfless",
+      "name_zh": "过于无私",
+      "description": "Protagonists can bury themselves in their hopeful promises, feeling others' problems as their own and striving hard to meet their word.",
+      "description_zh": "主人公可能会沉浸在他们充满希望的承诺中，把他人的问题当作自己的问题，并努力兑现诺言。"
+    },
+    {
+      "name": "Too Sensitive",
+      "name_zh": "过于敏感",
+      "description": "It's easy for Protagonists to take criticism a little too much to heart. People with this personality type may feel problems that aren't their own and try to fix things they can't fix, worrying if they are doing enough.",
+      "description_zh": "主人公很容易把批评太放在心上。这种人格类型的人可能会感受到不属于自己的问题，并试图修复他们无法修复的事情，担心自己做得是否足够。"
+    },
+    {
+      "name": "Struggle to Make Tough Decisions",
+      "name_zh": "难以做出艰难决定",
+      "description": "If caught between a rock and a hard place, Protagonists can be stricken with paralysis, imagining all the consequences of their actions, especially if those consequences are humanitarian.",
+      "description_zh": "如果进退两难，主人公可能会陷入瘫痪状态，想象他们行为的所有后果，特别是如果这些后果涉及人道主义。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Assertive Protagonists are the most likely personality type to intentionally practice expressing gratitude.",
+    "content_zh": "果断型主人公是最有可能有意识地练习表达感激之情的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

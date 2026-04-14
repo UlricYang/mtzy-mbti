@@ -1,0 +1,172 @@
+{
+  "cognitive_functions": {
+    "Se": {
+      "name_en": "Extroverted Sensing",
+      "name_zh": "外倾感觉",
+      "description_en": "Enjoying the finer aspects of life in food, fashion. Being physically in tune with the world",
+      "description_zh": "享受生活中美好的事物，如美食、时尚。与外部世界保持身体上的协调"
+    },
+    "Ne": {
+      "name_en": "Extroverted Intuition",
+      "name_zh": "外倾直觉",
+      "description_en": "From one observation, deriving ten different ideas and possibilities",
+      "description_zh": "从一个观察中衍生出十种不同的想法和可能性"
+    },
+    "Te": {
+      "name_en": "Extroverted Thinking",
+      "name_zh": "外倾思考",
+      "description_en": "Real-world practicality, results-driven, things that can be written down on a resume",
+      "description_zh": "现实世界的实用性，结果导向，可以写在简历上的成就"
+    },
+    "Fe": {
+      "name_en": "Extroverted Feeling",
+      "name_zh": "外倾情感",
+      "description_en": "Being able to read the room, attuned to the social atmosphere, tailoring your words to your audience",
+      "description_zh": "能够察言观色，敏锐感知社交氛围，根据听众调整言辞"
+    },
+    "Si": {
+      "name_en": "Introverted Sensing",
+      "name_zh": "内倾感觉",
+      "description_en": "Seeing and remembering things as they were in the past, taking things step by step",
+      "description_zh": "按过去的原样看待和记忆事物，循序渐进地处理事情"
+    },
+    "Ni": {
+      "name_en": "Introverted Intuition",
+      "name_zh": "内倾直觉",
+      "description_en": "From ten observations, deriving one single theory that explains everything. Projecting the one future path that most likely will happen",
+      "description_zh": "从十个观察中提炼出一个解释一切的理论。预测最可能发生的未来路径"
+    },
+    "Ti": {
+      "name_en": "Introverted Thinking",
+      "name_zh": "内倾思考",
+      "description_en": "Logical and consistent, having various categories to ensure that everything has its own place in a water-tight system",
+      "description_zh": "逻辑严谨、前后一致，建立各种分类确保每件事都有其位置，形成严密的系统"
+    },
+    "Fi": {
+      "name_en": "Introverted Feeling",
+      "name_zh": "内倾情感",
+      "description_en": "Having a clear idea of individual desires, values, tastes. Living life authentically without being affected by what the rest of the world does",
+      "description_zh": "对个人欲望、价值观和品味有清晰的认识。真实地生活，不受外界影响"
+    }
+  },
+  "function_stacks": {
+    "ISFJ": {
+      "dominant": { "function": "Si", "name_zh": "内倾感觉" },
+      "auxiliary": { "function": "Fe", "name_zh": "外倾情感" },
+      "tertiary": { "function": "Ti", "name_zh": "内倾思考" },
+      "inferior": { "function": "Ne", "name_zh": "外倾直觉" }
+    },
+    "ESFJ": {
+      "dominant": { "function": "Fe", "name_zh": "外倾情感" },
+      "auxiliary": { "function": "Si", "name_zh": "内倾感觉" },
+      "tertiary": { "function": "Ne", "name_zh": "外倾直觉" },
+      "inferior": { "function": "Ti", "name_zh": "内倾思考" }
+    },
+    "INTP": {
+      "dominant": { "function": "Ti", "name_zh": "内倾思考" },
+      "auxiliary": { "function": "Ne", "name_zh": "外倾直觉" },
+      "tertiary": { "function": "Si", "name_zh": "内倾感觉" },
+      "inferior": { "function": "Fe", "name_zh": "外倾情感" }
+    },
+    "ENTP": {
+      "dominant": { "function": "Ne", "name_zh": "外倾直觉" },
+      "auxiliary": { "function": "Ti", "name_zh": "内倾思考" },
+      "tertiary": { "function": "Fe", "name_zh": "外倾情感" },
+      "inferior": { "function": "Si", "name_zh": "内倾感觉" }
+    },
+    "ISTJ": {
+      "dominant": { "function": "Si", "name_zh": "内倾感觉" },
+      "auxiliary": { "function": "Te", "name_zh": "外倾思考" },
+      "tertiary": { "function": "Fi", "name_zh": "内倾情感" },
+      "inferior": { "function": "Ne", "name_zh": "外倾直觉" }
+    },
+    "ESTJ": {
+      "dominant": { "function": "Te", "name_zh": "外倾思考" },
+      "auxiliary": { "function": "Si", "name_zh": "内倾感觉" },
+      "tertiary": { "function": "Ne", "name_zh": "外倾直觉" },
+      "inferior": { "function": "Fi", "name_zh": "内倾情感" }
+    },
+    "INFP": {
+      "dominant": { "function": "Fi", "name_zh": "内倾情感" },
+      "auxiliary": { "function": "Ne", "name_zh": "外倾直觉" },
+      "tertiary": { "function": "Si", "name_zh": "内倾感觉" },
+      "inferior": { "function": "Te", "name_zh": "外倾思考" }
+    },
+    "ENFP": {
+      "dominant": { "function": "Ne", "name_zh": "外倾直觉" },
+      "auxiliary": { "function": "Fi", "name_zh": "内倾情感" },
+      "tertiary": { "function": "Te", "name_zh": "外倾思考" },
+      "inferior": { "function": "Si", "name_zh": "内倾感觉" }
+    },
+    "INFJ": {
+      "dominant": { "function": "Ni", "name_zh": "内倾直觉" },
+      "auxiliary": { "function": "Fe", "name_zh": "外倾情感" },
+      "tertiary": { "function": "Ti", "name_zh": "内倾思考" },
+      "inferior": { "function": "Se", "name_zh": "外倾感觉" }
+    },
+    "ENFJ": {
+      "dominant": { "function": "Fe", "name_zh": "外倾情感" },
+      "auxiliary": { "function": "Ni", "name_zh": "内倾直觉" },
+      "tertiary": { "function": "Se", "name_zh": "外倾感觉" },
+      "inferior": { "function": "Ti", "name_zh": "内倾思考" }
+    },
+    "ISTP": {
+      "dominant": { "function": "Ti", "name_zh": "内倾思考" },
+      "auxiliary": { "function": "Se", "name_zh": "外倾感觉" },
+      "tertiary": { "function": "Ni", "name_zh": "内倾直觉" },
+      "inferior": { "function": "Fe", "name_zh": "外倾情感" }
+    },
+    "ESTP": {
+      "dominant": { "function": "Se", "name_zh": "外倾感觉" },
+      "auxiliary": { "function": "Ti", "name_zh": "内倾思考" },
+      "tertiary": { "function": "Fe", "name_zh": "外倾情感" },
+      "inferior": { "function": "Ni", "name_zh": "内倾直觉" }
+    },
+    "INTJ": {
+      "dominant": { "function": "Ni", "name_zh": "内倾直觉" },
+      "auxiliary": { "function": "Te", "name_zh": "外倾思考" },
+      "tertiary": { "function": "Fi", "name_zh": "内倾情感" },
+      "inferior": { "function": "Se", "name_zh": "外倾感觉" }
+    },
+    "ENTJ": {
+      "dominant": { "function": "Te", "name_zh": "外倾思考" },
+      "auxiliary": { "function": "Ni", "name_zh": "内倾直觉" },
+      "tertiary": { "function": "Se", "name_zh": "外倾感觉" },
+      "inferior": { "function": "Fi", "name_zh": "内倾情感" }
+    },
+    "ISFP": {
+      "dominant": { "function": "Fi", "name_zh": "内倾情感" },
+      "auxiliary": { "function": "Se", "name_zh": "外倾感觉" },
+      "tertiary": { "function": "Ni", "name_zh": "内倾直觉" },
+      "inferior": { "function": "Te", "name_zh": "外倾思考" }
+    },
+    "ESFP": {
+      "dominant": { "function": "Se", "name_zh": "外倾感觉" },
+      "auxiliary": { "function": "Fi", "name_zh": "内倾情感" },
+      "tertiary": { "function": "Te", "name_zh": "外倾思考" },
+      "inferior": { "function": "Ni", "name_zh": "内倾直觉" }
+    }
+  },
+  "function_roles": {
+    "dominant": {
+      "name_en": "Dominant",
+      "name_zh": "主导功能",
+      "description_zh": "最强大的功能，主导人格的核心运作方式"
+    },
+    "auxiliary": {
+      "name_en": "Auxiliary",
+      "name_zh": "辅助功能",
+      "description_zh": "支持主导功能，平衡内外倾方向"
+    },
+    "tertiary": {
+      "name_en": "Tertiary",
+      "name_zh": "第三功能",
+      "description_zh": "发展程度较弱，与辅助功能相对"
+    },
+    "inferior": {
+      "name_en": "Inferior / Primitive",
+      "name_zh": "劣势功能",
+      "description_zh": "最不发达的功能，通常在压力下显现"
+    }
+  }
+}

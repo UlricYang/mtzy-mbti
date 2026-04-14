@@ -1,0 +1,118 @@
+{
+  "mbti_type": "ISTJ-A",
+  "type_name": {
+    "en": "Logistician (Assertive)",
+    "zh": "逻辑学家型（果断型）"
+  },
+  "role": {
+    "name": "Sentinel",
+    "name_zh": "守卫者",
+    "description": "Observant (S) and Judging (J) personality types, known for their focus on practicality, order, security and stability.",
+    "description_zh": "观察型(S)和判断型(J)人格类型，以注重实用性、秩序、安全和稳定著称。"
+  },
+  "strategy": {
+    "name": "Confident Individualism",
+    "name_zh": "自信的个体主义",
+    "description": "Confident Individualists prefer doing things alone, choosing to rely on their own skills and instincts as opposed to seeking others' help.",
+    "description_zh": "自信的个体主义者更喜欢独自做事，选择依靠自己的技能和直觉，而不是寻求他人的帮助。"
+  },
+  "traits": {
+    "introverted": {
+      "letter": "I",
+      "name": "Introverted",
+      "name_zh": "内向",
+      "description": "Individuals prefer solitary activities and get exhausted by social interaction. They tend to be quite sensitive to external stimulation (e.g. sound) in general.",
+      "description_zh": "内向型个体喜欢独处活动，社交互动会让他们精疲力竭。他们通常对外部刺激（如声音）相当敏感。"
+    },
+    "observant": {
+      "letter": "S",
+      "name": "Observant",
+      "name_zh": "观察",
+      "description": "Individuals are highly practical, pragmatic and down-to-earth. They tend to have strong habits and focus on what is happening or has already happened.",
+      "description_zh": "观察型个体非常务实、注重实效且脚踏实地。他们倾向于有强烈的习惯，并关注正在发生或已经发生的事情。"
+    },
+    "thinking": {
+      "letter": "T",
+      "name": "Thinking",
+      "name_zh": "思考",
+      "description": "Individuals focus on objectivity and rationality, prioritizing logic over emotions. They tend to hide their feelings and see efficiency as more important than cooperation.",
+      "description_zh": "思考型个体注重客观性和理性，优先考虑逻辑而非情感。他们倾向于隐藏自己的感受，认为效率比合作更重要。"
+    },
+    "judging": {
+      "letter": "J",
+      "name": "Judging",
+      "name_zh": "判断",
+      "description": "Individuals are decisive, thorough and highly organized. They value clarity, predictability and closure, preferring structure and planning to spontaneity.",
+      "description_zh": "判断型个体果断、彻底且高度有条理。他们重视清晰、可预测性和完结，更喜欢结构和规划而非自发性。"
+    },
+    "assertive": {
+      "suffix": "-A",
+      "name": "Assertive",
+      "name_zh": "果断",
+      "description": "Individuals are self-assured, even-tempered and resistant to stress. They refuse to worry too much and do not push themselves too hard when it comes to achieving goals.",
+      "description_zh": "果断型个体自信、情绪稳定且抗压力强。他们拒绝过度担忧，在追求目标时不会过分逼迫自己。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Honest and Direct",
+      "name_zh": "诚实直率",
+      "description": "Integrity is the heart of this personality type. Logisticians prefer to manage any situations they encounter with plain and simple honesty.",
+      "description_zh": "诚信是这种人格类型的核心。逻辑学家倾向于以简单直率的诚实来管理他们遇到的任何情况。"
+    },
+    {
+      "name": "Strong-willed",
+      "name_zh": "意志坚定",
+      "description": "Patient and determined, Logisticians embody that integrity in their actions too, working hard and staying focused on their goals.",
+      "description_zh": "耐心和坚定，逻辑学家在他们的行动中也体现了这种诚信，努力工作并专注于他们的目标。"
+    },
+    {
+      "name": "Calm and Practical",
+      "name_zh": "冷静务实",
+      "description": "Logisticians keep their feet on the ground and make clear, rational decisions, with effectiveness in mind.",
+      "description_zh": "逻辑学家脚踏实地，做出清晰、理性的决策，同时考虑效率。"
+    },
+    {
+      "name": "Create and Enforce Order",
+      "name_zh": "建立和执行秩序",
+      "description": "The primary goal of any Logistician is to be effective in what they've chosen to do. Unclear guidelines and people who break established rules undermine this effort, and are rarely tolerated by Logisticians.",
+      "description_zh": "任何逻辑学家的首要目标是在他们选择做的事情上有效率。不明确的指导方针和破坏既定规则的人会削弱这一努力，逻辑学家很少容忍这种情况。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Stubborn",
+      "name_zh": "固执",
+      "description": "The facts are the facts, and Logisticians tend to resist any new idea that isn't supported by them. Logisticians may also find it difficult to accept that they were wrong about something – but anyone can miss a detail, even them.",
+      "description_zh": "事实就是事实，逻辑学家倾向于抵制任何没有事实支持的新想法。逻辑学家可能还会发现很难接受他们对某事错了——但任何人都可能遗漏细节，即使他们也不例外。"
+    },
+    {
+      "name": "Insensitive",
+      "name_zh": "不敏感",
+      "description": "While not intentionally harsh, Logisticians often hurt more sensitive types' feelings by the simple mantra that honesty is the best policy.",
+      "description_zh": "虽然不是故意的刻薄，但逻辑学家经常通过诚实是最好的政策这一简单咒语伤害更敏感类型的人的感情。"
+    },
+    {
+      "name": "Always by the Book",
+      "name_zh": "墨守成规",
+      "description": "Logisticians are often reluctant to bend rules or try new things. Truly unstructured environments may leave Logisticians all but paralyzed.",
+      "description_zh": "逻辑学家往往不愿意变通规则或尝试新事物。真正无结构的环境可能让逻辑学家几乎瘫痪。"
+    },
+    {
+      "name": "Often Unreasonably Blame Themselves",
+      "name_zh": "常常不合理地责备自己",
+      "description": "Logisticians sometimes heap all the work on themselves, inevitably hit a tipping point, and then believe thesample.jsonresponsibility for failure is theirs alone to bear.",
+      "description_zh": "逻辑学家有时把所有工作都堆在自己身上，不可避免地达到临界点，然后相信失败的责任是他们自己独自承担的。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Assertive Logisticians are the most likely personality type to say it's more important to tell the truth, even if it hurts someone's feelings.",
+    "content_zh": "果断型逻辑学家是最有可能说即使会伤害某人的感情，说实话更重要的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

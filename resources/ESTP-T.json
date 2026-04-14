@@ -1,0 +1,130 @@
+{
+  "mbti_type": "ESTP-T",
+  "type_name": {
+    "en": "Entrepreneur (Turbulent)",
+    "zh": "企业家型（动荡型）"
+  },
+  "role": {
+    "name": "Explorer",
+    "name_zh": "探险家",
+    "description": "Observant (S) and Prospecting (P) personality types, known for their spontaneity, ingenuity, and ability to live in the moment.",
+    "description_zh": "观察型(S)和展望型(P)人格类型，以自发性、机智和活在当下著称。"
+  },
+  "strategy": {
+    "name": "Social Engagement",
+    "name_zh": "社交参与",
+    "description": "This strategy is adopted by sociable, energetic and success-driven types. Social Engagers tend to be restless, perfectionistic individuals, prone to experiencing both very positive and very negative emotions.",
+    "description_zh": "这种策略被善于交际、精力充沛和追求成功的类型采用。社交参与者往往是躁动不安的完美主义者，容易经历非常积极和非常消极的情绪。"
+  },
+  "traits": {
+    "extraverted": {
+      "letter": "E",
+      "name": "Extraverted",
+      "name_zh": "外向",
+      "description": "Individuals prefer group activities and get energized by social interaction. They tend to be more enthusiastic and more easily excited than Introverts.",
+      "description_zh": "外向型个体喜欢团体活动，通过社交互动获得能量。他们往往比内向型更热情、更容易兴奋。"
+    },
+    "observant": {
+      "letter": "S",
+      "name": "Observant",
+      "name_zh": "观察",
+      "description": "Individuals are highly practical, pragmatic and down-to-earth. They tend to have strong habits and focus on what is happening or has already happened.",
+      "description_zh": "观察型个体非常务实、讲求实际且脚踏实地。他们往往有强烈的习惯，专注于正在发生或已经发生的事物。"
+    },
+    "thinking": {
+      "letter": "T",
+      "name": "Thinking",
+      "name_zh": "思考",
+      "description": "Individuals focus on objectivity and rationality, prioritizing logic over emotions. They tend to hide their feelings and see efficiency as more important than cooperation.",
+      "description_zh": "思考型个体注重客观性和理性，优先考虑逻辑而非情感。他们往往隐藏自己的感受，将效率看得比合作更重要。"
+    },
+    "prospecting": {
+      "letter": "P",
+      "name": "Prospecting",
+      "name_zh": "展望",
+      "description": "Individuals are very good at improvising and spotting opportunities. They tend to be flexible, relaxed nonconformists who prefer keeping their options open.",
+      "description_zh": "展望型个体非常擅长即兴发挥和发现机会。他们往往是灵活、轻松的不墨守成规者，喜欢保持选择的开放性。"
+    },
+    "turbulent": {
+      "suffix": "-T",
+      "name": "Turbulent",
+      "name_zh": "动荡",
+      "description": "Individuals are self-conscious and sensitive to stress. They are likely to experience a wide range of emotions and to be success-driven, perfectionistic and eager to improve.",
+      "description_zh": "动荡型个体自我意识强且对压力敏感。他们可能会经历广泛的情绪，追求成功、追求完美且渴望改进。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Bold",
+      "name_zh": "大胆",
+      "description": "Entrepreneurs are full of life and energy. There's no greater joy for them than pushing boundaries and discovering new things and ideas.",
+      "description_zh": "企业家充满活力和能量。对他们来说，没有比突破界限和发现新事物和新想法更快乐的事情了。"
+    },
+    {
+      "name": "Rational and Practical",
+      "name_zh": "理性和务实",
+      "description": "Entrepreneurs love knowledge and philosophy, but not for their own sake. What's fun for Entrepreneur personalities is finding ideas that are actionable and drilling into the details so they can put them to use.",
+      "description_zh": "企业家热爱知识和哲学，但不是为了知识本身。对企业家人格类型来说有趣的是找到可操作的创意，并深入研究细节，以便将其付诸实践。"
+    },
+    {
+      "name": "Original",
+      "name_zh": "原创",
+      "description": "Combining their boldness and practicality, Entrepreneurs love to experiment with new ideas and solutions. They put things together in ways no one else would think to.",
+      "description_zh": "结合他们的大胆和务实，企业家喜欢尝试新想法和解决方案。他们以其他人想不到的方式将事物组合在一起。"
+    },
+    {
+      "name": "Direct",
+      "name_zh": "直接",
+      "description": "Entrepreneurs have a knack for making excellent use of social interactions and prefer to communicate clearly, with direct, factual questions and answers. Things are what they are.",
+      "description_zh": "企业家善于充分利用社交互动，喜欢清晰地沟通，提出直接、基于事实的问题和答案。事物就是它们本来的样子。"
+    },
+    {
+      "name": "Perceptive",
+      "name_zh": "敏锐",
+      "description": "Entrepreneurs notice small details and use them to their advantage. They are quick to spot opportunities and even quicker to take advantage of them.",
+      "description_zh": "企业家注意到小细节并加以利用。他们迅速发现机会，甚至更快地抓住机会。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Insensitive",
+      "name_zh": "迟钝",
+      "description": "Feelings and emotions come second to facts and \"reality\" for Entrepreneurs. For them, emotionally charged situations are awkward, uncomfortable affairs.",
+      "description_zh": "对企业家人格类型来说，感受和情感次于事实和\"现实\"。对他们来说，情绪激烈的场合是尴尬、不舒服的事情。"
+    },
+    {
+      "name": "Impatient",
+      "name_zh": "急躁",
+      "description": "Entrepreneurs move at their own pace to keep themselves excited. Slowing down because someone else \"doesn't get it\" or having to stay focused on a single detail for too long is extremely challenging for Entrepreneurs.",
+      "description_zh": "企业家以自己的节奏前进以保持兴奋。因为别人\"不理解\"而放慢速度，或者必须长时间专注于单一细节，对企业家来说极具挑战性。"
+    },
+    {
+      "name": "Risk-prone",
+      "name_zh": "冒险倾向",
+      "description": "This impatience can lead Entrepreneurs to push into uncharted territory without thinking of the long-term consequences. They sometimes combat boredom with extra risk.",
+      "description_zh": "这种急躁可能导致企业家在没有考虑长期后果的情况下进入未知领域。他们有时会用额外的风险来对抗无聊。"
+    },
+    {
+      "name": "Defiant",
+      "name_zh": "叛逆",
+      "description": "Entrepreneurs won't be boxed in. Repetition, hardline rules, sitting quietly while they are lectured at – this isn't how Entrepreneurs live their lives.",
+      "description_zh": "企业家不愿被束缚。重复、强硬的规则、在被说教时安静坐着——这不是企业家的生活方式。"
+    },
+    {
+      "name": "Unstructured",
+      "name_zh": "缺乏结构",
+      "description": "Entrepreneurs are not great at following through on long-term commitments. Their enthusiasm wanes quickly when the novelty wears off, making it difficult to complete projects that require sustained effort.",
+      "description_zh": "企业家不擅长履行长期承诺。当新鲜感消退时，他们的热情很快就会减弱，这使得完成需要持续努力的项目变得困难。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Turbulent Entrepreneurs are the least likely personality type to watch documentaries.",
+    "content_zh": "动荡型企业家是最不可能观看纪录片的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}
