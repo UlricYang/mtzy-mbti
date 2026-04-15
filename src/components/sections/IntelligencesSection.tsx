@@ -1,29 +1,20 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { RadarChart } from '@/components/charts/RadarChart'
-import { BlurFade } from '@/components/ui/blur-fade'
-import type { TestData } from '@/types'
-import { prepareRadarChartData } from '@/lib/data-loader'
+import { RadarChart } from '@/components/charts/RadarChart';
+import { Badge } from '@/components/ui/badge';
+import { BlurFade } from '@/components/ui/blur-fade';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { prepareRadarChartData } from '@/lib/data-loader';
+import type { TestData } from '@/types';
+import { Brain, Target, TrendingUp } from 'lucide-react';
 
 interface IntelligencesSectionProps {
   data: TestData
 }
 
-const COLORS = [
-  '#667eea',
-  '#f093fb',
-  '#4facfe',
-  '#f5576c',
-  '#00f2fe',
-  '#764ba2',
-  '#fbbf24',
-  '#34d399',
-]
+const COLORS = ["#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#9bf6ff", "#a0c4ff", "#bdb2ff", "#ffc6ff"]
 
 export function IntelligencesSection({ data }: IntelligencesSectionProps) {
   const radarData = prepareRadarChartData(data)
-  const { 
+  const {
     multiple_intelligences_result,
     multiple_intelligences_strengths,
     multiple_intelligences_description,
@@ -32,100 +23,109 @@ export function IntelligencesSection({ data }: IntelligencesSectionProps) {
     not_recommand_major_list,
   } = data.multiple_intelligences
 
-  // Sort by score descending
   const sortedIntelligences = Object.entries(multiple_intelligences_result)
     .sort(([, a], [, b]) => b - a)
 
   return (
-    <section className="py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+    <section className="py-16 px-4 bg-muted/10">
+      <div className="max-w-6xl mx-auto space-y-8">
         <BlurFade>
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold tracking-tight mb-2">
+          <div className="text-center">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 gradient-text">
               多元智能分析
             </h2>
-            <p className="text-muted-foreground">
-              基于霍华德·加德纳的多元智能理论
-            </p>
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#4facfe]/10 px-4 py-1.5 text-sm font-medium text-[#4facfe]">
+              <Brain className="w-4 h-4" />
+              您的智能优势图谱
+            </div>
           </div>
         </BlurFade>
 
-        {/* Radar Chart */}
         <BlurFade delay={0.1}>
-          <Card className="mb-8 border-0 shadow-lg bg-gradient-to-br from-card to-muted/30">
-            <CardHeader>
-              <CardTitle className="text-center">智能雷达图</CardTitle>
-              <CardDescription className="text-center">
-                八大智能维度得分可视化
-              </CardDescription>
+          <Card className="border-2 border-[#4facfe]/20 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-[#4facfe]/5 to-[#00f2fe]/5 pb-2">
+              <CardTitle className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#4facfe] to-[#00f2fe] flex items-center justify-center">
+                  <Brain className="w-5 h-5 text-white" />
+                </div>
+                智能分布
+              </CardTitle>
             </CardHeader>
-            <CardContent>
-              <RadarChart data={radarData} />
+            <CardContent className="pt-6">
+              <RadarChart data={radarData} className="w-full h-[600px]" />
             </CardContent>
           </Card>
         </BlurFade>
 
-        {/* Intelligence Details */}
         <BlurFade delay={0.2}>
-          <Card className="mb-8">
-            <CardHeader>
-              <CardTitle>智能详情</CardTitle>
-              <CardDescription>点击查看各智能类型详细说明</CardDescription>
+          <Card className="border-2 border-[#764ba2]/20 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-[#764ba2]/5 to-[#f093fb]/5 pb-2">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#764ba2] to-[#f093fb] flex items-center justify-center">
+                  <Target className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl">智能详情</CardTitle>
+                  <p className="text-sm text-muted-foreground">各智能类型详细分析</p>
+                </div>
+              </div>
             </CardHeader>
-            <CardContent>
-              <Accordion type="single" collapsible className="w-full">
-                {sortedIntelligences.map(([name, score], index) => (
-                  <AccordionItem key={name} value={name}>
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <div 
-                          className="w-3 h-3 rounded-full" 
-                          style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                        />
-                        <span className="font-medium">{name}</span>
-                        <Badge variant="secondary" className="ml-auto mr-2">
-                          {score}分
-                        </Badge>
+            <CardContent className="pt-6 space-y-4">
+              {sortedIntelligences.map(([name, score], index) => (
+                <Card key={name} className="border border-border/50 bg-card">
+                  <CardContent className="pt-4">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div
+                        className="w-5 h-5 rounded-full flex-shrink-0"
+                        style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                      />
+                      <span className="font-semibold text-xl">{name}</span>
+                      <Badge variant="secondary" className="ml-auto text-lg">
+                        {score}分
+                      </Badge>
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-4 pl-9">
+                      <div>
+                        <p className="text-base font-medium text-muted-foreground mb-1">描述</p>
+                        <p className="text-base leading-relaxed">{multiple_intelligences_description[name]}</p>
                       </div>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <div className="space-y-3 pt-2">
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground mb-1">描述</p>
-                          <p className="text-sm">{multiple_intelligences_description[name]}</p>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground mb-1">优势说明</p>
-                          <p className="text-sm">{multiple_intelligences_strengths[name]}</p>
-                        </div>
+                      <div>
+                        <p className="text-base font-medium text-muted-foreground mb-1">优势</p>
+                        <p className="text-base leading-relaxed">{multiple_intelligences_strengths[name]}</p>
                       </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </CardContent>
           </Card>
         </BlurFade>
 
-        {/* Major Recommendations */}
         <BlurFade delay={0.3}>
-          <Card>
-            <CardHeader>
-              <CardTitle>专业推荐</CardTitle>
-              <CardDescription>基于多元智能分析的专业选择建议</CardDescription>
+          <Card className="border-2 border-[#f5576c]/20 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-[#f5576c]/5 to-[#f093fb]/5 pb-2">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#f5576c] to-[#f093fb] flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl">专业推荐</CardTitle>
+                  <p className="text-sm text-muted-foreground">基于多元智能分析的专业选择</p>
+                </div>
+              </div>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="pt-6 space-y-6">
               <div>
-                <h4 className="font-medium mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-green-500" />
+                <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-green-500" />
                   主要推荐
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {primary_recommand_major_list.map((major) => (
-                    <Badge 
-                      key={major} 
+                    <Badge
+                      key={major}
                       variant="default"
-                      className="bg-gradient-to-r from-[#667eea] to-[#764ba2] hover:opacity-90"
+                      className="text-base px-4 py-1.5 bg-gradient-to-r from-[#667eea] to-[#764ba2]"
                     >
                       {major}
                     </Badge>
@@ -134,16 +134,16 @@ export function IntelligencesSection({ data }: IntelligencesSectionProps) {
               </div>
 
               <div>
-                <h4 className="font-medium mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-yellow-500" />
+                <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-yellow-500" />
                   次要推荐
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {secondary_recommand_major_list.map((major) => (
-                    <Badge 
-                      key={major} 
+                    <Badge
+                      key={major}
                       variant="secondary"
-                      className="hover:bg-secondary/80"
+                      className="text-base px-4 py-1.5"
                     >
                       {major}
                     </Badge>
@@ -152,16 +152,16 @@ export function IntelligencesSection({ data }: IntelligencesSectionProps) {
               </div>
 
               <div>
-                <h4 className="font-medium mb-3 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-red-500" />
+                <h4 className="font-semibold text-lg mb-3 flex items-center gap-2">
+                  <span className="w-3 h-3 rounded-full bg-red-500" />
                   不推荐
                 </h4>
                 <div className="flex flex-wrap gap-2">
                   {not_recommand_major_list.map((major) => (
-                    <Badge 
-                      key={major} 
+                    <Badge
+                      key={major}
                       variant="outline"
-                      className="text-muted-foreground"
+                      className="text-base px-4 py-1.5 text-muted-foreground"
                     >
                       {major}
                     </Badge>

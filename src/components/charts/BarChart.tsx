@@ -7,6 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
   Cell,
+  LabelList,
 } from 'recharts'
 import type { BarChartData } from '@/types'
 
@@ -18,11 +19,11 @@ interface BarChartProps {
 export function BarChart({ data, className }: BarChartProps) {
   return (
     <div className={className}>
-      <ResponsiveContainer width="100%" height={300}>
+      <ResponsiveContainer width="100%" height={400}>
         <RechartsBarChart 
           data={data} 
           layout="vertical"
-          margin={{ top: 5, right: 30, left: 80, bottom: 5 }}
+          margin={{ top: 5, right: 60, left: 20, bottom: 5 }}
         >
           <CartesianGrid 
             strokeDasharray="3 3" 
@@ -33,17 +34,17 @@ export function BarChart({ data, className }: BarChartProps) {
           <XAxis 
             type="number" 
             domain={[0, 'dataMax + 10']}
-            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 14 }}
             tickLine={false}
             axisLine={{ stroke: 'hsl(var(--border))' }}
           />
           <YAxis 
             type="category" 
             dataKey="name"
-            tick={{ fill: 'hsl(var(--foreground))', fontSize: 12, fontWeight: 500 }}
+            tick={{ fill: 'hsl(var(--foreground))', fontSize: 14, fontWeight: 500 }}
             tickLine={false}
             axisLine={false}
-            width={75}
+            width={80}
           />
           <Tooltip
             contentStyle={{
@@ -63,12 +64,18 @@ export function BarChart({ data, className }: BarChartProps) {
           />
           <Bar 
             dataKey="value" 
-            radius={[0, 4, 4, 0]}
-            maxBarSize={35}
+            radius={[0, 6, 6, 0]}
+            maxBarSize={45}
           >
             {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.fill || '#667eea'} />
             ))}
+            <LabelList 
+              dataKey="value" 
+              position="right" 
+              style={{ fill: 'hsl(var(--foreground))', fontSize: 16, fontWeight: 600 }}
+              formatter={(value) => `${value}分`}
+            />
           </Bar>
         </RechartsBarChart>
       </ResponsiveContainer>

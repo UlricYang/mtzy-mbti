@@ -1,139 +1,111 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { BarChart } from '@/components/charts/BarChart'
-import { BlurFade } from '@/components/ui/blur-fade'
-import { NumberTicker } from '@/components/ui/number-ticker'
-import type { TestData } from '@/types'
-import { prepareBarChartData } from '@/lib/data-loader'
+import { BarChart } from '@/components/charts/BarChart';
+import { Badge } from '@/components/ui/badge';
+import { BlurFade } from '@/components/ui/blur-fade';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { prepareBarChartData } from '@/lib/data-loader';
+import type { TestData } from '@/types';
+import { BarChart3, Scale } from 'lucide-react';
 
 interface ValuesSectionProps {
   data: TestData
 }
 
-const VALUE_COLORS: Record<string, string> = {
-  '科学型': '#667eea',
-  '经济型': '#f093fb',
-  '社会型': '#4facfe',
-  '政治型': '#f5576c',
-  '审美型': '#00f2fe',
-  '精神型': '#764ba2',
-}
+
+const SCORE_COLORS = ['#CD5C5C', '#FF7F50', '#FFBF00', '#3CB371', '#48D1CC', '#7B68EE']
 
 export function ValuesSection({ data }: ValuesSectionProps) {
   const barData = prepareBarChartData(data)
   const studentValue = data.student_value
 
-  // Sort by score descending
   const sortedValues = Object.entries(studentValue)
     .sort(([, a], [, b]) => b.score - a.score)
 
   return (
-    <section className="py-12 px-4 bg-muted/10">
-      <div className="max-w-4xl mx-auto">
+    <section className="py-16 px-4 bg-gradient-to-b from-muted/20 to-muted/30">
+      <div className="max-w-6xl mx-auto space-y-8">
         <BlurFade>
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold tracking-tight mb-2">
-              学生价值观分析
+          <div className="text-center">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 gradient-text">
+              价值观分析
             </h2>
-            <p className="text-muted-foreground">
-              探索您的核心价值观取向
-            </p>
+            <div className="inline-flex items-center gap-2 rounded-full bg-[#4facfe]/10 px-4 py-1.5 text-sm font-medium text-[#4facfe]">
+              <Scale className="w-4 h-4" />
+              您的价值观图谱
+            </div>
           </div>
         </BlurFade>
 
-        {/* Score Summary Cards */}
         <BlurFade delay={0.1}>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-            {sortedValues.slice(0, 6).map(([name, item]) => (
-              <Card 
-                key={name} 
-                className="border-0 shadow-md hover:shadow-lg transition-shadow"
-                style={{ 
-                  background: `linear-gradient(135deg, ${VALUE_COLORS[name]}10 0%, ${VALUE_COLORS[name]}05 100%)` 
-                }}
-              >
-                <CardContent className="pt-4 pb-4">
-                  <p className="text-sm text-muted-foreground mb-1">{name}</p>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-bold" style={{ color: VALUE_COLORS[name] }}>
-                      <NumberTicker value={item.score} />
-                    </span>
-                    <span className="text-sm text-muted-foreground">分</span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </BlurFade>
-
-        {/* Bar Chart */}
-        <BlurFade delay={0.2}>
-          <Card className="mb-8 border-0 shadow-lg">
-            <CardHeader>
-              <CardTitle className="text-center">价值观得分对比</CardTitle>
-              <CardDescription className="text-center">
-                六大价值观维度得分可视化
-              </CardDescription>
+          <Card className="border-2 border-[#667eea]/20 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-[#667eea]/5 to-[#764ba2]/5 pb-2">
+              <CardTitle className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#667eea] to-[#764ba2] flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-white" />
+                </div>
+                得分对比
+              </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
               <BarChart data={barData} />
             </CardContent>
           </Card>
         </BlurFade>
 
-        {/* Value Details */}
-        <BlurFade delay={0.3}>
-          <Card>
-            <CardHeader>
-              <CardTitle>价值观详情</CardTitle>
-              <CardDescription>点击查看各价值观类型对应的专业建议</CardDescription>
+        <BlurFade delay={0.2}>
+          <Card className="border-2 border-[#764ba2]/20 shadow-xl">
+            <CardHeader className="bg-gradient-to-r from-[#764ba2]/5 to-[#f093fb]/5 pb-2">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#764ba2] to-[#f093fb] flex items-center justify-center">
+                  <Scale className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-xl">价值观详情</CardTitle>
+                  <p className="text-sm text-muted-foreground">各价值观类型对应的专业建议</p>
+                </div>
+              </div>
             </CardHeader>
-            <CardContent>
-              <Accordion type="single" collapsible className="w-full">
-                {sortedValues.map(([name, item]) => (
-                  <AccordionItem key={name} value={name}>
-                    <AccordionTrigger className="hover:no-underline">
-                      <div className="flex items-center gap-3">
-                        <div 
-                          className="w-3 h-3 rounded-full" 
-                          style={{ backgroundColor: VALUE_COLORS[name] }}
-                        />
-                        <span className="font-medium">{name}</span>
-                        <Badge 
-                          variant="secondary" 
-                          className="ml-auto mr-2"
-                          style={{ 
-                            backgroundColor: `${VALUE_COLORS[name]}20`,
-                            color: VALUE_COLORS[name],
-                          }}
-                        >
-                          {item.score}分
-                        </Badge>
+            <CardContent className="pt-6 space-y-4">
+              {sortedValues.map(([name, item], index) => (
+                <Card key={name} className="border border-border/50 bg-card">
+                  <CardContent className="pt-4">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div 
+                        className="w-5 h-5 rounded-full flex-shrink-0" 
+                        style={{ backgroundColor: SCORE_COLORS[index] }}
+                      />
+                      <span className="font-semibold text-xl">{name}</span>
+                      <Badge 
+                        variant="secondary" 
+                        className="ml-auto text-lg"
+                        style={{ 
+                          backgroundColor: `${SCORE_COLORS[index]}20`,
+                          color: SCORE_COLORS[index],
+                        }}
+                      >
+                        {item.score}分
+                      </Badge>
+                    </div>
+                    <div>
+                      <p className="text-base font-medium text-muted-foreground mb-3">推荐专业类别</p>
+                      <div className="flex flex-wrap gap-2">
+                        {item.majors.map((major) => (
+                          <Badge 
+                            key={major} 
+                            variant="outline"
+                            className="text-base px-3 py-1"
+                            style={{ 
+                              borderColor: SCORE_COLORS[index],
+                              color: SCORE_COLORS[index],
+                            }}
+                          >
+                            {major}
+                          </Badge>
+                        ))}
                       </div>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                      <div className="pt-2">
-                        <p className="text-sm font-medium text-muted-foreground mb-2">推荐专业类别</p>
-                        <div className="flex flex-wrap gap-2">
-                          {item.majors.map((major) => (
-                            <Badge 
-                              key={major} 
-                              variant="outline"
-                              style={{ 
-                                borderColor: VALUE_COLORS[name],
-                                color: VALUE_COLORS[name],
-                              }}
-                            >
-                              {major}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
-              </Accordion>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </CardContent>
           </Card>
         </BlurFade>

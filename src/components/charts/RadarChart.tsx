@@ -1,13 +1,13 @@
+import type { RadarChartData } from '@/types';
 import {
-  RadarChart as RechartsRadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  Radar,
-  ResponsiveContainer,
-  Tooltip,
-} from 'recharts'
-import type { RadarChartData } from '@/types'
+    PolarAngleAxis,
+    PolarGrid,
+    PolarRadiusAxis,
+    Radar,
+    RadarChart as RechartsRadarChart,
+    ResponsiveContainer,
+    Tooltip,
+} from 'recharts';
 
 interface RadarChartProps {
   data: RadarChartData[]
@@ -22,8 +22,8 @@ const COLORS = {
 export function RadarChart({ data, className }: RadarChartProps) {
   return (
     <div className={className}>
-      <ResponsiveContainer width="100%" height={350}>
-        <RechartsRadarChart cx="50%" cy="50%" outerRadius="80%" data={data}>
+      <ResponsiveContainer width="100%" height="100%">
+        <RechartsRadarChart cx="50%" cy="50%" outerRadius="90%" data={data}>
           <PolarGrid 
             stroke="hsl(var(--border))" 
             strokeDasharray="3 3"
@@ -32,7 +32,7 @@ export function RadarChart({ data, className }: RadarChartProps) {
             dataKey="name" 
             tick={{ 
               fill: 'hsl(var(--foreground))', 
-              fontSize: 12,
+              fontSize: 18,
               fontWeight: 500,
             }}
             tickLine={false}
@@ -40,7 +40,7 @@ export function RadarChart({ data, className }: RadarChartProps) {
           <PolarRadiusAxis 
             angle={90} 
             domain={[0, 100]} 
-            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
+            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
             tickLine={false}
             axisLine={false}
           />

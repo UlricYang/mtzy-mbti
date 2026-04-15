@@ -66,8 +66,12 @@
   .glass-card {
     @apply bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-xl;
   }
-  .gradient-text {
+  .gradient-text,
+  .text-gradient-screen {
     @apply bg-gradient-to-r from-[#667eea] via-[#764ba2] to-[#f093fb] bg-clip-text text-transparent;
+  }
+  .text-gradient-screen-alt {
+    @apply bg-gradient-to-r from-[#f093fb] to-[#f5576c] bg-clip-text text-transparent;
   }
   .shimmer-border {
     @apply relative overflow-hidden;
@@ -91,9 +95,48 @@
   }
 }
 
+[data-print="true"] .text-gradient-screen,
+[data-print="true"] .text-gradient-screen-alt,
+[data-print="true"] .gradient-text,
+[data-print="true"] [class*="bg-clip-text"],
+[data-print="true"] [class*="text-transparent"] {
+  background: none !important;
+  background-image: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+  -webkit-text-fill-color: #667eea !important;
+  color: #667eea !important;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@media print {
+  .gradient-text,
+  .text-gradient-screen,
+  .text-gradient-screen-alt,
+  [class*="bg-clip-text"],
+  [class*="text-transparent"] {
+    background: none !important;
+    background-image: none !important;
+    -webkit-background-clip: unset !important;
+    background-clip: unset !important;
+    -webkit-text-fill-color: #667eea !important;
+    color: #667eea !important;
+  }
+
+  .backdrop-blur-xl {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  * {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
   }
 }
 

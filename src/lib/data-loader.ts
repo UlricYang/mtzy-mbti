@@ -1,4 +1,4 @@
-import type { TestData } from '@/types'
+import type { TestData } from '@/types';
 
 export function getDataPath(): string {
   return import.meta.env.VITE_DATA_PATH || 'data/inputs.json'
@@ -44,19 +44,19 @@ export function prepareRadarChartData(data: TestData) {
   }))
 }
 
+const VALUE_COLORS_MAP: Record<string, string> = {
+  '科学型': '#CD5C5C', // Red
+  '经济型': '#FF7F50', // Orange
+  '社会型': '#FFBF00', // Yellow
+  '政治型': '#3CB371', // Green
+  '审美型': '#48D1CC', // Blue
+  '精神型': '#7B68EE', // Violet
+}
+
 export function prepareBarChartData(data: TestData) {
-  const colors = [
-    '#667eea',
-    '#f093fb',
-    '#4facfe',
-    '#f5576c',
-    '#00f2fe',
-    '#764ba2',
-  ]
-  
-  return Object.entries(data.student_value).map(([name, item], index) => ({
+  return Object.entries(data.student_value).map(([name, item]) => ({
     name,
     value: item.score,
-    fill: colors[index % colors.length],
+    fill: VALUE_COLORS_MAP[name] || '#667eea',
   }))
 }
