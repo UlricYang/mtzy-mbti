@@ -1,0 +1,118 @@
+{
+  "mbti_type": "INTP-T",
+  "type_name": {
+    "en": "Logician (Turbulent)",
+    "zh": "逻辑学家型（动荡型）"
+  },
+  "role": {
+    "name": "Analyst",
+    "name_zh": "分析师",
+    "description": "Intuitive (N) and Thinking (T) personality types, known for their rationality, impartiality and intellectual excellence.",
+    "description_zh": "直觉型(N)和思考型(T)人格类型，以理性、公正和卓越智力著称。"
+  },
+  "strategy": {
+    "name": "Constant Improvement",
+    "name_zh": "持续改进",
+    "description": "Constant Improvers are quiet, individualistic people. They tend to be success-driven and often perfectionists, pouring a great deal of energy and time into their work.",
+    "description_zh": "持续改进者是安静、个人主义的人。他们往往追求成功，而且常常是完美主义者，在工作上花费大量时间和精力。"
+  },
+  "traits": {
+    "introverted": {
+      "letter": "I",
+      "name": "Introverted",
+      "name_zh": "内向",
+      "description": "Individuals prefer solitary activities and get exhausted by social interaction. They tend to be quite sensitive to external stimulation (e.g. sound, sight or smell) in general.",
+      "description_zh": "内向型个体偏好独处活动，社交互动后容易感到疲惫。他们通常对外部刺激（如声音、视觉或气味）相当敏感。"
+    },
+    "intuitive": {
+      "letter": "N",
+      "name": "Intuitive",
+      "name_zh": "直觉",
+      "description": "Individuals are very imaginative, open-minded and curious. They prefer novelty over stability and focus on hidden meanings and future possibilities.",
+      "description_zh": "直觉型个体富有想象力、思想开放且充满好奇心。他们更喜欢新奇而非稳定，关注隐藏的含义和未来的可能性。"
+    },
+    "thinking": {
+      "letter": "T",
+      "name": "Thinking",
+      "name_zh": "思考",
+      "description": "Individuals focus on objectivity and rationality, prioritizing logic over emotions. They tend to hide their feelings and see efficiency as more important than cooperation.",
+      "description_zh": "思考型个体注重客观性和理性，优先考虑逻辑而非情感。他们往往隐藏自己的感受，将效率看得比合作更重要。"
+    },
+    "prospecting": {
+      "letter": "P",
+      "name": "Prospecting",
+      "name_zh": "展望",
+      "description": "Individuals are very good at improvising and spotting opportunities. They tend to be flexible, relaxed nonconformists who prefer keeping their options open.",
+      "description_zh": "展望型个体非常擅长即兴发挥和发现机会。他们往往是灵活、轻松的不墨守成规者，喜欢保持选择的开放性。"
+    },
+    "turbulent": {
+      "suffix": "-T",
+      "name": "Turbulent",
+      "name_zh": "动荡",
+      "description": "Individuals are self-conscious and sensitive to stress. They are likely to experience a wide range of emotions and to be success-driven, perfectionistic and eager to improve.",
+      "description_zh": "动荡型个体自我意识强且对压力敏感。他们可能会经历广泛的情绪，追求成功、追求完美且渴望改进。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Analytical",
+      "name_zh": "分析能力强",
+      "description": "Logicians analyze everything that they come across, unearthing unexpected patterns and connections that other personality types might overlook.",
+      "description_zh": "逻辑学家分析他们遇到的一切，发现其他人格类型可能忽视的意外模式和联系。"
+    },
+    {
+      "name": "Original",
+      "name_zh": "富有创意",
+      "description": "Thanks to their unrelenting imagination, Logicians can come up with creative, counterintuitive ideas that wouldn't occur to most people.",
+      "description_zh": "由于他们无情的想象力，逻辑学家能够想出具有创造性、违反直觉的想法，这些是大多数人可能从未想到过的。"
+    },
+    {
+      "name": "Open-Minded",
+      "name_zh": "思想开放",
+      "description": "Logicians are driven by curiosity and an intense desire to learn everything that they can. People with this personality type tend to be receptive to new ideas and ways of doing things.",
+      "description_zh": "逻辑学家受好奇心和强烈的学习欲望驱动。这种人格类型的人往往对新想法和做事方式持开放态度。"
+    },
+    {
+      "name": "Objective",
+      "name_zh": "客观公正",
+      "description": "Logicians care about the truth. Rather than taking comfort in ideology or received ideas, they want to understand what's really going on beneath the surface.",
+      "description_zh": "逻辑学家关心真相。他们不是从意识形态或既定观念中寻求安慰，而是想了解表面之下实际发生了什么。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Disconnected",
+      "name_zh": "疏离感",
+      "description": "Logicians can get lost in their own train of thought, even when they're with other people. This can cause them to feel disconnected from others, especially in large social gatherings.",
+      "description_zh": "逻辑学家可能陷入自己的思绪中，即使与他人在一起时也是如此。这可能导致他们感到与他人疏离，特别是在大型社交聚会中。"
+    },
+    {
+      "name": "Insensitive",
+      "name_zh": "冷漠",
+      "description": "People with this personality type see rationality as the key to a better, happier world. They may underestimate the importance of such values as compassion, etiquette, and tradition.",
+      "description_zh": "这种人格类型的人将理性视为通往更美好、更幸福世界的关键。他们可能低估同情心、礼仪和传统等价值观的重要性。"
+    },
+    {
+      "name": "Dissatisfied",
+      "name_zh": "不满现状",
+      "description": "Logicians can't help but imagine how things could be better than they already are. This mindset can become overwhelming, with Logicians constantly trying to reinvent the wheel.",
+      "description_zh": "逻辑学家不禁想象事物如何能够比现状更好。这种心态可能变得压倒性，逻辑学家不断试图重新发明轮子。"
+    },
+    {
+      "name": "Perfectionistic",
+      "name_zh": "完美主义",
+      "description": "Logicians want to get things done, but their quest for perfection can get in the way. At times, these personalities may get so lost in analyzing various options that they never reach a decision or even give up on the project.",
+      "description_zh": "逻辑学家想要完成事情，但他们对完美的追求可能会阻碍他们。有时，这些人格可能如此陷入分析各种选项中，以至于永远无法做出决定甚至放弃项目。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Turbulent Logicians are the most likely personality type to get 'lost' in researching a topic.",
+    "content_zh": "动荡型逻辑学家是最有可能在研究某个话题时\"迷失\"的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "mbti_type": "INFP-T",
+  "type_name": {
+    "en": "Mediator (Turbulent)",
+    "zh": "调停者型（动荡型）"
+  },
+  "role": {
+    "name": "Diplomat",
+    "name_zh": "外交官",
+    "description": "Intuitive (N) and Feeling (F) personality types, known for their focus on empathy, diplomacy and cooperation.",
+    "description_zh": "直觉型(N)和情感型(F)人格类型，以同理心、外交手腕和合作精神著称。"
+  },
+  "strategy": {
+    "name": "Constant Improvement",
+    "name_zh": "持续改进",
+    "description": "Constant Improvers are quiet, individualistic people. They tend to be success-driven and often perfectionists, pouring a great deal of energy and time into their work.",
+    "description_zh": "持续改进者是安静、个人主义的人。他们往往追求成功，而且常常是完美主义者，在工作上花费大量时间和精力。"
+  },
+  "traits": {
+    "introverted": {
+      "letter": "I",
+      "name": "Introverted",
+      "name_zh": "内向",
+      "description": "Individuals prefer solitary activities and get exhausted by social interaction. They tend to be quite sensitive to external stimulation (e.g. sound, sight or smell) in general.",
+      "description_zh": "内向型个体偏好独处活动，社交互动后容易感到疲惫。他们通常对外部刺激（如声音、视觉或气味）相当敏感。"
+    },
+    "intuitive": {
+      "letter": "N",
+      "name": "Intuitive",
+      "name_zh": "直觉",
+      "description": "Individuals are very imaginative, open-minded and curious. They prefer novelty over stability and focus on hidden meanings and future possibilities.",
+      "description_zh": "直觉型个体富有想象力、思想开放且充满好奇心。他们更喜欢新奇而非稳定，关注隐藏的含义和未来的可能性。"
+    },
+    "feeling": {
+      "letter": "F",
+      "name": "Feeling",
+      "name_zh": "情感",
+      "description": "Individuals are sensitive and emotionally expressive. They are more empathic and less competitive than Thinking types, and focus on social harmony and cooperation.",
+      "description_zh": "情感型个体敏感且善于表达情感。他们比思考型更有同理心、竞争性较低，关注社会和谐与合作。"
+    },
+    "prospecting": {
+      "letter": "P",
+      "name": "Prospecting",
+      "name_zh": "展望",
+      "description": "Individuals are very good at improvising and spotting opportunities. They tend to be flexible, relaxed nonconformists who prefer keeping their options open.",
+      "description_zh": "展望型个体非常擅长即兴发挥和发现机会。他们往往是灵活、轻松的不墨守成规者，喜欢保持选择的开放性。"
+    },
+    "turbulent": {
+      "suffix": "-T",
+      "name": "Turbulent",
+      "name_zh": "动荡",
+      "description": "Individuals are self-conscious and sensitive to stress. They are likely to experience a wide range of emotions and to be success-driven, perfectionistic and eager to improve.",
+      "description_zh": "动荡型个体自我意识强且对压力敏感。他们可能会经历广泛的情绪，追求成功、追求完美且渴望改进。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Empathetic",
+      "name_zh": "善解人意",
+      "description": "Mediators are often considerate and kind, hating the idea of hurting anyone's feelings, even unintentionally.",
+      "description_zh": "调停者往往体贴善良，讨厌伤害任何人的想法，即使是出于无意。"
+    },
+    {
+      "name": "Generous",
+      "name_zh": "慷慨大方",
+      "description": "Mediators rarely succeed at others' expense. Instead, they feel a sense of duty to share the good things in their lives and lift up the people around them.",
+      "description_zh": "调停者很少以他人的代价换取成功。相反，他们感到有使命分享生活中的美好事物，并提升周围的人。"
+    },
+    {
+      "name": "Open-Minded",
+      "name_zh": "思想开放",
+      "description": "Tolerant and nonjudgmental, Mediators try not to criticize others' beliefs, lifestyles, or decisions. They prefer to sympathize than to blame, and they can empathize even with those who have done wrong.",
+      "description_zh": "宽容且不加评判，调停者尽量不批评他人的信仰、生活方式或决定。他们偏好同情而非责备，即使对那些做错事的人也能感同身受。"
+    },
+    {
+      "name": "Creative",
+      "name_zh": "有创造力",
+      "description": "Mediators love to see the world for what it could be. With their imagination and creativity, they can identify opportunities and solutions that others might miss.",
+      "description_zh": "调停者喜欢看到世界可能成为的样子。凭借他们的想象力和创造力，他们能够识别他人可能错过的机会和解决方案。"
+    },
+    {
+      "name": "Passionate",
+      "name_zh": "充满热情",
+      "description": "When Mediators believe in something, they go all in. While they are often quiet and reserved, they can become surprisingly passionate and energetic when pursuing a cause that matters to them.",
+      "description_zh": "当调停者相信某事时，他们会全力以赴。虽然他们通常安静矜持，但在追求对他们重要的事业时，他们会变得 surprisingly 充满热情和活力。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Unrealistic",
+      "name_zh": "不切实际",
+      "description": "Perfect is the enemy of good for Mediators. This personality type can be hopeless romantics, seeing the world through rose-colored glasses.",
+      "description_zh": "对调停者来说，完美是美好的敌人。这种人格类型可能是无可救药的浪漫主义者，通过玫瑰色的眼镜看世界。"
+    },
+    {
+      "name": "Self-Isolating",
+      "name_zh": "自我孤立",
+      "description": "Mediators crave connection with others, but they don't always know how to make it happen. Especially in new environments, Mediators may be reluctant to put themselves out there in ways that would help them make new friends or become part of a new community.",
+      "description_zh": "调停者渴望与他人建立联系，但并不总是知道如何实现。特别是在新环境中，调停者可能不愿意以有助于他们结交新朋友或成为新社区一部分的方式展示自己。"
+    },
+    {
+      "name": "Unfocused",
+      "name_zh": "注意力不集中",
+      "description": "Mediators' imaginative, introspective nature doesn't always lend itself to productivity. Many Mediators become frustrated with themselves when they find it difficult to focus on a given task or project.",
+      "description_zh": "调停者富有想象力、内省的天性并不总是有助于提高工作效率。许多调停者在发现难以专注于特定任务或项目时，会对自己感到沮丧。"
+    },
+    {
+      "name": "Self-Critical",
+      "name_zh": "自我批评",
+      "description": "Mediators believe in their own unique potential and are desperate to live up to it. But this can cause them to have unrealistic expectations of themselves. When they fail to meet these expectations, they may fall into a spiral of self-criticism that can be difficult to escape.",
+      "description_zh": "调停者相信自己独特的潜力，并渴望不辜负它。但这可能导致他们对自己有不切实际的期望。当他们未能达到这些期望时，他们可能陷入难以逃脱的自我批评漩涡。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Turbulent Mediators are the most likely personality type to say they have difficulty expressing their emotions.",
+    "content_zh": "动荡型调停者是最有可能表示他们在表达情感方面有困难的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "mbti_type": "ENFP-T",
+  "type_name": {
+    "en": "Campaigner (Turbulent)",
+    "zh": "竞选者型（动荡型）"
+  },
+  "role": {
+    "name": "Diplomat",
+    "name_zh": "外交官",
+    "description": "Intuitive (N) and Feeling (F) personality types, known for their focus on empathy, diplomacy and cooperation.",
+    "description_zh": "直觉型(N)和情感型(F)人格类型，以同理心、外交手腕和合作精神著称。"
+  },
+  "strategy": {
+    "name": "Social Engagement",
+    "name_zh": "社交参与",
+    "description": "This strategy is adopted by sociable, energetic and success-driven types. Social Engagers tend to be restless, perfectionistic individuals, prone to experiencing both very positive and very negative emotions.",
+    "description_zh": "这种策略被善于社交、精力充沛和追求成功的人采用。社交参与者往往是不安分、完美主义的个体，容易经历非常积极和非常消极的情绪。"
+  },
+  "traits": {
+    "extraverted": {
+      "letter": "E",
+      "name": "Extraverted",
+      "name_zh": "外向",
+      "description": "Individuals prefer group activities and get energized by social interaction. They tend to be more enthusiastic and more easily excited than Introverts.",
+      "description_zh": "外向型个体喜欢团体活动，通过社交互动获得能量。他们往往比内向型更热情、更容易兴奋。"
+    },
+    "intuitive": {
+      "letter": "N",
+      "name": "Intuitive",
+      "name_zh": "直觉",
+      "description": "Individuals are very imaginative, open-minded and curious. They prefer novelty over stability and focus on hidden meanings and future possibilities.",
+      "description_zh": "直觉型个体富有想象力、思想开放且充满好奇心。他们更喜欢新奇而非稳定，关注隐藏的含义和未来的可能性。"
+    },
+    "feeling": {
+      "letter": "F",
+      "name": "Feeling",
+      "name_zh": "情感",
+      "description": "Individuals are sensitive and emotionally expressive. They are more empathic and less competitive than Thinking types, and focus on social harmony and cooperation.",
+      "description_zh": "情感型个体敏感且善于表达情感。他们比思考型更有同理心、竞争性较低，关注社会和谐与合作。"
+    },
+    "prospecting": {
+      "letter": "P",
+      "name": "Prospecting",
+      "name_zh": "探索",
+      "description": "Individuals are very good at improvising and spotting opportunities. They tend to be flexible, relaxed nonconformists who prefer keeping their options open.",
+      "description_zh": "探索型个体非常擅长即兴发挥和发现机会。他们往往是灵活的、放松的非传统主义者，更喜欢保持选择的开放性。"
+    },
+    "turbulent": {
+      "suffix": "-T",
+      "name": "Turbulent",
+      "name_zh": "动荡",
+      "description": "Individuals are self-conscious and sensitive to stress. They are likely to experience a wide range of emotions and to be success-driven, perfectionistic and eager to improve.",
+      "description_zh": "动荡型个体自我意识强且对压力敏感。他们可能会经历广泛的情感波动，以成功为驱动力，追求完美并渴望改进。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Curious",
+      "name_zh": "好奇",
+      "description": "Campaigners want to go out and experience things, and don't hesitate to step out of their comfort zones to do so. They are imaginative and open-minded, seeing all things as part of a big, mysterious puzzle called life.",
+      "description_zh": "竞选者想要出去体验事物，毫不犹豫地走出舒适区。他们富有想象力和思想开放，将一切视为生命中一个巨大而神秘的谜题的一部分。"
+    },
+    {
+      "name": "Energetic and Enthusiastic",
+      "name_zh": "精力充沛且热情",
+      "description": "Campaigners tend to be very excited about their discoveries, and share them with anyone who'll listen, with infectious enthusiasm.",
+      "description_zh": "竞选者往往对他们的发现感到非常兴奋，并以富有感染力的热情与任何愿意倾听的人分享。"
+    },
+    {
+      "name": "Excellent Communicators",
+      "name_zh": "优秀的沟通者",
+      "description": "Campaigners have very strong people skills and enjoy both small talk and deep, meaningful conversations.",
+      "description_zh": "竞选者拥有很强的人际交往能力，喜欢闲聊和深入而有意义的对话。"
+    },
+    {
+      "name": "Popular and Friendly",
+      "name_zh": "受欢迎且友好",
+      "description": "All this adaptability and spontaneity comes together to form a person who is approachable, interesting and exciting. Campaigners can get along with nearly everyone.",
+      "description_zh": "所有这些适应性和自发性结合在一起，形成了一个平易近人、有趣且令人兴奋的人。竞选者几乎可以和任何人相处融洽。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Poor Practical Skills",
+      "name_zh": "实际技能较差",
+      "description": "When it comes to new ideas and projects, especially involving other people, Campaigners have great talent. Unfortunately their skill with upkeep, administration, and follow-through on those projects struggles.",
+      "description_zh": "当涉及到新想法和项目时，尤其是涉及其他人时，竞选者很有天赋。不幸的是，他们在维护、管理和跟进这些项目方面的技能却很挣扎。"
+    },
+    {
+      "name": "Find It Difficult to Focus",
+      "name_zh": "难以集中注意力",
+      "description": "Campaigners are natural explorers of interpersonal connections and philosophy, but it's hard for them to maintain interest as tasks drift towards routine, administrative matters.",
+      "description_zh": "竞选者是人际关系和哲学的天然探索者，但当任务转向常规行政事务时，他们很难保持兴趣。"
+    },
+    {
+      "name": "Highly Emotional",
+      "name_zh": "情绪高度敏感",
+      "description": "While emotional expression is healthy and natural, it can come out too strongly and cause problems for Campaigners, particularly when under stress, criticism or conflict.",
+      "description_zh": "虽然情感表达是健康和自然的，但它可能表现得太强烈，给竞选者带来问题，尤其是在压力、批评或冲突下。"
+    },
+    {
+      "name": "Independent to a Fault",
+      "name_zh": "过于独立",
+      "description": "Campaigners loathe being micromanaged and restrained – they want to be seen as highly independent masters of their own fates.",
+      "description_zh": "竞选者讨厌被微观管理和束缚——他们希望被视为自己命运的独立主宰者。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Turbulent Campaigners are the most likely personality type to listen to their heart rather than their head when making important choices.",
+    "content_zh": "动荡型竞选者是最有可能在做出重要选择时听从内心而非头脑的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

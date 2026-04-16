@@ -1,0 +1,124 @@
+{
+  "mbti_type": "ISFP-T",
+  "type_name": {
+    "en": "Adventurer (Turbulent)",
+    "zh": "探险家型（动荡型）"
+  },
+  "role": {
+    "name": "Explorer",
+    "name_zh": "探险家",
+    "description": "Observant (S) and Prospecting (P) personality types, known for their spontaneity, ingenuity, and ability to live in the moment.",
+    "description_zh": "观察型(S)和展望型(P)人格类型，以自发性、机智和活在当下著称。"
+  },
+  "strategy": {
+    "name": "Constant Improvement",
+    "name_zh": "持续改进",
+    "description": "Constant Improvers are quiet, individualistic people. They tend to be success-driven and often perfectionistic, spending a lot of time and effort on their work.",
+    "description_zh": "持续改进者是安静、个人主义的人。他们往往追求成功，而且常常是完美主义者，在工作上花费大量时间和精力。"
+  },
+  "traits": {
+    "introverted": {
+      "letter": "I",
+      "name": "Introverted",
+      "name_zh": "内向",
+      "description": "Individuals prefer solitary activities and get exhausted by social interaction. They tend to be quite sensitive to external stimulation (e.g. sound, sight or smell) in general.",
+      "description_zh": "内向型个体偏好独处活动，社交互动后容易感到疲惫。他们通常对外部刺激（如声音、视觉或气味）相当敏感。"
+    },
+    "observant": {
+      "letter": "S",
+      "name": "Observant",
+      "name_zh": "观察",
+      "description": "Individuals are highly practical, pragmatic and down-to-earth. They tend to have strong habits and focus on what is happening or has already happened.",
+      "description_zh": "观察型个体非常务实、讲求实际且脚踏实地。他们往往有强烈的习惯，专注于正在发生或已经发生的事物。"
+    },
+    "feeling": {
+      "letter": "F",
+      "name": "Feeling",
+      "name_zh": "情感",
+      "description": "Individuals are sensitive and emotionally expressive. They are more empathic and less competitive than Thinking types, and focus on social harmony and cooperation.",
+      "description_zh": "情感型个体敏感且善于表达情感。他们比思考型更有同理心、竞争性较低，关注社会和谐与合作。"
+    },
+    "prospecting": {
+      "letter": "P",
+      "name": "Prospecting",
+      "name_zh": "展望",
+      "description": "Individuals are very good at improvising and spotting opportunities. They tend to be flexible, relaxed nonconformists who prefer keeping their options open.",
+      "description_zh": "展望型个体非常擅长即兴发挥和发现机会。他们往往是灵活、轻松的不墨守成规者，喜欢保持选择的开放性。"
+    },
+    "turbulent": {
+      "suffix": "-T",
+      "name": "Turbulent",
+      "name_zh": "动荡",
+      "description": "Individuals are self-conscious and sensitive to stress. They are likely to experience a wide range of emotions and to be success-driven, perfectionistic and eager to improve.",
+      "description_zh": "动荡型个体自我意识强且对压力敏感。他们可能会经历广泛的情绪，追求成功、追求完美且渴望改进。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Charming",
+      "name_zh": "有魅力",
+      "description": "Adventurers' warm, sensitive nature makes it easy for them to connect with others, often finding a way to work in even the most stubborn personalities.",
+      "description_zh": "探险家温暖、敏感的天性使他们容易与他人建立联系，通常能找到方法与即使是最固执的人格类型共事。"
+    },
+    {
+      "name": "Artistic",
+      "name_zh": "富有艺术感",
+      "description": "Adventurers are able to draw on their keen observations to see things for what they are, giving them a unique perspective that they can express through a wide variety of art forms.",
+      "description_zh": "探险家能够利用他们敏锐的观察力看清事物的本质，给他们独特的视角，他们可以通过各种艺术形式来表达。"
+    },
+    {
+      "name": "Imaginative",
+      "name_zh": "想象力丰富",
+      "description": "Adventurers may take this a step further, exploring new ideas and experimenting with new methods to find better ways of doing things.",
+      "description_zh": "探险家可能会更进一步，探索新想法并尝试新方法，以找到更好的做事方式。"
+    },
+    {
+      "name": "Passionate",
+      "name_zh": "充满热情",
+      "description": "When Adventurers find something that sparks their interest, they give it their full attention, making these moments some of the most exciting and rewarding in their lives.",
+      "description_zh": "当探险家发现激发他们兴趣的事物时，他们会全神贯注，使这些时刻成为他们生活中最令人兴奋和最有回报的时刻。"
+    },
+    {
+      "name": "Curious",
+      "name_zh": "好奇心强",
+      "description": "Adventurers may take this a step further, exploring new ideas and experimenting with new methods to find better ways of doing things.",
+      "description_zh": "探险家可能会更进一步，探索新想法并尝试新方法，以找到更好的做事方式。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Fiercely Independent",
+      "name_zh": "过于独立",
+      "description": "Adventurers' drive for freedom and spontaneity can lead them to clash with more traditional types who prefer structure and predictability.",
+      "description_zh": "探险家对自由和自发性的追求可能导致他们与更喜欢结构和可预测性的传统类型发生冲突。"
+    },
+    {
+      "name": "Unpredictable",
+      "name_zh": "不可预测",
+      "description": "Adventurers' dislike of long-term commitments and their tendency to live in the moment can lead them to change their minds frequently, making it difficult for others to rely on them.",
+      "description_zh": "探险家不喜欢长期承诺，倾向于活在当下，这可能导致他们频繁改变主意，使他人难以依赖他们。"
+    },
+    {
+      "name": "Easily Stressed",
+      "name_zh": "容易紧张",
+      "description": "Adventurers live in the moment, enjoying the here and now. When things get stressful, they may feel overwhelmed and struggle to cope with the pressure.",
+      "description_zh": "探险家活在当下，享受此时此刻。当事情变得紧张时，他们可能感到不知所措，难以应对压力。"
+    },
+    {
+      "name": "Overly Competitive",
+      "name_zh": "过于好胜",
+      "description": "Adventurers can become so caught up in the moment that they may push themselves too hard, leading to burnout or conflict with others who don't share their level of intensity.",
+      "description_zh": "探险家可能如此沉浸在当下，以至于他们对自己要求过高，导致倦怠或与不分享他们强度水平的人发生冲突。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Turbulent Adventurers are the most likely personality type to say they often feel overwhelmed.",
+    "content_zh": "动荡型探险家是最有可能表示他们经常感到不知所措的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

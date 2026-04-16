@@ -1,0 +1,118 @@
+{
+  "mbti_type": "ESFJ-A",
+  "type_name": {
+    "en": "Consul (Assertive)",
+    "zh": "执政官型（果断型）"
+  },
+  "role": {
+    "name": "Sentinel",
+    "name_zh": "守护者",
+    "description": "Observant (S) and Judging (J) personality types, known for their focus on practicality, order, security and stability.",
+    "description_zh": "观察型(S)和判断型(J)人格类型，以注重实用性、秩序、安全和稳定著称。"
+  },
+  "strategy": {
+    "name": "People Mastery",
+    "name_zh": "人际精通",
+    "description": "People Masters seek social contact and tend to have very good communication skills. These types are confident in their abilities and don't hesitate to express their opinions.",
+    "description_zh": "人际精通者寻求社交联系，通常具有很好的沟通技巧。这些类型对自己的能力充满信心，毫不犹豫地表达自己的观点。"
+  },
+  "traits": {
+    "extraverted": {
+      "letter": "E",
+      "name": "Extraverted",
+      "name_zh": "外向",
+      "description": "Individuals prefer group activities and get energized by social interaction. They tend to be more enthusiastic and more easily excited than Introverts.",
+      "description_zh": "外向型个体喜欢团体活动，通过社交互动获得能量。他们往往比内向型更热情、更容易兴奋。"
+    },
+    "observant": {
+      "letter": "S",
+      "name": "Observant",
+      "name_zh": "观察",
+      "description": "Individuals are highly practical, pragmatic and down-to-earth. They tend to have strong habits and focus on what is happening or has already happened.",
+      "description_zh": "观察型个体非常务实、讲究实际且脚踏实地。他们往往有很强的习惯，专注于正在发生或已经发生的事物。"
+    },
+    "feeling": {
+      "letter": "F",
+      "name": "Feeling",
+      "name_zh": "情感",
+      "description": "Individuals are sensitive and emotionally expressive. They are more empathic and less competitive than Thinking types, and focus on social harmony and cooperation.",
+      "description_zh": "情感型个体敏感且善于表达情感。他们比思考型更有同理心、竞争性较低，关注社会和谐与合作。"
+    },
+    "judging": {
+      "letter": "J",
+      "name": "Judging",
+      "name_zh": "判断",
+      "description": "Individuals are decisive, thorough and highly organized. They value clarity, predictability and closure, preferring structure and planning to spontaneity.",
+      "description_zh": "判断型个体果断、彻底且高度有条理。他们重视清晰、可预测性和完结，更喜欢结构和规划而非自发行为。"
+    },
+    "assertive": {
+      "suffix": "-A",
+      "name": "Assertive",
+      "name_zh": "果断",
+      "description": "Individuals are self-assured, even-tempered and resistant to stress. They refuse to worry too much and do not push themselves too hard when it comes to achieving goals.",
+      "description_zh": "果断型个体自信、情绪稳定且抗压力强。他们拒绝过度担忧，在追求目标时不会过分逼迫自己。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Strong Practical Skills",
+      "name_zh": "强大的实践技能",
+      "description": "Consuls are excellent managers of day-to-day tasks and routine maintenance, making sure that those who are close to them are well cared for.",
+      "description_zh": "执政官是日常任务和常规维护的优秀管理者，确保那些与他们亲近的人得到很好的照顾。"
+    },
+    {
+      "name": "Strong Sense of Duty",
+      "name_zh": "强烈的责任感",
+      "description": "Consuls have a strong sense of responsibility and strive to meet their obligations.",
+      "description_zh": "执政官有强烈的责任感，努力履行他们的义务。"
+    },
+    {
+      "name": "Very Loyal",
+      "name_zh": "非常忠诚",
+      "description": "Valuing stability and security very highly, Consuls are eager to preserve the status quo, which makes them extremely loyal and trustworthy partners and employees. Consuls are true pillars of any groups they belong to.",
+      "description_zh": "执政官高度重视稳定和安全，渴望维护现状，这使他们成为极其忠诚和值得信赖的合作伙伴和员工。执政官是他们所属任何团体的真正支柱。"
+    },
+    {
+      "name": "Good at Connecting with Others",
+      "name_zh": "善于与他人建立联系",
+      "description": "Consuls are social, comfortable and well-liked. They have no problem with small talk or following social cues in order to help them take an active role in their communities.",
+      "description_zh": "执政官善于社交、平易近人且受欢迎。他们在闲聊或遵循社交暗示方面没有问题，以帮助他们在社区中发挥积极作用。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Inflexible",
+      "name_zh": "不够灵活",
+      "description": "Consuls place a lot of importance on what is socially acceptable, and can be very cautious, even critical of anything unconventional or outside the mainstream.",
+      "description_zh": "执政官非常重视社会可接受的事物，可能非常谨慎，甚至对任何非传统或主流之外的事物持批评态度。"
+    },
+    {
+      "name": "Reluctant to Innovate or Improvise",
+      "name_zh": "不愿创新或即兴发挥",
+      "description": "Just as they can be critical of others' unusual behavior, Consuls may also be unwilling to step out of their own comfort zones, usually for fear of being (or just appearing) different.",
+      "description_zh": "正如他们可能对他人不寻常的行为持批评态度一样，执政官也可能不愿意走出自己的舒适区，通常是因为害怕（或只是看起来）与众不同。"
+    },
+    {
+      "name": "Vulnerable to Criticism",
+      "name_zh": "容易受到批评的影响",
+      "description": "It can be especially challenging to change these tendencies because Consuls are so conflict-averse. Consul personalities can become very defensive and hurt if someone, especially a person close to them, criticizes their habits, beliefs or traditions.",
+      "description_zh": "改变这些倾向可能特别具有挑战性，因为执政官非常回避冲突。如果有人，特别是与他们亲近的人，批评他们的习惯、信仰或传统，执政官人格可能会变得非常防御和受伤。"
+    },
+    {
+      "name": "Often Too Needy",
+      "name_zh": "往往过于需要关注",
+      "description": "Consuls desire a great deal of appreciation. If their efforts go unnoticed, Consuls may start fishing for compliments, in an attempt to get reassurance of how much they are valued.",
+      "description_zh": "执政官渴望得到大量的赞赏。如果他们的努力被忽视，执政官可能会开始寻求赞美，试图获得他们被重视程度的保证。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Assertive Consuls are the most likely personality type to carefully evaluate how their actions may affect other people before acting.",
+    "content_zh": "果断型执政官是最有可能在行动前仔细评估他们的行为可能如何影响他人的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

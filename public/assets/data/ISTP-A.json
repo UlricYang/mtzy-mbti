@@ -1,0 +1,118 @@
+{
+  "mbti_type": "ISTP-A",
+  "type_name": {
+    "en": "Virtuoso (Assertive)",
+    "zh": "鉴赏家型（果断型）"
+  },
+  "role": {
+    "name": "Explorer",
+    "name_zh": "探索者",
+    "description": "Observant (S) and Prospecting (P) personality types, known for their spontaneity, ingenuity, and ability to live in the moment.",
+    "description_zh": "观察型(S)和展望型(P)人格类型，以其自发性、独创性和活在当下的能力著称。"
+  },
+  "strategy": {
+    "name": "Confident Individualism",
+    "name_zh": "自信独立",
+    "description": "Confident Individualists prefer doing things alone, choosing to rely on their own skills and instincts as opposed to seeking others' help.",
+    "description_zh": "自信独立者喜欢独自做事，选择依靠自己的技能和直觉，而不是寻求他人的帮助。"
+  },
+  "traits": {
+    "introverted": {
+      "letter": "I",
+      "name": "Introverted",
+      "name_zh": "内向",
+      "description": "Individuals prefer solitary activities and get exhausted by social interaction. They tend to be quite sensitive to external stimulation (e.g. sound) in general.",
+      "description_zh": "内向型个体喜欢独处活动，通过社交互动感到疲惫。他们通常对外部刺激（如声音）相当敏感。"
+    },
+    "observant": {
+      "letter": "S",
+      "name": "Observant",
+      "name_zh": "观察",
+      "description": "Individuals are highly practical, pragmatic and down-to-earth. They tend to have strong habits and focus on what is happening or has already happened.",
+      "description_zh": "观察型个体非常务实、实用且脚踏实地。他们往往有很强的习惯，专注于正在发生或已经发生的事情。"
+    },
+    "thinking": {
+      "letter": "T",
+      "name": "Thinking",
+      "name_zh": "思考",
+      "description": "Individuals focus on objectivity and rationality, prioritizing logic over emotions. They tend to hide their feelings and see efficiency as more important than cooperation.",
+      "description_zh": "思考型个体注重客观性和理性，将逻辑置于情感之上。他们往往隐藏自己的感受，认为效率比合作更重要。"
+    },
+    "prospecting": {
+      "letter": "P",
+      "name": "Prospecting",
+      "name_zh": "展望",
+      "description": "Individuals are very good at improvising and spotting opportunities. They tend to be flexible, relaxed nonconformists who prefer keeping their options open.",
+      "description_zh": "展望型个体非常擅长即兴发挥和发现机会。他们往往是灵活、放松的不墨守成规者，喜欢保持选择的开放性。"
+    },
+    "assertive": {
+      "suffix": "-A",
+      "name": "Assertive",
+      "name_zh": "果断",
+      "description": "Individuals are self-assured, even-tempered and resistant to stress. They refuse to worry too much and do not push themselves too hard when it comes to achieving goals.",
+      "description_zh": "果断型个体自信、沉稳且抗压。他们拒绝过度担忧，在实现目标时不会对自己过于苛刻。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Creative and Practical",
+      "name_zh": "富有创造力且务实",
+      "description": "Virtuosos are very imaginative when it comes to practical things, mechanics, and crafts. They love using their hands to put ideas into action.",
+      "description_zh": "鉴赏家在实用事物、机械和手工艺方面非常有想象力。他们喜欢用双手将想法付诸行动。"
+    },
+    {
+      "name": "Spontaneous and Rational",
+      "name_zh": "自发且理性",
+      "description": "Combining spontaneity with logic, Virtuosos can switch mindsets to fit new situations with little effort, making them flexible and versatile individuals.",
+      "description_zh": "将自发性与逻辑相结合，鉴赏家可以毫不费力地切换思维方式以适应新情况，使他们成为灵活多变的人。"
+    },
+    {
+      "name": "Great in a Crisis",
+      "name_zh": "善于应对危机",
+      "description": "With all this hands-on creativity and spontaneity, it's no wonder that Virtuosos are naturals in crisis situations. People with this personality type usually enjoy a little physical risk, and they aren't afraid to get their hands dirty when the situation calls for it.",
+      "description_zh": "凭借所有这些动手创造力和自发性，难怪鉴赏家在危机情况下是天生的。这种人格类型的人通常喜欢一点身体风险，当情况需要时，他们不怕弄脏自己的手。"
+    },
+    {
+      "name": "Relaxed",
+      "name_zh": "放松",
+      "description": "Through all this, Virtuosos are able to stay quite relaxed. They live in the moment and go with the flow, refusing to worry too much about the future.",
+      "description_zh": "尽管如此，鉴赏家能够保持相当放松。他们活在当下，顺其自然，拒绝为未来过度担忧。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Stubborn",
+      "name_zh": "固执",
+      "description": "As easily as Virtuosos go with the flow, they can also ignore it entirely, and move in another direction with little apology or sensitivity.",
+      "description_zh": "就像鉴赏家顺其自然一样，他们也可以完全忽视它，几乎没有道歉或敏感地朝另一个方向前进。"
+    },
+    {
+      "name": "Private and Reserved",
+      "name_zh": "私密且矜持",
+      "description": "Virtuoso personalities are notoriously difficult to get to know. They keep their personal matters to themselves, and often just prefer silence to small talk.",
+      "description_zh": "鉴赏家人格出了名的难以了解。他们把自己的私事保密，往往更喜欢沉默而不是闲聊。"
+    },
+    {
+      "name": "Easily Bored",
+      "name_zh": "容易厌倦",
+      "description": "Virtuosos enjoy novelty, which makes them excellent tinkerers, but much less reliable when it comes to focusing on things long-term.",
+      "description_zh": "鉴赏家喜欢新奇，这使他们成为优秀的修补匠，但在长期专注于事物方面却不太可靠。"
+    },
+    {
+      "name": "Dislike Commitment",
+      "name_zh": "厌恶承诺",
+      "description": "Long-term commitments are particularly onerous for Virtuosos. They prefer to take things day-by-day, and may consider the feeling of being locked into something for a long time as downright oppressive.",
+      "description_zh": "长期承诺对鉴赏家来说尤其繁重。他们喜欢日复一日地处理事情，可能会认为长时间被锁定在某件事中的感觉是完全压抑的。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Assertive Virtuosos are the most likely personality type to think they would respond well in an emergency.",
+    "content_zh": "果断型鉴赏家是最有可能认为自己在紧急情况下会应对良好的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

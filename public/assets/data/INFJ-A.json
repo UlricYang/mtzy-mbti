@@ -1,0 +1,118 @@
+{
+  "mbti_type": "INFJ-A",
+  "type_name": {
+    "en": "Advocate (Assertive)",
+    "zh": "倡导者型（果断型）"
+  },
+  "role": {
+    "name": "Diplomat",
+    "name_zh": "外交官",
+    "description": "Intuitive (N) and Feeling (F) personality types, known for their focus on empathy, diplomacy and cooperation.",
+    "description_zh": "直觉型(N)和情感型(F)人格类型，以同理心、外交手腕和合作精神著称。"
+  },
+  "strategy": {
+    "name": "Confident Individualism",
+    "name_zh": "自信个人主义",
+    "description": "These personality types prefer to do things by themselves, choosing to rely on their own skills and instincts instead of seeking help from others. They are confident, even-tempered and resistant to stress. They refuse to worry too much and do not push themselves too hard when it comes to achieving goals.",
+    "description_zh": "这些人格类型喜欢独自做事，选择依靠自己的技能和本能，而不是寻求他人帮助。他们自信、情绪稳定且抗压力强。他们拒绝过度担忧，在追求目标时不会过分逼迫自己。"
+  },
+  "traits": {
+    "introverted": {
+      "letter": "I",
+      "name": "Introverted",
+      "name_zh": "内向",
+      "description": "Individuals prefer solitary activities and get exhausted by social interaction. They tend to be quite sensitive to external stimulation (e.g. sound, sight or smell) in general.",
+      "description_zh": "内向型个体偏好独处活动，社交互动后容易感到疲惫。他们通常对外部刺激（如声音、视觉或气味）相当敏感。"
+    },
+    "intuitive": {
+      "letter": "N",
+      "name": "Intuitive",
+      "name_zh": "直觉",
+      "description": "Individuals are very imaginative, open-minded and curious. They prefer novelty over stability and focus on hidden meanings and future possibilities.",
+      "description_zh": "直觉型个体富有想象力、思想开放且充满好奇心。他们更喜欢新奇而非稳定，关注隐藏的含义和未来的可能性。"
+    },
+    "feeling": {
+      "letter": "F",
+      "name": "Feeling",
+      "name_zh": "情感",
+      "description": "Individuals are sensitive and emotionally expressive. They are more empathic and less competitive than Thinking types, and focus on social harmony and cooperation.",
+      "description_zh": "情感型个体敏感且善于表达情感。他们比思考型更有同理心、竞争性较低，关注社会和谐与合作。"
+    },
+    "judging": {
+      "letter": "J",
+      "name": "Judging",
+      "name_zh": "判断",
+      "description": "Individuals are decisive, thorough and highly organized. They value clarity, predictability and closure, preferring structure and planning to spontaneity.",
+      "description_zh": "判断型个体果断、彻底且高度有条理。他们重视清晰、可预测性和完结，更喜欢结构和规划而非自发性。"
+    },
+    "assertive": {
+      "suffix": "-A",
+      "name": "Assertive",
+      "name_zh": "果断",
+      "description": "Individuals are self-assured, even-tempered and resistant to stress. They refuse to worry too much and do not push themselves too hard when it comes to achieving goals.",
+      "description_zh": "果断型个体自信、情绪稳定且抗压力强。他们拒绝过度担忧，在追求目标时不会过分逼迫自己。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Creative",
+      "name_zh": "创造力",
+      "description": "Advocates enjoy finding the perfect solution for the people they care about. To do this, they draw on their vivid imagination and their strong sense of compassion.",
+      "description_zh": "倡导者喜欢为他们关心的人找到完美的解决方案。为此，他们依靠自己丰富的想象力和强烈的同理心。"
+    },
+    {
+      "name": "Insightful",
+      "name_zh": "洞察力",
+      "description": "Advocates strive to look beyond appearances and get to the heart of matters. They have an almost uncanny ability to understand people's true motivations, feelings, and needs.",
+      "description_zh": "倡导者努力超越表象，触及问题的核心。他们有一种近乎神奇的能力，能够理解人们真实的动机、感受和需求。"
+    },
+    {
+      "name": "Principled",
+      "name_zh": "原则性",
+      "description": "Advocates have deep-rooted beliefs, and their conviction often shines through when they speak or write about the topics that matter to them.",
+      "description_zh": "倡导者拥有根深蒂固的信念，当他们谈论或撰写对他们重要的主题时，他们的信念往往闪耀着光芒。"
+    },
+    {
+      "name": "Passionate",
+      "name_zh": "热情",
+      "description": "Advocates pursue their goals with a quiet, single-minded passion that can catch others off guard. This rare combination often takes people by surprise, as Advocates rarely settle for \"good enough\" and are willing to disrupt the status quo.",
+      "description_zh": "倡导者以安静但热情的一心一意追求自己的目标，这种特质可能让他人措手不及。这种罕见的组合常常让人们感到惊讶，因为倡导者很少满足于\"足够好\"，并且愿意打破现状。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Sensitive to Criticism",
+      "name_zh": "对批评敏感",
+      "description": "Advocates may react strongly when someone challenges their principles or values. They may become defensive in the face of criticism and conflict, particularly when the issues at hand are close to their hearts.",
+      "description_zh": "当有人质疑倡导者的原则或价值观时，他们可能会做出强烈反应。面对批评和冲突时，他们可能会变得防御性，特别是当手头的问题触及内心时。"
+    },
+    {
+      "name": "Reluctant to Open Up",
+      "name_zh": "不愿敞开心扉",
+      "description": "Advocates value honesty, but they are also very private individuals. They may find it difficult to open up and be vulnerable about their struggles, even with people they trust.",
+      "description_zh": "倡导者重视诚实，但他们也是非常注重隐私的个体。他们可能发现很难敞开心扉，即使是与他们信任的人，也难以对自己的挣扎表现出脆弱。"
+    },
+    {
+      "name": "Avoiding the Ordinary",
+      "name_zh": "回避平庸",
+      "description": "Driven by a sense of higher purpose in life, Advocates may struggle with translating their dreams into day-to-day routines and to-do lists. The mundane aspects of life can feel like a distraction from their greater mission.",
+      "description_zh": "受生活中更高目标感的驱动，倡导者可能难以将梦想转化为日常例行事务和待办清单。生活的平凡方面可能感觉像是分散他们更伟大使命的干扰。"
+    },
+    {
+      "name": "Prone to Burnout",
+      "name_zh": "容易倦怠",
+      "description": "Advocates' perfectionism and reserve may leave them with few outlets for stress. Their tendency to take on too much and push themselves too hard can lead to exhaustion and burnout if they don't find ways to balance their drive with necessary self-care and rest.",
+      "description_zh": "倡导者的完美主义和矜持可能让他们很少有压力的宣泄渠道。他们承担太多和过分逼迫自己的倾向，如果找不到方法平衡他们的驱动力与必要的自我照顾和休息，可能会导致疲惫和倦怠。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Assertive Advocates are the most likely personality type to consider the time they spend reading an important part of their life.",
+    "content_zh": "果断型倡导者是最有可能认为阅读时间是生活中重要部分的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

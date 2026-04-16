@@ -1,0 +1,118 @@
+{
+  "mbti_type": "INFJ-T",
+  "type_name": {
+    "en": "Advocate (Turbulent)",
+    "zh": "倡导者型（动荡型）"
+  },
+  "role": {
+    "name": "Diplomat",
+    "name_zh": "外交官",
+    "description": "Intuitive (N) and Feeling (F) personality types, known for their focus on empathy, diplomacy and cooperation.",
+    "description_zh": "直觉型(N)和情感型(F)人格类型，以同理心、外交手腕和合作精神著称。"
+  },
+  "strategy": {
+    "name": "Constant Improvement",
+    "name_zh": "持续改进",
+    "description": "Constant Improvers are quiet, individualistic people. They tend to be success-driven and often perfectionists, pouring a great deal of energy and time into their work.",
+    "description_zh": "持续改进者是安静、个人主义的人。他们往往追求成功，而且常常是完美主义者，在工作上花费大量时间和精力。"
+  },
+  "traits": {
+    "introverted": {
+      "letter": "I",
+      "name": "Introverted",
+      "name_zh": "内向",
+      "description": "Individuals prefer solitary activities and get exhausted by social interaction. They tend to be quite sensitive to external stimulation (e.g. sound, sight or smell) in general.",
+      "description_zh": "内向型个体偏好独处活动，社交互动后容易感到疲惫。他们通常对外部刺激（如声音、视觉或气味）相当敏感。"
+    },
+    "intuitive": {
+      "letter": "N",
+      "name": "Intuitive",
+      "name_zh": "直觉",
+      "description": "Individuals are very imaginative, open-minded and curious. They prefer novelty over stability and focus on hidden meanings and future possibilities.",
+      "description_zh": "直觉型个体富有想象力、思想开放且充满好奇心。他们更喜欢新奇而非稳定，关注隐藏的含义和未来的可能性。"
+    },
+    "feeling": {
+      "letter": "F",
+      "name": "Feeling",
+      "name_zh": "情感",
+      "description": "Individuals are sensitive and emotionally expressive. They are more empathic and less competitive than Thinking types, and focus on social harmony and cooperation.",
+      "description_zh": "情感型个体敏感且善于表达情感。他们比思考型更有同理心、竞争性较低，关注社会和谐与合作。"
+    },
+    "judging": {
+      "letter": "J",
+      "name": "Judging",
+      "name_zh": "判断",
+      "description": "Individuals are decisive, thorough and highly organized. They value clarity, predictability and closure, preferring structure and planning to spontaneity.",
+      "description_zh": "判断型个体果断、彻底且高度有条理。他们重视清晰、可预测性和完结，更喜欢结构和规划而非自发性。"
+    },
+    "turbulent": {
+      "suffix": "-T",
+      "name": "Turbulent",
+      "name_zh": "动荡",
+      "description": "Individuals are self-conscious and sensitive to stress. They are likely to experience a wide range of emotions and to be success-driven, perfectionistic and eager to improve.",
+      "description_zh": "动荡型个体自我意识强且对压力敏感。他们可能会经历广泛的情绪，追求成功、追求完美且渴望改进。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Creative",
+      "name_zh": "创造力",
+      "description": "Advocates enjoy finding the perfect solution for the people they care about. To do this, they draw on their vivid imagination and their strong sense of compassion.",
+      "description_zh": "倡导者喜欢为他们关心的人找到完美的解决方案。为此，他们依靠自己丰富的想象力和强烈的同情心。"
+    },
+    {
+      "name": "Insightful",
+      "name_zh": "洞察力",
+      "description": "Advocates strive to look beyond appearances and get to the heart of matters. They have an almost uncanny ability to understand people's true motivations, feelings, and needs.",
+      "description_zh": "倡导者努力超越表象，触及问题的核心。他们有一种近乎神奇的能力，能够理解人们真实的动机、感受和需求。"
+    },
+    {
+      "name": "Principled",
+      "name_zh": "原则性",
+      "description": "Advocates have deep-rooted beliefs, and their conviction often shines through when they speak or write about the topics that matter to them.",
+      "description_zh": "倡导者拥有根深蒂固的信念，当他们谈论或撰写对他们重要的主题时，他们的信念往往闪耀着光芒。"
+    },
+    {
+      "name": "Passionate",
+      "name_zh": "热情",
+      "description": "Advocates pursue their goals with a quiet, single-minded passion that can catch others off guard. This rare combination of traits often takes people by surprise, as Advocates rarely settle for \"good enough\" and are willing to disrupt the status quo.",
+      "description_zh": "倡导者以安静但热情的一心一意追求目标，这可能会让他人措手不及。这种罕见的特质组合常常让人们感到惊讶，因为倡导者很少满足于\"足够好\"，并且愿意打破现状。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Sensitive to Criticism",
+      "name_zh": "对批评敏感",
+      "description": "Advocates may react strongly when someone challenges their principles or values. They can become defensive in the face of criticism and conflict, particularly when the issues at hand are close to their hearts.",
+      "description_zh": "当有人质疑倡导者的原则或价值观时，他们可能会做出强烈反应。面对批评和冲突时，他们可能会变得防御性，特别是当手头的问题触及内心时。"
+    },
+    {
+      "name": "Reluctant to Open Up",
+      "name_zh": "不愿敞开心扉",
+      "description": "Advocates value honesty, but they are also very private individuals. They may find it difficult to open up and be vulnerable about their struggles, even with people they trust.",
+      "description_zh": "倡导者重视诚实，但他们也是非常注重隐私的个体。他们可能发现很难敞开心扉，即使对他们信任的人，也难以对自己的挣扎表现出脆弱。"
+    },
+    {
+      "name": "Avoiding the Ordinary",
+      "name_zh": "回避平凡",
+      "description": "Advocates tend to be motivated by a sense of having a greater purpose in life. They may struggle with translating their dreams into day-to-day routines and to-do lists, which can feel like a distraction from their greater mission.",
+      "description_zh": "倡导者往往被生活中有更大目标感所激励。他们可能难以将梦想转化为日常例行事务和待办清单，这可能感觉像是分散了他们更伟大使命的注意力。"
+    },
+    {
+      "name": "Prone to Burnout",
+      "name_zh": "容易倦怠",
+      "description": "Advocates' perfectionism and reserve may leave them with few outlets for stress. They must find a way to balance their drive with necessary self-care and rest, or they may find themselves exhausted and burned out.",
+      "description_zh": "倡导者的完美主义和矜持可能让他们很少有压力的宣泄渠道。他们必须找到一种方法来平衡他们的驱动力与必要的自我照顾和休息，否则他们可能会发现自己精疲力竭、身心俱疲。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Turbulent Advocates are the most likely personality type to imagine how conversations could have gone differently.",
+    "content_zh": "动荡型倡导者是最有可能想象对话如何以不同方式进行的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

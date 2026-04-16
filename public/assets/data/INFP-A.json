@@ -1,0 +1,118 @@
+{
+  "mbti_type": "INFP-A",
+  "type_name": {
+    "en": "Mediator (Assertive)",
+    "zh": "调停者型（果断型）"
+  },
+  "role": {
+    "name": "Diplomat",
+    "name_zh": "外交官",
+    "description": "Intuitive (N) and Feeling (F) personality types, known for their focus on empathy, diplomacy and cooperation.",
+    "description_zh": "直觉型(N)和情感型(F)人格类型，以同理心、外交手腕和合作精神著称。"
+  },
+  "strategy": {
+    "name": "Confident Individualism",
+    "name_zh": "自信独立",
+    "description": "Confident Individualists prefer doing things alone, choosing to rely on their own skills and instincts as opposed to seeking others' help.",
+    "description_zh": "自信独立者喜欢独自做事，选择依靠自己的技能和直觉，而不是寻求他人的帮助。"
+  },
+  "traits": {
+    "introverted": {
+      "letter": "I",
+      "name": "Introverted",
+      "name_zh": "内向",
+      "description": "Individuals prefer solitary activities and get exhausted by social interaction. They tend to be quite sensitive to external stimulation (e.g. sound) in general.",
+      "description_zh": "内向型个体喜欢独处活动，通过社交互动感到疲惫。他们通常对外部刺激（如声音）相当敏感。"
+    },
+    "intuitive": {
+      "letter": "N",
+      "name": "Intuitive",
+      "name_zh": "直觉",
+      "description": "Individuals are very imaginative, open-minded and curious. They prefer novelty over stability and focus on hidden meanings and future possibilities.",
+      "description_zh": "直觉型个体非常富有想象力、思想开放且好奇。他们喜欢新奇而非稳定，专注于隐藏的含义和未来的可能性。"
+    },
+    "feeling": {
+      "letter": "F",
+      "name": "Feeling",
+      "name_zh": "情感",
+      "description": "Individuals are sensitive and emotionally expressive. They are more empathic and less competitive than Thinking types, and focus on social harmony and cooperation.",
+      "description_zh": "情感型个体敏感且善于情感表达。他们比思考型更具同理心、竞争性更低，注重社会和谐与合作。"
+    },
+    "prospecting": {
+      "letter": "P",
+      "name": "Prospecting",
+      "name_zh": "展望",
+      "description": "Individuals are very good at improvising and spotting opportunities. They tend to be flexible, relaxed nonconformists who prefer keeping their options open.",
+      "description_zh": "展望型个体非常擅长即兴发挥和发现机会。他们往往是灵活、放松的不墨守成规者，喜欢保持选择的开放性。"
+    },
+    "assertive": {
+      "suffix": "-A",
+      "name": "Assertive",
+      "name_zh": "果断",
+      "description": "Individuals are self-assured, even-tempered and resistant to stress. They refuse to worry too much and do not push themselves too hard when it comes to achieving goals.",
+      "description_zh": "果断型个体自信、沉稳且抗压。他们拒绝过度担忧，在实现目标时不会对自己过于苛刻。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Empathetic",
+      "name_zh": "有同理心",
+      "description": "Mediators tend to be thoughtful and kindhearted, and they hate the idea of hurting anyone, even unintentionally.",
+      "description_zh": "调停者往往是体贴和善良的，他们讨厌伤害任何人的想法，即使是无意的。"
+    },
+    {
+      "name": "Generous",
+      "name_zh": "慷慨",
+      "description": "Mediators rarely enjoy succeeding at other people's expense. They feel called to share the good things in their lives and uplift the people around them.",
+      "description_zh": "调停者很少喜欢以牺牲他人为代价而成功。他们感到有使命去分享生活中美好的事物，并提升周围的人。"
+    },
+    {
+      "name": "Open-Minded",
+      "name_zh": "思想开放",
+      "description": "Tolerant and accepting, Mediators try not to judge others' beliefs, lifestyles, or decisions. They prefer compassion to fault-finding, feeling empathy even for those who have done wrong.",
+      "description_zh": "宽容和包容，调停者尽量不评判他人的信仰、生活方式或决定。他们更喜欢同情而不是找错，即使对那些做错事的人也感到同理心。"
+    },
+    {
+      "name": "Idealistic",
+      "name_zh": "理想主义",
+      "description": "Mediators strive to follow their conscience, even when doing the right thing isn't easy or convenient. They rarely lose sight of their desire to live a meaningful, purpose-filled life.",
+      "description_zh": "调停者努力遵循自己的良心，即使做正确的事并不容易或方便。他们很少忘记自己想要过有意义、有目标的生活的愿望。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Unrealistic",
+      "name_zh": "不切实际",
+      "description": "Imperfection can be difficult for Mediators to accept. People with this personality type can be hopeless romantics, with rose-colored visions of what their lives should be like.",
+      "description_zh": "不完美对调停者来说很难接受。这种人格类型的人可能是无可救药的浪漫主义者，对他们生活应该是什么样子有着玫瑰色的幻想。"
+    },
+    {
+      "name": "Self-Isolating",
+      "name_zh": "自我孤立",
+      "description": "Mediators long to connect with others, but they don't always know how. Especially in new environments, Mediators may be reluctant to put themselves out there in ways that would help them make new friends or become involved in a new community.",
+      "description_zh": "调停者渴望与他人建立联系，但他们并不总是知道如何做到。特别是在新环境中，调停者可能不愿意以有助于他们结交新朋友或融入新社区的方式展示自己。"
+    },
+    {
+      "name": "Unfocused",
+      "name_zh": "注意力不集中",
+      "description": "Mediators' imaginative, introspective nature doesn't always lend itself to productivity. Many Mediators get frustrated by how difficult they find it to buckle down and get things done.",
+      "description_zh": "调停者富有想象力、内省的天性并不总是有助于生产力。许多调停者感到沮丧，因为他们发现很难静下心来把事情做完。"
+    },
+    {
+      "name": "Self-Critical",
+      "name_zh": "自我批评",
+      "description": "Mediators believe in their unique potential, and they desperately want to live up to it. But this can cause them to have unrealistic expectations for themselves.",
+      "description_zh": "调停者相信他们独特的潜力，他们迫切希望不辜负它。但这可能导致他们对自己有不切实际的期望。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Assertive Mediators are the most likely personality type to drift away into daydreaming and fantasizing about different ideas or scenarios.",
+    "content_zh": "果断型调停者是最有可能陷入白日梦和幻想不同想法或场景的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}

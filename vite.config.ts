@@ -13,4 +13,14 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // 使用 IIFE 格式，支持本地 file:// 协议直接打开
+        format: 'iife',
+        // 内联动态导入，避免额外的 chunk 文件
+        inlineDynamicImports: true,
+      },
+    },
+  },
 })

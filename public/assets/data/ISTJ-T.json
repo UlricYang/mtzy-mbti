@@ -1,0 +1,118 @@
+{
+  "mbti_type": "ISTJ-T",
+  "type_name": {
+    "en": "Logistician (Turbulent)",
+    "zh": "物流师型（动荡型）"
+  },
+  "role": {
+    "name": "Sentinel",
+    "name_zh": "守护者",
+    "description": "Observant (S) and Judging (J) personality types, known for their focus on practicality, order, security and stability.",
+    "description_zh": "观察型(S)和判断型(J)人格类型，以其实用性、秩序、安全和稳定性著称。"
+  },
+  "strategy": {
+    "name": "Constant Improvement",
+    "name_zh": "持续改进",
+    "description": "Constant Improvers are quiet, individualistic people. They tend to be success-driven and often perfectionistic, spending a lot of time and effort on their work.",
+    "description_zh": "持续改进者是安静、个人主义的人。他们往往以成功为导向，常常追求完美，在工作上花费大量时间和精力。"
+  },
+  "traits": {
+    "introverted": {
+      "letter": "I",
+      "name": "Introverted",
+      "name_zh": "内向",
+      "description": "Individuals prefer solitary activities and get exhausted by social interaction. They tend to be quite sensitive to external stimulation (e.g. sound) in general.",
+      "description_zh": "内向型个体喜欢独处活动，通过社交互动感到疲惫。他们通常对外部刺激（如声音）相当敏感。"
+    },
+    "observant": {
+      "letter": "S",
+      "name": "Observant",
+      "name_zh": "观察",
+      "description": "Individuals are highly practical, pragmatic and down-to-earth. They tend to have strong habits and focus on what is happening or has already happened.",
+      "description_zh": "观察型个体非常务实、实用且脚踏实地。他们往往有很强的习惯，专注于正在发生或已经发生的事情。"
+    },
+    "thinking": {
+      "letter": "T",
+      "name": "Thinking",
+      "name_zh": "思考",
+      "description": "Individuals focus on objectivity and rationality, prioritizing logic over emotions. They tend to hide their feelings and see efficiency as more important than cooperation.",
+      "description_zh": "思考型个体注重客观性和理性，将逻辑置于情感之上。他们往往隐藏自己的感受，认为效率比合作更重要。"
+    },
+    "judging": {
+      "letter": "J",
+      "name": "Judging",
+      "name_zh": "判断",
+      "description": "Individuals are decisive, thorough and highly organized. They value clarity, predictability and closure, preferring structure and planning to spontaneity.",
+      "description_zh": "判断型个体果断、彻底且高度有条理。他们重视清晰、可预测性和完结，更喜欢结构和规划而非自发行为。"
+    },
+    "turbulent": {
+      "suffix": "-T",
+      "name": "Turbulent",
+      "name_zh": "动荡",
+      "description": "Individuals are self-conscious and sensitive to stress. They are likely to experience a wide range of emotions and to be success-driven, perfectionistic and eager to improve.",
+      "description_zh": "动荡型个体自我意识强且对压力敏感。他们可能会经历广泛的情绪变化，以成功为导向，追求完美并渴望改进。"
+    }
+  },
+  "strengths": [
+    {
+      "name": "Honest and Direct",
+      "name_zh": "诚实直率",
+      "description": "Integrity is the heart of this personality type. Logisticians prefer to manage any situations they encounter with plain and simple honesty.",
+      "description_zh": "诚信是这种人格类型的核心。物流师喜欢用朴素简单的诚实来管理他们遇到的任何情况。"
+    },
+    {
+      "name": "Strong-willed",
+      "name_zh": "意志坚强",
+      "description": "Patient and determined, Logisticians embody that integrity in their actions too, working hard and staying focused on their goals.",
+      "description_zh": "耐心和坚定，物流师也在他们的行动中体现了这种诚信，努力工作并保持对目标的专注。"
+    },
+    {
+      "name": "Calm and Practical",
+      "name_zh": "冷静务实",
+      "description": "Logisticians keep their feet on the ground and make clear, rational decisions, with effectiveness in mind.",
+      "description_zh": "物流师脚踏实地，做出清晰、理性的决定，以有效性为目标。"
+    },
+    {
+      "name": "Create and Enforce Order",
+      "name_zh": "创造并执行秩序",
+      "description": "The primary goal of any Logistician is to be effective in what they've chosen to do. Unclear guidelines and people who break established rules undermine this effort, and are rarely tolerated by Logisticians.",
+      "description_zh": "任何物流师的首要目标是在他们选择做的事情上做到有效。不明确的指导方针和违反既定规则的人会破坏这种努力，物流师很少容忍这种情况。"
+    }
+  ],
+  "weaknesses": [
+    {
+      "name": "Stubborn",
+      "name_zh": "固执",
+      "description": "The facts are the facts, and Logisticians tend to resist any new idea that isn't supported by them. Logisticians may also find it difficult to accept that they were wrong about something – but anyone can miss a detail, even them.",
+      "description_zh": "事实就是事实，物流师倾向于抵制任何没有事实支持的新想法。物流师可能还会发现很难接受他们对某事错了——但任何人都可能遗漏细节，即使他们也不例外。"
+    },
+    {
+      "name": "Insensitive",
+      "name_zh": "不敏感",
+      "description": "While not intentionally harsh, Logisticians often hurt more sensitive types' feelings by the simple mantra that honesty is the best policy.",
+      "description_zh": "虽然不是故意的刻薄，但物流师经常通过诚实是最好的政策这一简单咒语伤害更敏感类型的人的感情。"
+    },
+    {
+      "name": "Always by the Book",
+      "name_zh": "墨守成规",
+      "description": "Logisticians are often reluctant to bend rules or try new things. Truly unstructured environments may leave Logisticians all but paralyzed.",
+      "description_zh": "物流师往往不愿意变通规则或尝试新事物。真正无结构的环境可能让物流师几乎瘫痪。"
+    },
+    {
+      "name": "Often Unreasonably Blame Themselves",
+      "name_zh": "常常不合理地责备自己",
+      "description": "Logisticians sometimes heap all the work on themselves, inevitably hit a tipping point, and then believe the responsibility for failure is theirs alone to bear.",
+      "description_zh": "物流师有时把所有工作都堆在自己身上，不可避免地达到临界点，然后相信失败的责任是他们自己独自承担的。"
+    }
+  ],
+  "research_insight": {
+    "title": "Research Insight",
+    "title_zh": "研究洞察",
+    "content": "Turbulent Logisticians are the most likely personality type to say they are private people.",
+    "content_zh": "动荡型物流师是最有可能说他们是私人的人格类型。"
+  },
+  "source": {
+    "name": "16Personalities",
+    "url": "www.16personalities.com"
+  }
+}
