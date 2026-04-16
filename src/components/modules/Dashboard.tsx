@@ -1,7 +1,7 @@
 import type { TestData } from '@/types'
-import { MBTISection } from './sections/MBTISection'
-import { IntelligencesSection } from './sections/IntelligencesSection'
-import { ValuesSection } from './sections/ValuesSection'
+import { MBTISection } from '@/components/sections/MBTISection'
+import { IntelligencesSection } from '@/components/sections/IntelligencesSection'
+import { ValuesSection } from '@/components/sections/ValuesSection'
 
 interface DashboardProps {
   data: TestData

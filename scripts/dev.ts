@@ -4,7 +4,7 @@ import { spawn } from 'child_process'
 import { resolve, basename } from 'path'
 import { copyFileSync, existsSync, mkdirSync } from 'fs'
 
-const dataPath = process.env.DATA_PATH || 'data/inputs.json'
+const dataPath = process.env.DATA_PATH || 'inputs/inputs.json'
 const port = process.env.PORT || '5173'
 
 console.log('\n🚀 Starting development server...')

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Dashboard } from '@/components/Dashboard'
+import { Dashboard } from '@/components/modules/Dashboard'
 import { loadData, getDataPath } from '@/lib/data-loader'
 import type { TestData } from '@/types'
 

@@ -1,6 +1,7 @@
 import { BarChart } from '@/components/charts/BarChart';
 import { Badge } from '@/components/ui/badge';
 import { BlurFade } from '@/components/ui/blur-fade';
+import { SectionTitle } from '@/components/ui/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { prepareBarChartData } from '@/lib/data-loader';
 import type { TestData } from '@/types';
@@ -23,17 +24,12 @@ export function ValuesSection({ data }: ValuesSectionProps) {
   return (
     <section className="py-16 px-4 bg-gradient-to-b from-muted/20 to-muted/30">
       <div className="max-w-6xl mx-auto space-y-8">
-        <BlurFade>
-          <div className="text-center">
-            <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 gradient-text">
-              价值观分析
-            </h2>
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#4facfe]/10 px-4 py-1.5 text-sm font-medium text-[#4facfe]">
-              <Scale className="w-4 h-4" />
-              您的价值观图谱
-            </div>
-          </div>
-        </BlurFade>
+        <SectionTitle
+          title="价值观分析"
+          subtitle="您的价值观图谱"
+          icon={<Scale className="w-5 h-5" />}
+          gradient="from-violet-500 to-purple-500"
+        />
 
         <BlurFade delay={0.1}>
           <Card className="border-2 border-[#667eea]/20 shadow-xl">
