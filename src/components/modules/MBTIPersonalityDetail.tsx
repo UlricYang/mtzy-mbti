@@ -120,28 +120,6 @@ export function MBTIPersonalityDetail({ data, celebritiesOccupation }: MBTIPerso
     }
   }
 
-  const getCelebritiesGroupedByOccupation = (): Map<string, string[]> => {
-    if (!celebritiesOccupation) return new Map()
-    
-    const allCelebrities = parseCelebrities(data.名人)
-    const groupedByOccupation = new Map<string, string[]>()
-    
-    allCelebrities.forEach(name => {
-      const fullOccupation = celebritiesOccupation[name]
-      if (!fullOccupation) return
-      
-      const primaryOccupation = fullOccupation.split('/')[0].trim()
-      
-      const existing = groupedByOccupation.get(primaryOccupation) || []
-      groupedByOccupation.set(primaryOccupation, [...existing, name])
-    })
-    
-    return groupedByOccupation
-  }
-
-  const celebritiesByOccupation = getCelebritiesGroupedByOccupation()
-  const occupationCategories = Array.from(celebritiesByOccupation.entries())
-
   return (
     <Card className="border-2 border-indigo-500/20 shadow-xl">
       <CardHeader className="bg-gradient-to-r from-indigo-500/5 to-purple-500/5">
