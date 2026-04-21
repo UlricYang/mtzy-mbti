@@ -53,9 +53,10 @@ export interface ExportPlugin {
  */
 export interface ServerOptions {
   port: number;
-  vitePort?: number;  // 新增：可选的 Vite 端口
+  vitePort?: number;   // Optional: Vite port for dev mode
   output: string;
   verbose: boolean;
+  devMode?: boolean;   // New: Run in development mode with Vite
 }
 
 // ==================== Preview API ====================
@@ -187,3 +188,15 @@ export interface PreviewStoreData {
  * Memory store type for preview data
  */
 export type PreviewStore = Map<string, PreviewStoreData>;
+
+// ==================== Static Serving ====================
+
+/**
+ * Configuration for static file serving
+ */
+export interface StaticConfig {
+  assets: string;      // Directory to serve static files from
+  prefix: string;      // URL prefix for static files
+  indexHTML: boolean;  // Enable SPA fallback routing
+  headers?: Record<string, string>;  // Custom headers for static files
+}

@@ -1,13 +1,17 @@
 import { Elysia } from 'elysia';
 import { spawn } from 'child_process';
 import { resolve } from 'path';
+import { staticPlugin } from '@elysiajs/static';
 import { ServerOptions, PreviewStore } from '../lib/types';
 import { createLogger } from '../lib/logger';
 import { ensureDir, fileExists, findAvailablePort } from '../lib/file-utils';
 import { handleReportRequest } from '../lib/report-handler';
 import { handlePreviewRequest } from '../lib/preview-handler';
 import { handleExportRequest } from '../lib/export-handler';
-
+import { validateBuild } from '../lib/build-validator';
+import { createStaticConfig } from '../lib/static-config';
+import { validateBuild } from '../lib/build-validator';
+import { createStaticConfig } from '../lib/static-config';
 /**
  * Configuration for high-concurrency optimization
  */
@@ -59,11 +63,13 @@ function cleanupExpiredPreviews(previewStore: PreviewStore, logger: ReturnType<t
 }
 
 /**
-* Start the web service with Vite dev server for dynamic preview
+* Start the web service
+* Production mode: Elysia serves static files from dist/
+* Development mode (--dev): Spawns Vite dev server
 */
 export async function serverCommand(options: ServerOptions): Promise<void> {
   const logger = createLogger(options.verbose, 'server');
-  const { port, vitePort: userVitePort, output, verbose } = options;
+  const { port, output, verbose, devMode } = options;
 
   // Ensure output directory exists
   const outputDir = resolve(output);
@@ -72,21 +78,28 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
     logger.warn(`Created output directory: ${outputDir}`);
   }
 
-  // Find available API port
+  // Validate build for production mode
+  if (!devMode) {
+    const validation = validateBuild('dist');
+    if (!validation.valid) {
+      logger.error(validation.error);
+      if (validation.suggestion) {
+        logger.info(validation.suggestion);
+      }
+      process.exit(1);
+    }
+    logger.verbose('Build validation passed');
+  }
+
+  // Find available port
   const actualPort = await findAvailablePort(port);
   if (actualPort !== port) {
     logger.warn(`Port ${port} is in use, using port ${actualPort} instead`);
   }
 
-  // Calculate or find available Vite port
-  const defaultVitePort = userVitePort || (actualPort + 1);
-  const actualVitePort = await findAvailablePort(defaultVitePort);
-  if (actualVitePort !== defaultVitePort) {
-    logger.warn(`Vite port ${defaultVitePort} is in use, using port ${actualVitePort} instead`);
-  }
-
   logger.info(`Starting web service on port ${actualPort}`);
   logger.verbose(`Output directory: ${outputDir}`);
+  logger.verbose(`Mode: ${devMode ? 'development' : 'production'}`);
 
   // Create preview store for temporary data
   const previewStore: PreviewStore = new Map();
@@ -99,7 +112,7 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
     cleanupExpiredPreviews(previewStore, logger);
   }, CONFIG.CLEANUP_INTERVAL);
 
-  // Create Elysia API server FIRST
+  // Create Elysia server
   const app = new Elysia()
     // Health check endpoint with detailed status
     .get('/health', () => {
@@ -119,9 +132,9 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
           active: exportQueue.length,
           max: CONFIG.MAX_CONCURRENT_EXPORTS,
         },
-        ports: {
-          api: actualPort,
-          vite: actualVitePort,
+        server: {
+          port: actualPort,
+          mode: devMode ? 'development' : 'production',
         },
       };
     })
@@ -133,7 +146,7 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
       const response = await handlePreviewRequest(
         body,
         previewStore,
-        actualVitePort,
+        actualPort,
         verbose
       );
       
@@ -210,7 +223,7 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
         body,
         outputDir,
         previewStore,
-        actualVitePort,
+        actualPort,
         verbose
       );
       
@@ -242,36 +255,47 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
       }
       
       return previewData.data;
-    })
-    
-    // Error handling
-    .onError(({ error, set }) => {
-      logger.error('Server error:', error);
-      set.status = 500;
-      return {
-        status: 'error',
-        message: error instanceof Error ? error.message : 'Internal server error',
-        data: null,
-      };
-    })
-    // Start API server and wait for it to be ready
-    .listen(actualPort, () => {
-      logger.info(`🚀 API server running at http://localhost:${actualPort}`);
-      
-      // Start Vite AFTER API server is ready
-      startVite();
     });
 
-  // Start Vite dev server after API is ready
-  function startVite() {
-    logger.info('Starting Vite dev server for dynamic preview...');
+  // Add static plugin for production mode (serves dist/ with SPA fallback)
+  if (!devMode) {
+    app.use(staticPlugin(createStaticConfig('dist')));
+  }
+
+  // Add error handling
+  app.onError(({ error, set }) => {
+    logger.error('Server error:', error);
+    set.status = 500;
+    return {
+      status: 'error',
+      message: error instanceof Error ? error.message : 'Internal server error',
+      data: null,
+    };
+  });
+
+  // Start server
+  app.listen(actualPort, () => {
+    logger.info(`\ud83d\ude80 Server running at http://localhost:${actualPort}`);
+    logger.info(`\ud83d\udccb Health check: GET http://localhost:${actualPort}/health`);
+    logger.info(`\ud83d\udccb Preview endpoint: POST http://localhost:${actualPort}/api/preview`);
+    logger.info(`\ud83d\udccb Export endpoint: POST http://localhost:${actualPort}/api/export`);
     
-    const viteProcess = spawn('bunx', ['vite', '--port', String(actualVitePort), '--strictPort'], {
+    if (devMode) {
+      // Start Vite dev server for development mode
+      startVite();
+    }
+  });
+
+  // Start Vite dev server (for development mode only)
+  function startVite() {
+    const vitePort = actualPort + 1;
+    logger.info('Starting Vite dev server for development mode...');
+    
+    const viteProcess = spawn('bunx', ['vite', '--port', String(vitePort), '--strictPort'], {
       stdio: 'inherit',
       shell: true,
       env: {
         ...process.env,
-        // Configure Vite to proxy API requests to our Elysia server
         VITE_API_PORT: String(actualPort),
       },
     });
@@ -281,17 +305,15 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
       process.exit(1);
     });
 
-    logger.info(`🎨 Vite dev server running at http://localhost:${actualVitePort}`);
-    logger.info(`📋 Preview endpoint: POST http://localhost:${actualPort}/api/preview`);
-    logger.info(`📋 Export endpoint: POST http://localhost:${actualPort}/api/export`);
+    logger.info(`\ud83c\udfa8 Vite dev server running at http://localhost:${vitePort}`);
   }
 
 // Graceful shutdown
 const shutdown = async () => {
-    logger.info('Shutting down servers...');
+    logger.info('Shutting down server...');
     clearInterval(cleanupInterval);
-await app.stop();
-process.exit(0);
+    await app.stop();
+    process.exit(0);
 };
 
   process.on('SIGINT', shutdown);
