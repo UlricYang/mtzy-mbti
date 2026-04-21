@@ -82,6 +82,167 @@ bun run export -i ./inputs/inputs.json -o ./output -t my-report -f pdf,png,webp,
 
 ---
 
+## 🌐 Web Service API
+
+使用 CLI 工具可以启动 Web 服务，提供 HTTP API 用于外部系统调用：
+
+```bash
+bun run server -p 3000 -o ./output
+
+# 参数说明
+# -p, --port <number>     服务器端口 (默认: 3000)
+# -o, --output <path>     输出目录路径 (默认: ./output)
+# -v, --verbose           显示详细日志
+```
+
+### API 端点
+
+Web 服务启动后会同时运行两个服务器：
+- **API Server** (默认端口 3000): 处理 API 请求
+- **Vite Preview Server** (默认端口 3001): 提供动态预览
+
+#### POST /api/preview
+
+快速预览接口 - 将数据存储在内存中，返回预览 URL。适合需要快速查看报告的场景。
+
+**请求体:**
+```json
+{
+  "student_id": "20240001",
+  "file_path": "/absolute/path/to/inputs.json"
+}
+```
+
+**成功响应:**
+```json
+{
+  "status": "success",
+  "message": null,
+  "data": {
+    "id": "20240001",
+    "timestamp": 1713600000000,
+    "results": {
+      "url": "http://localhost:3001/report/20240001/20260420143052",
+      "png": "",
+      "pdf": ""
+    }
+  }
+}
+```
+
+**说明：**
+- `timestamp`: Unix 时间戳 (毫秒)
+- `url`: 预览页面的完整 URL，包含人类可读的 YYYYMMDDHHmmss 时间格式
+- `png` 和 `pdf`: 预览接口不生成文件，默认为空字符串
+
+---
+
+#### POST /api/export
+
+导出接口 - 直接生成 PNG/PDF 文件。适合需要下载文件的场景。
+
+**请求体:**
+```json
+{
+  "student_id": "20240001",
+  "file_path": "/absolute/path/to/inputs.json"
+}
+```
+
+**成功响应:**
+```json
+{
+  "status": "success",
+  "message": null,
+  "data": {
+    "id": "20240001",
+    "timestamp": 1713600000000,
+    "results": {
+      "url": "",
+      "png": "/output/report-20240001-20260420143052.png",
+      "pdf": "/output/report-20240001-20260420143052.pdf"
+    }
+  }
+}
+```
+
+**说明：**
+- 导出接口与预览接口完全独立，可单独使用
+- 文件名使用统一的时间戳格式: `report-{student_id}-{YYYYMMDDHHmmss}.{format}`
+- `url`: 导出接口不生成预览，默认为空字符串
+
+---
+
+#### POST /api/report
+
+ legacy 复合接口 - 同时生成预览和导出文件。
+
+**请求体:**
+```json
+{
+  "student_id": "20240001",
+  "file_path": "/absolute/path/to/inputs.json"
+}
+```
+
+**成功响应:**
+```json
+{
+  "status": "success",
+  "message": null,
+  "data": {
+    "id": "20240001",
+    "timestamp": 1713600000000,
+    "results": {
+      "url": "http://localhost:3001/report/20240001/20260420143052",
+      "png": "/output/report-20240001-20260420143052.png",
+      "pdf": "/output/report-20240001-20260420143052.pdf"
+    }
+  }
+}
+```
+
+**错误响应 (所有接口):**
+```json
+{
+  "status": "error",
+  "message": "File not found: /path/to/inputs.json",
+  "data": null
+}
+```
+
+### 测试 API
+
+使用测试脚本 (推荐):
+```bash
+# 启动 Web 服务后，在另一个终端运行测试脚本
+bun run server -p 3000 -o ./output
+bash scripts/cli/test-web.sh
+```
+
+或手动测试:
+
+```bash
+# 启动 Web 服务
+bun run server -p 3000 -o ./output
+
+# 测试预览接口
+curl -X POST http://localhost:3000/api/preview \
+  -H "Content-Type: application/json" \
+  -d '{"student_id":"20240001","file_path":"/path/to/inputs.json"}'
+
+# 测试导出接口
+curl -X POST http://localhost:3000/api/export \
+  -H "Content-Type: application/json" \
+  -d '{"student_id":"20240001","file_path":"/path/to/inputs.json"}'
+
+# 测试复合接口
+curl -X POST http://localhost:3000/api/report \
+  -H "Content-Type: application/json" \
+  -d '{"student_id":"20240001","file_path":"/path/to/inputs.json"}'
+```
+---
+
 ## 🏗️ 项目结构
 
 ```
@@ -136,17 +297,20 @@ mtzy-mbti/
 ├── 📁 scripts/                  # 脚本工具
 │   ├── 📁 cli/                  # CLI 工具
 │   │   ├── 📄 index.ts          # CLI 入口
-│   │   ├── 📁 commands/         # 命令实现
 │   │   │   ├── 📄 dev.ts        # 开发服务器命令
-│   │   │   └── 📄 export.ts     # 导出命令
+│   │   │   ├── 📄 export.ts     # 导出命令
+│   │   │   └── 📄 server.ts     # Web 服务命令
 │   │   ├── 📁 plugins/          # 导出插件
 │   │   │   ├── 📄 export-pdf.ts
 │   │   │   ├── 📄 export-png.ts
 │   │   │   └── 📄 export-html.ts
 │   │   └── 📁 lib/              # CLI 工具库
-│   │       ├── 📄 file-utils.ts
-│   │       ├── 📄 logger.ts
-│   │       └── 📄 types.ts
+│   │   │   ├── 📄 file-utils.ts
+│   │   │   ├── 📄 logger.ts
+│   │   │   ├── 📄 types.ts
+│   │   │   ├── 📄 preview-handler.ts
+│   │   │   ├── 📄 export-handler.ts
+│   │   │   └── 📄 report-handler.ts
 │   └── 📁 tool/                 # 数据处理工具
 │       ├── 📄 extract-celebrities.ts
 │       ├── 📄 categorize-celebrities-by-occupation.ts
@@ -321,11 +485,12 @@ export default defineConfig({
 
 | 命令 | 说明 |
 |------|------|
-| `bun run dev` | 启动 CLI 开发服务器 |
-| `bun run build` | 构建生产版本 |
-| `bun run export` | 导出报告 (PDF/PNG/WebP/HTML) |
-| `bun run lint` | 运行 ESLint 代码检查 |
-| `bun run preview` | 预览生产构建 |
+JH| `bun run dev` | 启动 CLI 开发服务器 |
+XJ| `bun run build` | 构建生产版本 |
+KQ| `bun run export` | 导出报告 (PDF/PNG/WebP/HTML) |
+VB| `bun run server` | 启动 Web 服务 (API + Preview) |
+HV| `bun run lint` | 运行 ESLint 代码检查 |
+NR| `bun run preview` | 预览生产构建 |
 
 ---
 

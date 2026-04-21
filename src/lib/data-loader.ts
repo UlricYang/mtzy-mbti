@@ -1,10 +1,43 @@
 import type { TestData, FunctionStacksData, FunctionStack, MBTITypeDetail, MBTIPersonalityData, MBTIDistributionData } from '@/types';
 
+
+/**
+ * Parse preview URL pattern: /report/{student_id}/{timestamp}
+ * Returns { studentId, timestamp } or null if not a preview URL
+ */
+export function parsePreviewUrl(): { studentId: string; timestamp: string } | null {
+  const path = window.location.pathname
+  const match = path.match(/^\/report\/([^/]+)\/([^/]+)(?:\/.*)?$/)
+  
+  if (!match) {
+    return null
+  }
+  
+  return {
+    studentId: match[1],
+    timestamp: match[2]
+  }
+}
+
+/**
+ * Check if the app is running in preview mode
+ */
+export function isPreviewMode(): boolean {
+  return parsePreviewUrl() !== null
+}
+
 export function getDataPath(): string {
   return import.meta.env.VITE_DATA_PATH || 'inputs/inputs.json'
 }
 
 export async function loadData(): Promise<TestData> {
+  // Check if in preview mode first
+  const preview = parsePreviewUrl()
+  if (preview) {
+    return loadPreviewData(preview.studentId, preview.timestamp)
+  }
+  
+  // Otherwise load from static file path
   const dataPath = getDataPath()
   
   try {
@@ -13,7 +46,6 @@ export async function loadData(): Promise<TestData> {
       throw new Error(`Failed to load data: ${response.status}`)
     }
     const data = await response.json() as TestData
-    
     if (!data.mbti || !data.multiple_intelligences || !data.student_value) {
       throw new Error('Invalid data structure: missing required fields')
     }
@@ -22,6 +54,26 @@ export async function loadData(): Promise<TestData> {
   } catch (error) {
     throw new Error(`Failed to load data from ${dataPath}: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
+}
+
+/**
+ * Load data from preview endpoint
+ * Used when app is accessed via /report/{student_id}/{timestamp}
+ */
+export async function loadPreviewData(studentId: string, timestamp: string): Promise<TestData> {
+  const response = await fetch(`/report/${studentId}/${timestamp}/data`)
+  
+  if (!response.ok) {
+    throw new Error(`Failed to load preview data: ${response.status}`)
+  }
+  
+  const data = await response.json() as TestData
+  
+  if (!data.mbti || !data.multiple_intelligences || !data.student_value) {
+    throw new Error('Invalid data structure: missing required fields')
+  }
+  
+  return data
 }
 
 export function getMBTITypeName(data: TestData): string {
