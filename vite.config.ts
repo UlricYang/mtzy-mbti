@@ -69,7 +69,7 @@ function previewRoutingPlugin(): Plugin {
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/',
   plugins: [react(), previewRoutingPlugin()],
   resolve: {
     alias: {

@@ -1,6 +1,6 @@
-import { existsSync, mkdirSync, copyFileSync, readdirSync, statSync } from 'fs';
+import { existsSync, mkdirSync, readdirSync, statSync } from 'fs';
+import { copyFileSync } from 'fs';
 import { join, resolve, basename, dirname } from 'path';
-import { createServer } from 'net';
 
 export function ensureDir(dir: string): void {
   if (!existsSync(dir)) {
@@ -156,37 +156,27 @@ export function generateOutputFilenameWithTimestamp(tag: string, timestamp: numb
 }
 
 /**
- * Find an available port starting from the specified port
+ * Find an available port starting from the specified port (Bun native implementation)
  * @param startPort - Port to start searching from (default: 4000)
  * @param maxAttempts - Maximum number of ports to try (default: 100)
  * @returns Promise that resolves to an available port number
  */
 export async function findAvailablePort(startPort: number = 4000, maxAttempts: number = 100): Promise<number> {
-  return new Promise((resolve, reject) => {
-    const tryPort = (port: number, attempts: number) => {
-      if (attempts >= maxAttempts) {
-        reject(new Error(`Could not find available port after ${maxAttempts} attempts`));
-        return;
+  for (let port = startPort; port < startPort + maxAttempts; port++) {
+    try {
+      const server = Bun.serve({
+        port,
+        fetch: () => new Response('OK'),
+      });
+      server.stop();
+      return port;
+    } catch (err) {
+      // Port in use, try next
+      if (port === startPort + maxAttempts - 1) {
+        throw new Error(`Could not find available port after ${maxAttempts} attempts`);
       }
-
-      const server = createServer();
-      server.once('error', (err: NodeJS.ErrnoException) => {
-        if (err.code === 'EADDRINUSE') {
-          server.close();
-          tryPort(port + 1, attempts + 1);
-        } else {
-          reject(err);
-        }
-      });
-
-      server.once('listening', () => {
-        server.close();
-        resolve(port);
-      });
-
-      server.listen(port);
-    };
-
-    tryPort(startPort, 0);
-  });
+    }
+  }
+  
+  throw new Error(`Could not find available port after ${maxAttempts} attempts`);
 }

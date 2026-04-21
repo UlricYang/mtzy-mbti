@@ -52,13 +52,19 @@ function generateTimestamp(): number {
 /**
  * Core report generation handler
  * Generates PNG/PDF files and stores data for preview
+ * @param request - The report request containing student_id and file_path
+ * @param outputDir - Directory to write output files
+ * @param previewStore - In-memory store for preview data
+ * @param serverPort - Port for the preview server (unified server architecture)
+ * @param verbose - Enable verbose logging
  */
 export async function handleReportRequest(
   request: unknown,
   outputDir: string,
   previewStore: PreviewStore,
-  vitePort: number,
-  verbose: boolean = false
+  serverPort: number,  // Changed from vitePort for unified server
+  verbose: boolean = false,
+  devMode: boolean = false
 ): Promise<ReportResponse> {
   const logger = createLogger(verbose, 'report-handler');
 
@@ -143,9 +149,9 @@ export async function handleReportRequest(
   // Dev server respects VITE_DATA_PATH env var for dynamic data loading
   // Each report session uses its own port to support concurrent users
   logger.info('Finding available port...');
-  const serverPort = await findAvailablePort(4000);
-  logger.info(`Starting Vite dev server on port ${serverPort}...`);
-  const previewServer = spawn('bunx', ['vite', '--port', String(serverPort), '--strictPort'], {
+  const devServerPort = await findAvailablePort(4000);
+  logger.info(`Starting Vite dev server on port ${devServerPort}...`);
+  const previewServer = spawn('bunx', ['vite', '--port', String(devServerPort), '--strictPort'], {
     stdio: 'pipe',
     shell: true,
     env: {
@@ -182,7 +188,7 @@ export async function handleReportRequest(
       browser,
       server: previewServer,
       dataFileName,
-      serverPort,
+      serverPort: devServerPort,
     };
     
     const pngResult = await exportPngPlugin.execute(exportContext);
@@ -208,7 +214,10 @@ export async function handleReportRequest(
     logger.info('Report generation completed');
     
     // Store data for preview - use formatted timestamp for URL and store key
-    const previewUrl = `http://localhost:${vitePort}/report/${student_id}/${formattedTimestamp}`;
+    // In dev mode, preview URL should use Vite port (serverPort + 1)
+    // In production mode, preview URL uses the same server port
+    const previewPort = devMode ? serverPort + 1 : serverPort;
+    const previewUrl = `http://localhost:${previewPort}/report/${student_id}/${formattedTimestamp}`;
     const storeKey = `${student_id}-${formattedTimestamp}`;
     
     previewStore.set(storeKey, {
