@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Dashboard } from '@/components/modules/Dashboard'
-import { loadData, getDataPath } from '@/lib/data-loader'
+import { loadData, getDataPath, isPreviewMode, parsePreviewUrl } from '@/lib/data-loader'
 import type { TestData } from '@/types'
 
 function App() {
@@ -40,9 +40,18 @@ function App() {
         <div className="text-center max-w-md px-4">
           <p className="text-red-500 mb-2">加载失败</p>
           <p className="text-muted-foreground text-sm">{error}</p>
-          <p className="text-muted-foreground text-sm mt-2">
-            数据路径: {getDataPath()}
-          </p>
+          {isPreviewMode() ? (
+            <p className="text-muted-foreground text-sm mt-2">
+              预览模式: {(() => {
+                const preview = parsePreviewUrl()
+                return preview ? `${preview.studentId} / ${preview.timestamp}` : '未知'
+              })()}
+            </p>
+          ) : (
+            <p className="text-muted-foreground text-sm mt-2">
+              数据路径: {getDataPath()}
+            </p>
+          )}
         </div>
       </div>
     )

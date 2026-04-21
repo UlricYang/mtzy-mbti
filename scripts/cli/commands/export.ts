@@ -76,6 +76,7 @@ export async function exportCommand(options: ExportOptions): Promise<void> {
       input: inputPath,
       output,
       tag,
+      timestamp: Date.now(),
       quality: imageQuality,
       verbose,
       browser,

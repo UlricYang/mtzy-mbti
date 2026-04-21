@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { ExportPlugin, ExportContext, ExportResult } from '../lib/types';
 import { createLogger } from '../lib/logger';
-import { generateOutputFilename } from '../lib/file-utils';
+import { generateOutputFilenameWithTimestamp } from '../lib/file-utils';
 
 function getPdfWaitTime(): number {
   return 3000;
@@ -12,7 +12,7 @@ export const exportPdfPlugin: ExportPlugin = {
 
   async execute(context: ExportContext): Promise<ExportResult> {
     const logger = createLogger(context.verbose, 'pdf');
-    const { output, tag, browser } = context;
+    const { output, tag, timestamp, browser } = context;
 
     try {
       const browserContext = await browser.newContext({
@@ -21,7 +21,9 @@ export const exportPdfPlugin: ExportPlugin = {
 
       const page = await browserContext.newPage();
 
-      await page.goto('http://localhost:4173', {
+      const serverUrl = `http://localhost:${context.serverPort}`;
+      logger.verbose(`Navigating to: ${serverUrl}`);
+      await page.goto(serverUrl, {
         waitUntil: 'networkidle',
         timeout: 60000
       });
@@ -59,7 +61,7 @@ export const exportPdfPlugin: ExportPlugin = {
       const pageHeight = await page.evaluate(() => document.documentElement.scrollHeight);
       logger.verbose(`Page height: ${pageHeight}px`);
 
-      const pdfFileName = generateOutputFilename(tag, 'pdf');
+      const pdfFileName = generateOutputFilenameWithTimestamp(tag, timestamp, 'pdf');
       const pdfPath = resolve(output, pdfFileName);
 
       await page.pdf({

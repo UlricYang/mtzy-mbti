@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, copyFileSync, readdirSync, statSync } from 'fs';
 import { join, resolve, basename, dirname } from 'path';
+import { createServer } from 'net';
 
 export function ensureDir(dir: string): void {
   if (!existsSync(dir)) {
@@ -131,4 +132,61 @@ export function parseFormats(formatStr?: string): ('pdf' | 'png' | 'webp' | 'htm
   }
   
   return formats;
+}
+
+/**
+ * Format timestamp for filename (YYYYMMDDHHmmss)
+ */
+export function formatTimestampForFilename(timestamp: number): string {
+  const date = new Date(timestamp);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hour = String(date.getHours()).padStart(2, '0');
+  const minute = String(date.getMinutes()).padStart(2, '0');
+  const second = String(date.getSeconds()).padStart(2, '0');
+  return `${year}${month}${day}${hour}${minute}${second}`;
+}
+
+/**
+ * Generate output filename with explicit timestamp
+ */
+export function generateOutputFilenameWithTimestamp(tag: string, timestamp: number, format: 'pdf' | 'png' | 'webp' | 'html'): string {
+  return `report-${tag}-${formatTimestampForFilename(timestamp)}.${format}`;
+}
+
+/**
+ * Find an available port starting from the specified port
+ * @param startPort - Port to start searching from (default: 4000)
+ * @param maxAttempts - Maximum number of ports to try (default: 100)
+ * @returns Promise that resolves to an available port number
+ */
+export async function findAvailablePort(startPort: number = 4000, maxAttempts: number = 100): Promise<number> {
+  return new Promise((resolve, reject) => {
+    const tryPort = (port: number, attempts: number) => {
+      if (attempts >= maxAttempts) {
+        reject(new Error(`Could not find available port after ${maxAttempts} attempts`));
+        return;
+      }
+
+      const server = createServer();
+      server.once('error', (err: NodeJS.ErrnoException) => {
+        if (err.code === 'EADDRINUSE') {
+          server.close();
+          tryPort(port + 1, attempts + 1);
+        } else {
+          reject(err);
+        }
+      });
+
+      server.once('listening', () => {
+        server.close();
+        resolve(port);
+      });
+
+      server.listen(port);
+    };
+
+    tryPort(startPort, 0);
+  });
 }

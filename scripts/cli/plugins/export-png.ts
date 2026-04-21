@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { ExportPlugin, ExportContext, ExportResult, ImageQuality } from '../lib/types';
 import { createLogger } from '../lib/logger';
-import { generateOutputFilename } from '../lib/file-utils';
+import { generateOutputFilenameWithTimestamp } from '../lib/file-utils';
 
 function getDeviceScaleFactor(quality: ImageQuality): number {
   const scaleFactors: Record<ImageQuality, number> = {
@@ -26,7 +26,7 @@ export const exportPngPlugin: ExportPlugin = {
 
   async execute(context: ExportContext): Promise<ExportResult> {
     const logger = createLogger(context.verbose, 'png');
-    const { output, tag, quality, browser } = context;
+    const { output, tag, timestamp, quality, browser } = context;
 
     try {
       const browserContext = await browser.newContext({
@@ -36,7 +36,9 @@ export const exportPngPlugin: ExportPlugin = {
 
       const page = await browserContext.newPage();
 
-      await page.goto('http://localhost:4173', {
+      const serverUrl = `http://localhost:${context.serverPort}`;
+      logger.verbose(`Navigating to: ${serverUrl}`);
+      await page.goto(serverUrl, {
         waitUntil: 'networkidle',
         timeout: 60000
       });
@@ -82,7 +84,7 @@ export const exportPngPlugin: ExportPlugin = {
 
       logger.verbose(`Page dimensions: ${pageWidth}x${pageHeight}px`);
 
-      const pngFileName = generateOutputFilename(tag, 'png');
+      const pngFileName = generateOutputFilenameWithTimestamp(tag, timestamp, 'png');
       const pngPath = resolve(output, pngFileName);
 
       await page.screenshot({
