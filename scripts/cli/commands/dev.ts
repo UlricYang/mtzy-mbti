@@ -7,10 +7,11 @@ import { ensureDir, resolveInputPath } from '../lib/file-utils';
 
 export async function devCommand(options: DevOptions): Promise<void> {
   const logger = createLogger(options.verbose, 'dev');
-  const { input, port, tag, watch: shouldWatch } = options;
+  const { input, output, port, tag, watch: shouldWatch } = options;
 
   logger.info('🚀 Starting development server...');
   logger.verbose(`Input: ${input}`);
+  logger.verbose(`Output: ${output}`);
   logger.verbose(`Port: ${port}`);
   logger.verbose(`Tag: ${tag}`);
   logger.verbose(`Watch: ${shouldWatch}`);

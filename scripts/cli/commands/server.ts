@@ -1,17 +1,17 @@
 import { Elysia } from 'elysia';
 import { spawn } from 'child_process';
-import { resolve } from 'path';
+import { resolve, basename } from 'path';
+import { watch } from 'chokidar';
 import { staticPlugin } from '@elysiajs/static';
 import { ServerOptions, PreviewStore } from '../lib/types';
 import { createLogger } from '../lib/logger';
-import { ensureDir, fileExists, findAvailablePort } from '../lib/file-utils';
+import { ensureDir, fileExists, findAvailablePort, resolveInputPath } from '../lib/file-utils';
 import { handleReportRequest } from '../lib/report-handler';
 import { handlePreviewRequest } from '../lib/preview-handler';
 import { handleExportRequest } from '../lib/export-handler';
 import { validateBuild } from '../lib/build-validator';
 import { createStaticConfig } from '../lib/static-config';
-import { validateBuild } from '../lib/build-validator';
-import { createStaticConfig } from '../lib/static-config';
+
 /**
  * Configuration for high-concurrency optimization
  */
@@ -69,9 +69,32 @@ function cleanupExpiredPreviews(previewStore: PreviewStore, logger: ReturnType<t
 */
 export async function serverCommand(options: ServerOptions): Promise<void> {
   const logger = createLogger(options.verbose, 'server');
-  const { port, output, verbose, devMode } = options;
+  const { input, output, port, tag, watch: shouldWatch, verbose, devMode } = options;
 
-  // Ensure output directory exists
+  logger.info('🚀 Starting web service...');
+  logger.verbose(`Input: ${input}`);
+  logger.verbose(`Output: ${output}`);
+  logger.verbose(`Port: ${port}`);
+  logger.verbose(`Tag: ${tag}`);
+  logger.verbose(`Watch: ${shouldWatch}`);
+
+  // Resolve input path
+  const { type, paths } = resolveInputPath(input);
+  const inputPath = paths[0];
+
+  // Ensure public directory exists and copy input data file
+  const publicDir = 'public';
+  ensureDir(publicDir);
+  const dataFileName = basename(inputPath);
+  const targetPath = resolve(publicDir, dataFileName);
+  try {
+    await Bun.write(targetPath, Bun.file(inputPath));
+    logger.info(`📋 Copied data to: ${targetPath}`);
+  } catch (error) {
+    logger.error('Failed to copy data file:', error);
+    process.exit(1);
+  }
+
   const outputDir = resolve(output);
   if (!fileExists(outputDir)) {
     ensureDir(outputDir);
@@ -147,7 +170,8 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
         body,
         previewStore,
         actualPort,
-        verbose
+        verbose,
+        devMode
       );
       
       if (response.status === 'error') {
@@ -224,7 +248,8 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
         outputDir,
         previewStore,
         actualPort,
-        verbose
+        verbose,
+        devMode
       );
       
       if (response.status === 'error') {
@@ -237,6 +262,42 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
       return response;
     })
     
+    .get('/report/:student_id/:timestamp', async ({ params, set }) => {
+      if (devMode) {
+        // In dev mode, let Vite handle it
+        return;
+      }
+
+      // Match /report/:student_id/:timestamp pattern (but not /report/*/data)
+      const pathname = `/report/${params.student_id}/${params.timestamp}`;
+
+      // Skip if this is the data endpoint
+      if (pathname.endsWith('/data')) {
+        return;
+      }
+
+      // Skip if this looks like a static file (has extension)
+      if (pathname.match(/\.[^/]+$/)) {
+        return;
+      }
+      // Serve index.html for SPA routing
+      const indexHtmlPath = resolve('dist', 'index.html');
+      const indexHtmlFile = Bun.file(indexHtmlPath);
+
+      logger.verbose(`SPA route matched: ${pathname}, serving ${indexHtmlPath}`);
+
+      if (await indexHtmlFile.exists()) {
+        set.headers['Content-Type'] = 'text/html';
+        logger.verbose(`Serving index.html for ${pathname}`);
+        return await indexHtmlFile.text();
+      }
+
+      logger.error(`index.html not found at ${indexHtmlPath}`);
+      set.status = 404;
+      return 'index.html not found';
+    })
+    
+
     // Preview data endpoint - returns JSON data for preview page
     .get('/report/:student_id/:timestamp/data', ({ params }) => {
       const { student_id, timestamp } = params;
@@ -284,6 +345,29 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
       // Start Vite dev server for development mode
       startVite();
     }
+
+    // Start file watcher if watch mode is enabled
+    if (shouldWatch) {
+      logger.info('👀 Watching for file changes...');
+      const watcher = watch(inputPath, {
+        persistent: true,
+        ignoreInitial: true,
+      });
+
+      watcher.on('change', async (path) => {
+        logger.info(`📝 File changed: ${path}`);
+        try {
+          await Bun.write(targetPath, Bun.file(path));
+          logger.info('✅ Data reloaded');
+        } catch (error) {
+          logger.error('Failed to reload data:', error);
+        }
+      });
+
+      watcher.on('error', (error) => {
+        logger.error('Watcher error:', error);
+      });
+    }
   });
 
   // Start Vite dev server (for development mode only)
@@ -312,6 +396,18 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
 const shutdown = async () => {
     logger.info('Shutting down server...');
     clearInterval(cleanupInterval);
+    
+    // Clean up copied data file
+    const targetFile = Bun.file(targetPath);
+    if (await targetFile.exists()) {
+      try {
+        await targetFile.unlink();
+        logger.verbose(`🧹 Cleaned up: ${targetPath}`);
+      } catch (error) {
+        logger.verbose(`Failed to cleanup ${targetPath}:`, error);
+      }
+    }
+    
     await app.stop();
     process.exit(0);
 };

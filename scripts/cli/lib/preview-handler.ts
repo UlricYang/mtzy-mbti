@@ -41,13 +41,15 @@ function validateRequest(request: unknown): { valid: boolean; error?: string } {
 /**
  * Preview handler - stores data for browser preview (fast response)
  * Does NOT generate files, just stores data and returns preview_url
- * @param serverPort - Port for the unified server (changed from vitePort)
+ * @param serverPort - Port for the API server
+ * @param devMode - If true, preview URL uses Vite port (serverPort + 1)
  */
 export async function handlePreviewRequest(
   request: unknown,
   previewStore: PreviewStore,
   serverPort: number,
-  verbose: boolean = false
+  verbose: boolean = false,
+  devMode: boolean = false
 ): Promise<PreviewResponse> {
   const logger = createLogger(verbose, 'preview-handler');
 
@@ -108,7 +110,10 @@ export async function handlePreviewRequest(
   const timestamp = Date.now();
   const formattedTimestamp = formatTimestampForFilename(timestamp);
   const storeKey = `${student_id}-${formattedTimestamp}`;
-  const previewUrl = `http://localhost:${serverPort}/report/${student_id}/${formattedTimestamp}`;
+  // In dev mode, preview URL should use Vite port (serverPort + 1)
+  // In production mode, preview URL uses the same server port
+  const previewPort = devMode ? serverPort + 1 : serverPort;
+  const previewUrl = `http://localhost:${previewPort}/report/${student_id}/${formattedTimestamp}`;
   
   previewStore.set(storeKey, {
     student_id,

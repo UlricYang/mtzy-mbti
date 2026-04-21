@@ -63,7 +63,8 @@ export async function handleReportRequest(
   outputDir: string,
   previewStore: PreviewStore,
   serverPort: number,  // Changed from vitePort for unified server
-  verbose: boolean = false
+  verbose: boolean = false,
+  devMode: boolean = false
 ): Promise<ReportResponse> {
   const logger = createLogger(verbose, 'report-handler');
 
@@ -213,7 +214,10 @@ export async function handleReportRequest(
     logger.info('Report generation completed');
     
     // Store data for preview - use formatted timestamp for URL and store key
-    const previewUrl = `http://localhost:${serverPort}/report/${student_id}/${formattedTimestamp}`;
+    // In dev mode, preview URL should use Vite port (serverPort + 1)
+    // In production mode, preview URL uses the same server port
+    const previewPort = devMode ? serverPort + 1 : serverPort;
+    const previewUrl = `http://localhost:${previewPort}/report/${student_id}/${formattedTimestamp}`;
     const storeKey = `${student_id}-${formattedTimestamp}`;
     
     previewStore.set(storeKey, {

@@ -16,6 +16,7 @@ program
   .command('dev')
   .description('启动开发服务器')
   .requiredOption('-i, --input <path>', '输入数据文件路径（JSON文件或目录）')
+  .option('-o, --output <path>', '输出目录路径', './output')
   .option('-p, --port <number>', '开发服务器端口', '5173')
   .requiredOption('-t, --tag <string>', '报告标识符')
   .option('-w, --watch', '监听输入文件变化，自动重新加载', false)
@@ -36,15 +37,21 @@ program
 program
   .command('server')
   .description('启动Web服务，提供HTTP API报告生成')
-  .option('-p, --port <number>', '服务器端口', '3000')
-  .option('--vite-port <number>', 'Vite 预览服务器端口（默认为 API端口+1）')
+  .requiredOption('-i, --input <path>', '输入数据文件路径（JSON文件或目录）')
   .option('-o, --output <path>', '输出目录路径', './output')
+  .option('-p, --port <number>', '服务器端口', '3000')
+  .requiredOption('-t, --tag <string>', '报告标识符')
+  .option('-w, --watch', '监听输入文件变化，自动重新加载', false)
+  .option('--vite-port <number>', 'Vite 预览服务器端口（默认为 API端口+1）')
   .option('-v, --verbose', '显示详细日志', false)
   .action(async (options) => {
     const serverOptions = {
-      port: parseInt(options.port, 10),
-      vitePort: options.vitePort ? parseInt(options.vitePort, 10) : undefined,
+      input: options.input,
       output: options.output,
+      port: parseInt(options.port, 10),
+      tag: options.tag,
+      watch: options.watch,
+      vitePort: options.vitePort ? parseInt(options.vitePort, 10) : undefined,
       verbose: options.verbose,
     };
     await serverCommand(serverOptions);

@@ -1,13 +1,37 @@
 /**
  * CLI 类型定义
  */
-
-export interface DevOptions {
+/**
+ * Common CLI options shared by dev and server commands
+ */
+export interface CommonOptions {
   input: string;
+  output: string;
   port: number;
   tag: string;
   watch: boolean;
   verbose: boolean;
+}
+
+/**
+ * Dev command CLI options (extends CommonOptions)
+ */
+export interface DevOptions extends CommonOptions {
+  // All options inherited from CommonOptions
+}
+
+/**
+ * Server command CLI options
+ */
+export interface ServerOptions {
+  input: string;
+  output: string;
+  port: number;
+  tag: string;
+  watch: boolean;
+  verbose: boolean;
+  vitePort?: number;   // Optional: Vite port for dev mode
+  devMode?: boolean;   // Run in development mode with Vite
 }
 
 export type ImageQuality = 'standard' | 'high' | 'print';
@@ -47,17 +71,6 @@ export interface ExportPlugin {
   execute(context: ExportContext): Promise<ExportResult>;
 }
 
-
-/**
- * Server command CLI options
- */
-export interface ServerOptions {
-  port: number;
-  vitePort?: number;   // Optional: Vite port for dev mode
-  output: string;
-  verbose: boolean;
-  devMode?: boolean;   // New: Run in development mode with Vite
-}
 
 // ==================== Preview API ====================
 

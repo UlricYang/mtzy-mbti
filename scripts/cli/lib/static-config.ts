@@ -21,7 +21,6 @@ export function createStaticConfig(distPath: string = 'dist'): StaticConfig {
   return {
     assets: distPath,
     prefix: '',          // Serve from root
-    indexHTML: true,     // Enable SPA fallback routing
-    headers: getStaticHeaders(),
+    indexHTML: false,   // Disable SPA fallback - we handle it explicitly in routes
   };
-}
+  }
