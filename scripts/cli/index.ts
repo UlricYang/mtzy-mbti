@@ -37,22 +37,18 @@ program
 program
   .command('server')
   .description('启动Web服务，提供HTTP API报告生成')
-  .requiredOption('-i, --input <path>', '输入数据文件路径（JSON文件或目录）')
   .option('-o, --output <path>', '输出目录路径', './output')
   .option('-p, --port <number>', '服务器端口', '3000')
-  .requiredOption('-t, --tag <string>', '报告标识符')
-  .option('-w, --watch', '监听输入文件变化，自动重新加载', false)
   .option('--vite-port <number>', 'Vite 预览服务器端口（默认为 API端口+1）')
   .option('-v, --verbose', '显示详细日志', false)
+  .option('--dev', '以开发模式运行（启动Vite开发服务器）', false)
   .action(async (options) => {
     const serverOptions = {
-      input: options.input,
       output: options.output,
       port: parseInt(options.port, 10),
-      tag: options.tag,
-      watch: options.watch,
       vitePort: options.vitePort ? parseInt(options.vitePort, 10) : undefined,
       verbose: options.verbose,
+      devMode: options.dev,
     };
     await serverCommand(serverOptions);
   });

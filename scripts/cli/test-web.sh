@@ -34,7 +34,7 @@ echo ""
 echo "=========================================="
 echo "Test 1: Health Check"
 echo "=========================================="
-HEALTH_RESPONSE=$(curl -s "$API_BASE/health")
+HEALTH_RESPONSE=$(curl -s "$API_BASE/api/assessment/health")
 echo "Response: $HEALTH_RESPONSE"
 if echo "$HEALTH_RESPONSE" | grep -q '"status":"ok"'; then
     echo -e "${GREEN}✓ Health check passed${NC}"
@@ -45,9 +45,9 @@ echo ""
 
 # Test 2: Preview API
 echo "=========================================="
-echo "Test 2: Preview API (/api/preview)"
+echo "Test 2: Preview API (/api/assessment/mbti/preview)"
 echo "=========================================="
-PREVIEW_RESPONSE=$(curl -s -X POST "$API_BASE/api/preview" \
+PREVIEW_RESPONSE=$(curl -s -X POST "$API_BASE/api/assessment/mbti/preview" \
     -H "Content-Type: application/json" \
     -d "{\"student_id\":\"20240001\",\"file_path\":\"$ABSOLUTE_INPUT\"}")
 
@@ -63,11 +63,31 @@ else
 fi
 echo ""
 
-# Test 3: Export API
+# Test 3: Link API
 echo "=========================================="
-echo "Test 3: Export API (/api/export)"
+echo "Test 3: Link API (/api/assessment/mbti/link)"
 echo "=========================================="
-EXPORT_RESPONSE=$(curl -s -X POST "$API_BASE/api/export" \
+LINK_RESPONSE=$(curl -s -X POST "$API_BASE/api/assessment/mbti/link" \
+    -H "Content-Type: application/json" \
+    -d "{\"student_id\":\"20240001\",\"file_path\":\"$ABSOLUTE_INPUT\"}")
+
+echo "Response:"
+echo "$LINK_RESPONSE" | jq '.' 2>/dev/null || echo "$LINK_RESPONSE"
+
+if echo "$LINK_RESPONSE" | grep -q '"status":"success"'; then
+    echo -e "${GREEN}✓ Link API passed${NC}"
+    LINK_URL=$(echo "$LINK_RESPONSE" | jq -r '.data.results.url')
+    echo -e "${YELLOW}Link URL: $LINK_URL${NC}"
+else
+    echo -e "${RED}✗ Link API failed${NC}"
+fi
+echo ""
+
+# Test 4: Export API
+echo "=========================================="
+echo "Test 4: Export API (/api/assessment/mbti/export)"
+echo "=========================================="
+EXPORT_RESPONSE=$(curl -s -X POST "$API_BASE/api/assessment/mbti/export" \
     -H "Content-Type: application/json" \
     -d "{\"student_id\":\"20240001\",\"file_path\":\"$ABSOLUTE_INPUT\"}")
 
@@ -85,11 +105,11 @@ else
 fi
 echo ""
 
-# Test 4: Report API (Legacy combined)
+# Test 5: Report API (Legacy combined)
 echo "=========================================="
-echo "Test 4: Report API (/api/report)"
+echo "Test 5: Report API (/api/assessment/mbti/report)"
 echo "=========================================="
-REPORT_RESPONSE=$(curl -s -X POST "$API_BASE/api/report" \
+REPORT_RESPONSE=$(curl -s -X POST "$API_BASE/api/assessment/mbti/report" \
     -H "Content-Type: application/json" \
     -d "{\"student_id\":\"20240002\",\"file_path\":\"$ABSOLUTE_INPUT\"}")
 
@@ -103,11 +123,11 @@ else
 fi
 echo ""
 
-# Test 5: Error handling - Missing file
+# Test 6: Error handling - Missing file
 echo "=========================================="
-echo "Test 5: Error Handling (missing file)"
+echo "Test 6: Error Handling (missing file)"
 echo "=========================================="
-ERROR_RESPONSE=$(curl -s -X POST "$API_BASE/api/preview" \
+ERROR_RESPONSE=$(curl -s -X POST "$API_BASE/api/assessment/mbti/preview" \
     -H "Content-Type: application/json" \
     -d '{"student_id":"20240001","file_path":"/nonexistent/file.json"}')
 
@@ -121,11 +141,11 @@ else
 fi
 echo ""
 
-# Test 6: Error handling - Missing fields
+# Test 7: Error handling - Missing fields
 echo "=========================================="
-echo "Test 6: Error Handling (missing fields)"
+echo "Test 7: Error Handling (missing fields)"
 echo "=========================================="
-ERROR_RESPONSE2=$(curl -s -X POST "$API_BASE/api/preview" \
+ERROR_RESPONSE2=$(curl -s -X POST "$API_BASE/api/assessment/mbti/preview" \
     -H "Content-Type: application/json" \
     -d '{"student_id":"20240001"}')
 
