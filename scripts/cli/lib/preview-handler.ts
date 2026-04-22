@@ -2,7 +2,7 @@ import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { PreviewRequest, PreviewResponse, PreviewStore, Results } from './types';
 import { formatTimestampForFilename } from './file-utils';
-import { createLogger } from './logger';
+import { previewLogger } from './logger';
 
 /**
  * Validates that the JSON file has required structure
@@ -27,12 +27,12 @@ function validateRequest(request: unknown): { valid: boolean; error?: string } {
   
   const req = request as Record<string, unknown>;
   
-  if (!req.student_id || typeof req.student_id !== 'string') {
-    return { valid: false, error: 'Missing required field: student_id' };
+  if (!req.userid || typeof req.userid !== 'string') {
+    return { valid: false, error: 'Missing required field: userid' };
   }
   
-  if (!req.file_path || typeof req.file_path !== 'string') {
-    return { valid: false, error: 'Missing required field: file_path' };
+  if (!req.filepath || typeof req.filepath !== 'string') {
+    return { valid: false, error: 'Missing required field: filepath' };
   }
   
   return { valid: true };
@@ -51,12 +51,12 @@ export async function handlePreviewRequest(
   verbose: boolean = false,
   devMode: boolean = false
 ): Promise<PreviewResponse> {
-  const logger = createLogger(verbose, 'preview-handler');
+  const logger = previewLogger;
 
   // Step 1: Validate request parameters
   const validation = validateRequest(request);
   if (!validation.valid) {
-    logger.error(`Validation failed: ${validation.error}`);
+    logger.error('Validation failed: {error}', { error: validation.error });
     return {
       status: 'error',
       message: validation.error || 'Invalid request',
@@ -65,15 +65,15 @@ export async function handlePreviewRequest(
   }
 
   const req = request as PreviewRequest;
-  const { student_id, file_path } = req;
+  const { userid, filepath } = req;
 
-  logger.info(`Creating preview for student: ${student_id}`);
-  logger.verbose(`File path: ${file_path}`);
+  logger.info('Creating preview for student: {userid}', { userid });
+  logger.debug('File path: {filepath}', { filepath });
 
-  // Step 2: Validate file_path exists
-  const absoluteFilePath = resolve(file_path);
+  // Step 2: Validate filepath exists
+  const absoluteFilePath = resolve(filepath);
   if (!existsSync(absoluteFilePath)) {
-    logger.error(`File not found: ${absoluteFilePath}`);
+    logger.error('File not found: {path}', { path: absoluteFilePath });
     return {
       status: 'error',
       message: `File not found: ${absoluteFilePath}`,
@@ -95,10 +95,10 @@ export async function handlePreviewRequest(
         data: null,
       };
     }
-    logger.verbose('JSON structure validated');
+    logger.debug('JSON structure validated');
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    logger.error(`JSON parsing failed: ${errorMsg}`);
+    logger.error('JSON parsing failed: {error}', { error: errorMsg });
     return {
       status: 'error',
       message: `Invalid JSON: ${errorMsg}`,
@@ -109,27 +109,27 @@ export async function handlePreviewRequest(
   // Step 4: Generate timestamp and store data
   const timestamp = Date.now();
   const formattedTimestamp = formatTimestampForFilename(timestamp);
-  const storeKey = `${student_id}-${formattedTimestamp}`;
+  const storeKey = `${userid}-${formattedTimestamp}`;
   // In dev mode, preview URL should use Vite port (serverPort + 1)
   // In production mode, preview URL uses the same server port
   const previewPort = devMode ? serverPort + 1 : serverPort;
-  const previewUrl = `http://localhost:${previewPort}/report/${student_id}/${formattedTimestamp}`;
+  const previewUrl = `http://localhost:${previewPort}/report/${userid}/${formattedTimestamp}`;
   
   previewStore.set(storeKey, {
-    student_id,
+    userid,
     timestamp,
     data: jsonData,
     createdAt: Date.now(),
   });
   
-  logger.verbose(`Stored preview data with key: ${storeKey}`);
-  logger.info(`Preview URL: ${previewUrl}`);
+  logger.debug('Stored preview data with key: {storeKey}', { storeKey });
+  logger.info('Preview URL: {url}', { url: previewUrl });
 
   return {
     status: 'success',
     message: null,
     data: {
-      id: student_id,
+      id: userid,
       timestamp,
       results: {
         url: previewUrl,

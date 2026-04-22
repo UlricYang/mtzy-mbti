@@ -12,7 +12,7 @@ async function copyDir(src: string, dest: string, verbose: boolean): Promise<voi
     const relPath = relative(src, filePath);
     
     if (relPath.endsWith('inputs.json')) {
-      logger.verbose(`Skipping: ${relPath}`);
+      logger.debug(`Skipping: ${relPath}`);
       continue;
     }
 
@@ -24,7 +24,7 @@ async function copyDir(src: string, dest: string, verbose: boolean): Promise<voi
     } else {
       const file = Bun.file(filePath);
       await Bun.write(destPath, file);
-      logger.verbose(`Copied: ${relPath}`);
+      logger.debug(`Copied: ${relPath}`);
     }
   }
 }
@@ -42,7 +42,7 @@ export const exportHtmlPlugin: ExportPlugin = {
       const outputDir = resolve(output, folderName);
 
       logger.info('📦 Copying dist folder for HTML export...');
-      logger.verbose(`Output directory: ${outputDir}`);
+      logger.debug(`Output directory: ${outputDir}`);
 
       const distDir = resolve(process.cwd(), 'dist');
       const distIndex = Bun.file(join(distDir, 'index.html'));
@@ -75,7 +75,7 @@ export const exportHtmlPlugin: ExportPlugin = {
           .replace(/fetch\s*\(\s*["'`]\/public\//g, 'fetch("./')
           .replace(/fetch\s*\(\s*["'`]\/([^"'`]+)["'`]/g, 'fetch("./$1"');
         await Bun.write(jsFile, content);
-        logger.verbose(`Fixed paths in: ${relative(outputDir, jsFile)}`);
+        logger.debug(`Fixed paths in: ${relative(outputDir, jsFile)}`);
       }
 
       logger.info(`✅ HTML export completed: ${outputDir}`);

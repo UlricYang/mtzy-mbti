@@ -2,7 +2,7 @@ import type { TestData, FunctionStacksData, FunctionStack, MBTITypeDetail, MBTIP
 
 
 /**
- * Parse preview URL pattern: /report/{student_id}/{timestamp}
+ * Parse preview URL pattern: /report/{userid}/{timestamp}
  * Returns { studentId, timestamp } or null if not a preview URL
  */
 export function parsePreviewUrl(): { studentId: string; timestamp: string } | null {
@@ -58,7 +58,7 @@ export async function loadData(): Promise<TestData> {
 
 /**
  * Load data from preview endpoint
- * Used when app is accessed via /report/{student_id}/{timestamp}
+ * Used when app is accessed via /report/{userid}/{timestamp}
  */
 export async function loadPreviewData(studentId: string, timestamp: string): Promise<TestData> {
   const response = await fetch(`/report/${studentId}/${timestamp}/data`)

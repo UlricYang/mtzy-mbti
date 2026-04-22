@@ -49,7 +49,7 @@ echo "Test 2: Preview API (/api/assessment/mbti/preview)"
 echo "=========================================="
 PREVIEW_RESPONSE=$(curl -s -X POST "$API_BASE/api/assessment/mbti/preview" \
     -H "Content-Type: application/json" \
-    -d "{\"student_id\":\"20240001\",\"file_path\":\"$ABSOLUTE_INPUT\"}")
+    -d "{\"userid\":\"20240001\",\"filepath\":\"$ABSOLUTE_INPUT\"}")
 
 echo "Response:"
 echo "$PREVIEW_RESPONSE" | jq '.' 2>/dev/null || echo "$PREVIEW_RESPONSE"
@@ -69,7 +69,7 @@ echo "Test 3: Link API (/api/assessment/mbti/link)"
 echo "=========================================="
 LINK_RESPONSE=$(curl -s -X POST "$API_BASE/api/assessment/mbti/link" \
     -H "Content-Type: application/json" \
-    -d "{\"student_id\":\"20240001\",\"file_path\":\"$ABSOLUTE_INPUT\"}")
+    -d "{\"userid\":\"20240001\",\"filepath\":\"$ABSOLUTE_INPUT\"}")
 
 echo "Response:"
 echo "$LINK_RESPONSE" | jq '.' 2>/dev/null || echo "$LINK_RESPONSE"
@@ -89,7 +89,7 @@ echo "Test 4: Export API (/api/assessment/mbti/export)"
 echo "=========================================="
 EXPORT_RESPONSE=$(curl -s -X POST "$API_BASE/api/assessment/mbti/export" \
     -H "Content-Type: application/json" \
-    -d "{\"student_id\":\"20240001\",\"file_path\":\"$ABSOLUTE_INPUT\"}")
+    -d "{\"userid\":\"20240001\",\"filepath\":\"$ABSOLUTE_INPUT\"}")
 
 echo "Response:"
 echo "$EXPORT_RESPONSE" | jq '.' 2>/dev/null || echo "$EXPORT_RESPONSE"
@@ -111,7 +111,7 @@ echo "Test 5: Report API (/api/assessment/mbti/report)"
 echo "=========================================="
 REPORT_RESPONSE=$(curl -s -X POST "$API_BASE/api/assessment/mbti/report" \
     -H "Content-Type: application/json" \
-    -d "{\"student_id\":\"20240002\",\"file_path\":\"$ABSOLUTE_INPUT\"}")
+    -d "{\"userid\":\"20240002\",\"filepath\":\"$ABSOLUTE_INPUT\"}")
 
 echo "Response:"
 echo "$REPORT_RESPONSE" | jq '.' 2>/dev/null || echo "$REPORT_RESPONSE"
@@ -129,7 +129,7 @@ echo "Test 6: Error Handling (missing file)"
 echo "=========================================="
 ERROR_RESPONSE=$(curl -s -X POST "$API_BASE/api/assessment/mbti/preview" \
     -H "Content-Type: application/json" \
-    -d '{"student_id":"20240001","file_path":"/nonexistent/file.json"}')
+    -d '{"userid":"20240001","filepath":"/nonexistent/file.json"}')
 
 echo "Response:"
 echo "$ERROR_RESPONSE" | jq '.' 2>/dev/null || echo "$ERROR_RESPONSE"
@@ -147,7 +147,7 @@ echo "Test 7: Error Handling (missing fields)"
 echo "=========================================="
 ERROR_RESPONSE2=$(curl -s -X POST "$API_BASE/api/assessment/mbti/preview" \
     -H "Content-Type: application/json" \
-    -d '{"student_id":"20240001"}')
+    -d '{"userid":"20240001"}')
 
 echo "Response:"
 echo "$ERROR_RESPONSE2" | jq '.' 2>/dev/null || echo "$ERROR_RESPONSE2"

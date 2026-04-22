@@ -2,7 +2,7 @@ import { spawn } from 'child_process';
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { ExportRequest, ExportResponse, ExportResults } from './types';
-import { createLogger } from './logger';
+import { exportLogger } from './logger';
 import { ensureDir, findAvailablePort } from './file-utils';
 import { exportPngPlugin } from '../plugins/export-png';
 import { exportPdfPlugin } from '../plugins/export-pdf';
@@ -23,14 +23,14 @@ function validateJsonStructure(data: unknown): boolean {
 
 /**
  * Export handler - generates PNG/PDF files directly from file
- * Independent of preview - accepts file_path directly
+ * Independent of preview - accepts filepath directly
  */
 export async function handleExportRequest(
   request: unknown,
   outputDir: string,
   verbose: boolean = false
 ): Promise<ExportResponse> {
-  const logger = createLogger(verbose, 'export-handler');
+  const logger = exportLogger;
   const timestamp = Date.now();
 
   // Step 1: Validate request
@@ -44,33 +44,33 @@ export async function handleExportRequest(
   
   const req = request as Record<string, unknown>;
   
-  if (!req.student_id || typeof req.student_id !== 'string') {
+  if (!req.userid || typeof req.userid !== 'string') {
     return {
       status: 'error',
-      message: 'Missing required field: student_id',
+      message: 'Missing required field: userid',
       data: null,
     };
   }
   
-  if (!req.file_path || typeof req.file_path !== 'string') {
+  if (!req.filepath || typeof req.filepath !== 'string') {
     return {
       status: 'error',
-      message: 'Missing required field: file_path',
+      message: 'Missing required field: filepath',
       data: null,
     };
   }
   
-  const student_id = req.student_id as string;
-  const file_path = req.file_path as string;
-  const absoluteFilePath = resolve(file_path);
+  const userid = req.userid as string;
+  const filepath = req.filepath as string;
+  const absoluteFilePath = resolve(filepath);
   
-  logger.info(`Exporting report for student: ${student_id}`);
-  logger.verbose(`File path: ${absoluteFilePath}`);
-  logger.verbose(`Output directory: ${outputDir}`);
+  logger.info('Exporting report for student: {userid}', { userid });
+  logger.debug('File path: {path}', { path: absoluteFilePath });
+  logger.debug('Output directory: {dir}', { dir: outputDir });
   
   // Step 2: Validate file exists
   if (!existsSync(absoluteFilePath)) {
-    logger.error(`File not found: ${absoluteFilePath}`);
+    logger.error('File not found: {path}', { path: absoluteFilePath });
     return {
       status: 'error',
       message: `File not found: ${absoluteFilePath}`,
@@ -92,10 +92,10 @@ export async function handleExportRequest(
         data: null,
       };
     }
-    logger.verbose('JSON structure validated');
+    logger.debug('JSON structure validated');
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    logger.error(`JSON parsing failed: ${errorMsg}`);
+    logger.error('JSON parsing failed: {error}', { error: errorMsg });
     return {
       status: 'error',
       message: `Invalid JSON: ${errorMsg}`,
@@ -110,15 +110,15 @@ export async function handleExportRequest(
   const publicDir = 'public';
   ensureDir(publicDir);
   
-  const dataFileName = `temp-${student_id}-${timestamp}.json`;
+  const dataFileName = `temp-${userid}-${timestamp}.json`;
   const targetPath = resolve(publicDir, dataFileName);
 
   try {
     await Bun.write(targetPath, JSON.stringify(jsonData));
-    logger.verbose(`Wrote temp data to: ${targetPath}`);
+    logger.debug('Wrote temp data to: {path}', { path: targetPath });
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    logger.error(`Failed to write temp data: ${errorMsg}`);
+    logger.error('Failed to write temp data: {error}', { error: errorMsg });
     return {
       status: 'error',
       message: `Failed to prepare data: ${errorMsg}`,
@@ -131,7 +131,7 @@ export async function handleExportRequest(
   // Each export session uses its own port to support concurrent users
   logger.info('Finding available port...');
   const serverPort = await findAvailablePort(4000);
-  logger.info(`Starting Vite dev server on port ${serverPort}...`);
+  logger.info('Starting Vite dev server on port {port}...', { port: serverPort });
   const previewServer = spawn('bunx', ['vite', '--port', String(serverPort), '--strictPort'], {
     stdio: 'pipe',
     shell: true,
@@ -161,7 +161,7 @@ export async function handleExportRequest(
     const exportContext = {
       input: targetPath,
       output: outputDir,
-      tag: student_id,
+      tag: userid,
       timestamp,
       quality: 'standard' as const,
       verbose,
@@ -173,7 +173,7 @@ export async function handleExportRequest(
     
     const pngResult = await exportPngPlugin.execute(exportContext);
     if (!pngResult.success) {
-      logger.error(`PNG generation failed: ${pngResult.error}`);
+      logger.error('PNG generation failed: {error}', { error: pngResult.error });
       throw new Error(pngResult.error || 'PNG generation failed');
     }
     if (pngResult.path) {
@@ -184,7 +184,7 @@ export async function handleExportRequest(
     logger.info('Generating PDF...');
     const pdfResult = await exportPdfPlugin.execute(exportContext);
     if (!pdfResult.success) {
-      logger.error(`PDF generation failed: ${pdfResult.error}`);
+      logger.error('PDF generation failed: {error}', { error: pdfResult.error });
       throw new Error(pdfResult.error || 'PDF generation failed');
     }
     if (pdfResult.path) {
@@ -197,14 +197,14 @@ export async function handleExportRequest(
       status: 'success',
       message: null,
       data: {
-        id: student_id,
+        id: userid,
         timestamp,
         results,
       },
     };
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    logger.error(`Export failed: ${errorMsg}`);
+    logger.error('Export failed: {error}', { error: errorMsg });
     
     return {
       status: 'error',
@@ -223,17 +223,17 @@ export async function handleExportRequest(
       // Timeout after 3 seconds if exit event doesn't fire
       setTimeout(() => resolve(), 3000);
     });
-    logger.verbose('Vite server stopped');
+    logger.debug('Vite server stopped');
     
     // Cleanup temp data file
     try {
       const targetFile = Bun.file(targetPath);
       if (await targetFile.exists()) {
         await targetFile.unlink();
-        logger.verbose(`Cleaned up: ${targetPath}`);
+        logger.debug('Cleaned up: {path}', { path: targetPath });
       }
     } catch {
-      logger.verbose(`Failed to cleanup ${targetPath}`);
+      logger.debug('Failed to cleanup {path}', { path: targetPath });
     }
   }
 }

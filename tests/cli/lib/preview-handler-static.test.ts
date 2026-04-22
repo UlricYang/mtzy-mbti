@@ -33,7 +33,7 @@ describe('preview-handler-static', () => {
       writeFileSync(inputFile, JSON.stringify(validTestData));
 
       const response = await handlePreviewRequest(
-        { student_id: '20240001', file_path: inputFile },
+        { userid: '20240001', filepath: inputFile },
         previewStore,
         3000,  // Production port
         false
@@ -50,7 +50,7 @@ describe('preview-handler-static', () => {
       writeFileSync(inputFile, JSON.stringify(validTestData));
 
       await handlePreviewRequest(
-        { student_id: '20240001', file_path: inputFile },
+        { userid: '20240001', filepath: inputFile },
         previewStore,
         3000,
         false
@@ -59,26 +59,26 @@ describe('preview-handler-static', () => {
       // Should have exactly one entry
       expect(previewStore.size).toBe(1);
       
-      // Key should match format: student_id-timestamp
+      // Key should match format: userid-timestamp
       const key = Array.from(previewStore.keys())[0];
       expect(key).toMatch(/^20240001-\d{14}$/);  // YYYYMMDDHHmmss format
     });
 
-    it('should return error for missing file_path', async () => {
+    it('should return error for missing filepath', async () => {
       const response = await handlePreviewRequest(
-        { student_id: '20240001' },
+        { userid: '20240001' },
         previewStore,
         3000,
         false
       );
 
       expect(response.status).toBe('error');
-      expect(response.message).toContain('file_path');
+      expect(response.message).toContain('filepath');
     });
 
     it('should return error for non-existent file', async () => {
       const response = await handlePreviewRequest(
-        { student_id: '20240001', file_path: '/nonexistent/path.json' },
+        { userid: '20240001', filepath: '/nonexistent/path.json' },
         previewStore,
         3000,
         false

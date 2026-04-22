@@ -2,7 +2,7 @@ import { spawn, execSync } from 'child_process';
 import { resolve, basename } from 'path';
 import { chromium, type Browser } from 'playwright';
 import { ExportOptions, ExportContext, OutputFormat } from '../lib/types';
-import { createLogger } from '../lib/logger';
+import { exportLogger } from '../lib/logger';
 import { ensureDir, resolveInputPath, parseFormats } from '../lib/file-utils';
 import { exportPngPlugin } from '../plugins/export-png';
 import { exportPdfPlugin } from '../plugins/export-pdf';
@@ -11,15 +11,11 @@ import { exportHtmlPlugin } from '../plugins/export-html';
 const plugins = [exportPngPlugin, exportPdfPlugin, exportHtmlPlugin];
 
 export async function exportCommand(options: ExportOptions): Promise<void> {
-  const logger = createLogger(options.verbose, 'export');
   const { input, output, tag, format, verbose, quality } = options;
   const imageQuality = quality || 'standard';
 
-  logger.info('📦 Exporting report...');
-  logger.verbose(`Input: ${input}`);
-  logger.verbose(`Output: ${output}`);
-  logger.verbose(`Tag: ${tag}`);
-  logger.verbose(`Format: ${format}`);
+  exportLogger.info('Exporting report...');
+  exportLogger.debug('Input: {input}, Output: {output}, Tag: {tag}, Format: {format}', { input, output, tag, format });
 
   const { paths } = resolveInputPath(input);
   const inputPath = paths[0];
@@ -34,13 +30,13 @@ export async function exportCommand(options: ExportOptions): Promise<void> {
 
   try {
     await Bun.write(targetPath, Bun.file(inputPath));
-    logger.info(`📋 Copied data to: ${targetPath}`);
+    exportLogger.info('Copied data to: {targetPath}', { targetPath });
   } catch (error) {
-    logger.error('Failed to copy data file:', error);
+    exportLogger.error('Failed to copy data file: {error}', { error: error instanceof Error ? error.message : String(error) });
     process.exit(1);
   }
 
-  logger.info('🔨 Building project...');
+  exportLogger.info('Building project...');
   try {
     execSync('bun run build', {
       stdio: 'inherit',
@@ -49,16 +45,16 @@ export async function exportCommand(options: ExportOptions): Promise<void> {
         VITE_DATA_PATH: dataFileName,
       },
     });
-    logger.info('✅ Build completed');
+    exportLogger.info('Build completed');
   } catch (error) {
-    logger.error('❌ Build failed');
+    exportLogger.error('Build failed');
     process.exit(1);
   }
 
   const formats = parseFormats(format);
-  logger.verbose(`Formats to generate: ${formats.join(', ')}`);
+  exportLogger.debug('Formats to generate: {formats}', { formats: formats.join(', ') });
 
-  logger.info('🌐 Starting preview server...');
+  exportLogger.info('Starting preview server...');
   const server = spawn('bunx', ['vite', 'preview', '--port', '4173'], {
     stdio: 'pipe',
     shell: true,
@@ -87,43 +83,42 @@ export async function exportCommand(options: ExportOptions): Promise<void> {
     for (const fmt of formats) {
       const plugin = plugins.find(p => p.name === fmt);
       if (plugin) {
-        logger.info(`\n▶ Running ${fmt.toUpperCase()} plugin...`);
+        exportLogger.info('Running {format} plugin...', { format: fmt.toUpperCase() });
         results[fmt] = await plugin.execute(context);
       } else {
-        logger.warn(`⚠️  No plugin found for format: ${fmt}`);
+        exportLogger.warn('No plugin found for format: {format}', { format: fmt });
         results[fmt] = { success: false, error: `No plugin for ${fmt}` };
       }
     }
   } catch (error) {
-    logger.error('❌ Export failed:', error);
+    exportLogger.error('Export failed: {error}', { error: error instanceof Error ? error.message : String(error) });
   } finally {
     if (browser) {
       await browser.close();
     }
   }
 
-  logger.verbose('Cleaning up...');
+  exportLogger.debug('Cleaning up...');
   server.kill();
 
-  // 清理复制的数据文件
   const targetFile = Bun.file(targetPath);
   if (await targetFile.exists()) {
     try {
       await targetFile.unlink();
-      logger.verbose(`🧹 Cleaned up: ${targetPath}`);
+      exportLogger.debug('Cleaned up: {targetPath}', { targetPath });
     } catch (error) {
-      logger.verbose(`Failed to cleanup ${targetPath}:`, error);
+      exportLogger.debug('Failed to cleanup {targetPath}: {error}', { targetPath, error: error instanceof Error ? error.message : String(error) });
     }
   }
 
-  logger.info('\n✨ Export completed!');
-  logger.info(`📁 Output directory: ${resolve(output)}`);
+  exportLogger.info('Export completed!');
+  exportLogger.info('Output directory: {output}', { output: resolve(output) });
 
   for (const [fmt, result] of Object.entries(results)) {
     if (result.success && result.path) {
-      logger.info(`✅ ${fmt.toUpperCase()}: ${result.path}`);
+      exportLogger.info('{format}: {path}', { format: fmt.toUpperCase(), path: result.path });
     } else if (result.error) {
-      logger.warn(`⚠️  ${fmt.toUpperCase()}: ${result.error}`);
+      exportLogger.warn('{format}: {error}', { format: fmt.toUpperCase(), error: result.error });
     }
   }
 }

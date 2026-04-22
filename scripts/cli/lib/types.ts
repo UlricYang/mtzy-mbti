@@ -79,8 +79,8 @@ export interface ExportPlugin {
  * Stores data for browser preview (fast response)
  */
 export interface PreviewRequest {
-  student_id: string;
-  file_path: string;
+  userid: string;
+  filepath: string;
 }
 
 /**
@@ -116,8 +116,8 @@ export interface PreviewResponseData {
  * Exports report to PNG/PDF files
  */
 export interface ExportRequest {
-  student_id: string;
-  file_path: string;
+  userid: string;
+  filepath: string;
 }
 
 /**
@@ -154,8 +154,8 @@ export interface ExportResults {
  * Use /api/preview and /api/export instead
  */
 export interface ReportRequest {
-  student_id: string;
-  file_path: string;
+  userid: string;
+  filepath: string;
 }
 
 /**
@@ -191,7 +191,7 @@ export interface ReportResults {
  * Preview data stored in memory
  */
 export interface PreviewStoreData {
-  student_id: string;
+  userid: string;
   timestamp: number;
   data: Record<string, unknown>;
   createdAt: number;

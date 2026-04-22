@@ -78,7 +78,7 @@ test_endpoint() {
     local http_code=$(curl -s -o "$response_file" -w "%{http_code}" \
         -X POST "http://localhost:$API_PORT/api/${endpoint}" \
         -H "Content-Type: application/json" \
-        -d "{\"student_id\":\"$STUDENT_ID\",\"file_path\":\"$INPUT_FILE\"}" \
+        -d "{\"userid\":\"$STUDENT_ID\",\"filepath\":\"$INPUT_FILE\"}" \
         --connect-timeout 10 \
         --max-time 120)
     
@@ -224,7 +224,7 @@ echo "════════════════════════�
 echo "📝 发送请求..."
 RESPONSE=$(curl -s -X POST "http://localhost:$API_PORT/api/report" \
     -H "Content-Type: application/json" \
-    -d "{\"student_id\":\"$STUDENT_ID\",\"file_path\":\"$INPUT_FILE\"}" \
+    -d "{\"userid\":\"$STUDENT_ID\",\"filepath\":\"$INPUT_FILE\"}" \
     --connect-timeout 10 \
     --max-time 120)
 

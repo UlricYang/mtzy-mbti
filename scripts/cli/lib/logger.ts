@@ -1,34 +1,100 @@
-export interface Logger {
-  verbose: (...args: unknown[]) => void;
-  info: (...args: unknown[]) => void;
-  warn: (...args: unknown[]) => void;
-  error: (...args: unknown[]) => void;
+import {
+  configure,
+  getLogger,
+  type Logger,
+  type LogLevel,
+  getConsoleSink,
+  getAnsiColorFormatter,
+  getJsonLinesFormatter,
+} from "@logtape/logtape";
+import { getFileSink } from "@logtape/file";
+import { resolve } from "path";
+import { mkdirSync, existsSync } from "fs";
+
+let isConfigured = false;
+
+export type { Logger, LogLevel };
+
+export interface LoggerConfig {
+  verbose?: boolean;
+  logDir?: string;
+  environment?: "development" | "production";
 }
 
-export function createLogger(verbose: boolean, tag: string): Logger {
-  const timestamp = () => {
-    const now = new Date();
-    return now.toLocaleTimeString('zh-CN', { hour12: false });
+export function getIsProduction(): boolean {
+  return process.env.NODE_ENV === "production";
+}
+
+function ensureLogDir(logDir: string): void {
+  if (!existsSync(logDir)) {
+    mkdirSync(logDir, { recursive: true });
+  }
+}
+
+export async function initLogger(config: LoggerConfig = {}): Promise<void> {
+  if (isConfigured) {
+    return;
+  }
+
+  const {
+    verbose = false,
+    logDir = "logs",
+    environment = getIsProduction() ? "production" : "development",
+  } = config;
+
+  const isProduction = environment === "production";
+  const lowestLevel: LogLevel = verbose ? "debug" : "info";
+
+  const sinks: Record<string, ReturnType<typeof getConsoleSink>> = {
+    console: getConsoleSink({
+      formatter: isProduction ? getJsonLinesFormatter() : getAnsiColorFormatter(),
+    }),
   };
 
-  const prefix = (level: string) => `\x1b[90m[${timestamp()}]\x1b[0m \x1b[1m[${tag}]\x1b[0m ${level}`;
+  const loggers: Array<{
+    category: string[];
+    lowestLevel: LogLevel;
+    sinks: string[];
+    filters?: string[];
+  }> = [];
 
-  return {
-    verbose: (...args: unknown[]) => {
-      if (verbose) {
-        console.log(prefix('\x1b[90m[verbose]\x1b[0m'), ...args);
-      }
+  const absLogDir = resolve(logDir);
+  ensureLogDir(absLogDir);
+
+  sinks.file = getFileSink(resolve(absLogDir, "app.log"));
+  sinks.errorFile = getFileSink(resolve(absLogDir, "error.log"));
+
+    loggers.push({
+      category: ["mtzy"],
+      lowestLevel,
+      sinks: ["console", "file"],
     },
-    info: (...args: unknown[]) => {
-      console.log(prefix('\x1b[34m[info]\x1b[0m'), ...args);
-    },
-    warn: (...args: unknown[]) => {
-      console.warn(prefix('\x1b[33m[warn]\x1b[0m'), ...args);
-    },
-    error: (...args: unknown[]) => {
-      console.error(prefix('\x1b[31m[error]\x1b[0m'), ...args);
+    {
+      category: ["mtzy", "error"],
+      lowestLevel: "error",
+      sinks: ["errorFile", "console"],
     }
-  };
+  );
+
+  await configure({
+    sinks,
+    loggers,
+  });
+
+  isConfigured = true;
 }
 
+export function createLogger(tag: string, category?: string[]): Logger {
+  const fullCategory = category || ["mtzy", tag];
+  return getLogger(fullCategory);
+}
 
+export const cliLogger = getLogger(["mtzy", "cli"]);
+export const serverLogger = getLogger(["mtzy", "server"]);
+export const httpLogger = getLogger(["mtzy", "server", "http"]);
+export const previewLogger = getLogger(["mtzy", "preview"]);
+export const exportLogger = getLogger(["mtzy", "export"]);
+export const reportLogger = getLogger(["mtzy", "report"]);
+export const errorLogger = getLogger(["mtzy", "error"]);
+
+export { getLogger };
