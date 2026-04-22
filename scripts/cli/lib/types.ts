@@ -23,12 +23,12 @@ export interface DevOptions extends CommonOptions {
 /**
  * Server command CLI options
  */
-export interface ServerOptions {
-  input: string;
+/**
+ * Server command CLI options
+ */
+  export interface ServerOptions {
   output: string;
   port: number;
-  tag: string;
-  watch: boolean;
   verbose: boolean;
   vitePort?: number;   // Optional: Vite port for dev mode
   devMode?: boolean;   // Run in development mode with Vite

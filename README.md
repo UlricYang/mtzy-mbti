@@ -101,9 +101,37 @@ Web 服务启动后会同时运行两个服务器：
 - **API Server** (默认端口 3000): 处理 API 请求
 - **Vite Preview Server** (默认端口 3001): 提供动态预览
 
-#### POST /api/preview
+#### POST /api/assessment/mbti/preview
 
-快速预览接口 - 将数据存储在内存中，返回预览 URL。适合需要快速查看报告的场景。
+快速预览接口 - 将数据存储在内存中，返回 HTTP 303 重定向到预览页面。适合浏览器直接导航的场景。
+
+**请求体:**
+```json
+{
+  "student_id": "20240001",
+  "file_path": "/absolute/path/to/inputs.json"
+}
+```
+
+**成功响应:**
+
+返回 HTTP 303 重定向，浏览器会自动跳转到预览页面。
+
+```
+HTTP/1.1 303 See Other
+Location: http://localhost:3001/report/20240001/20260420143052
+```
+
+**说明：**
+- 使用 POST 请求后，服务器返回 303 状态码，浏览器自动 GET 预览页面
+- 预览 URL 格式: `http://localhost:{vite_port}/report/{student_id}/{YYYYMMDDHHmmss}`
+- 开发模式下预览页面由 Vite dev server 提供 (端口 3001)
+- 生产模式下预览页面由同一服务器提供 (端口 3000)
+---
+
+#### POST /api/assessment/mbti/link
+
+链接接口 - 将数据存储在内存中，返回包含预览 URL 的 JSON 响应（无重定向）。适合 API 调用需要获取预览链接的场景。
 
 **请求体:**
 ```json
@@ -131,13 +159,13 @@ Web 服务启动后会同时运行两个服务器：
 ```
 
 **说明：**
-- `timestamp`: Unix 时间戳 (毫秒)
-- `url`: 预览页面的完整 URL，包含人类可读的 YYYYMMDDHHmmss 时间格式
-- `png` 和 `pdf`: 预览接口不生成文件，默认为空字符串
+- 与 preview 接口功能相同，但返回 JSON 而非 303 重定向
+- 适合非浏览器客户端（如后端服务、移动应用）调用
+- `url` 字段包含可访问的预览页面链接
 
 ---
 
-#### POST /api/export
+#### POST /api/assessment/mbti/export
 
 导出接口 - 直接生成 PNG/PDF 文件。适合需要下载文件的场景。
 
@@ -173,7 +201,7 @@ Web 服务启动后会同时运行两个服务器：
 
 ---
 
-#### POST /api/report
+#### POST /api/assessment/mbti/report
 
  legacy 复合接口 - 同时生成预览和导出文件。
 
@@ -227,17 +255,17 @@ bash scripts/cli/test-web.sh
 bun run server -p 3000 -o ./output
 
 # 测试预览接口
-curl -X POST http://localhost:3000/api/preview \
+curl -X POST http://localhost:3000/api/assessment/mbti/preview \
   -H "Content-Type: application/json" \
   -d '{"student_id":"20240001","file_path":"/path/to/inputs.json"}'
 
 # 测试导出接口
-curl -X POST http://localhost:3000/api/export \
+curl -X POST http://localhost:3000/api/assessment/mbti/export \
   -H "Content-Type: application/json" \
   -d '{"student_id":"20240001","file_path":"/path/to/inputs.json"}'
 
 # 测试复合接口
-curl -X POST http://localhost:3000/api/report \
+curl -X POST http://localhost:3000/api/assessment/mbti/report \
   -H "Content-Type: application/json" \
   -d '{"student_id":"20240001","file_path":"/path/to/inputs.json"}'
 ```

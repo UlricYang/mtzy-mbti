@@ -1,11 +1,10 @@
 import { Elysia } from 'elysia';
 import { spawn } from 'child_process';
-import { resolve, basename } from 'path';
-import { watch } from 'chokidar';
+import { resolve } from 'path';
 import { staticPlugin } from '@elysiajs/static';
 import { ServerOptions, PreviewStore } from '../lib/types';
 import { createLogger } from '../lib/logger';
-import { ensureDir, fileExists, findAvailablePort, resolveInputPath } from '../lib/file-utils';
+import { ensureDir, findAvailablePort } from '../lib/file-utils';
 import { handleReportRequest } from '../lib/report-handler';
 import { handlePreviewRequest } from '../lib/preview-handler';
 import { handleExportRequest } from '../lib/export-handler';
@@ -69,37 +68,10 @@ function cleanupExpiredPreviews(previewStore: PreviewStore, logger: ReturnType<t
 */
 export async function serverCommand(options: ServerOptions): Promise<void> {
   const logger = createLogger(options.verbose, 'server');
-  const { input, output, port, tag, watch: shouldWatch, verbose, devMode } = options;
-
-  logger.info('🚀 Starting web service...');
-  logger.verbose(`Input: ${input}`);
-  logger.verbose(`Output: ${output}`);
-  logger.verbose(`Port: ${port}`);
-  logger.verbose(`Tag: ${tag}`);
-  logger.verbose(`Watch: ${shouldWatch}`);
-
-  // Resolve input path
-  const { type, paths } = resolveInputPath(input);
-  const inputPath = paths[0];
-
-  // Ensure public directory exists and copy input data file
-  const publicDir = 'public';
-  ensureDir(publicDir);
-  const dataFileName = basename(inputPath);
-  const targetPath = resolve(publicDir, dataFileName);
-  try {
-    await Bun.write(targetPath, Bun.file(inputPath));
-    logger.info(`📋 Copied data to: ${targetPath}`);
-  } catch (error) {
-    logger.error('Failed to copy data file:', error);
-    process.exit(1);
-  }
+  const { output, port, verbose, devMode } = options;
 
   const outputDir = resolve(output);
-  if (!fileExists(outputDir)) {
-    ensureDir(outputDir);
-    logger.warn(`Created output directory: ${outputDir}`);
-  }
+  ensureDir(outputDir);
 
   // Validate build for production mode
   if (!devMode) {
@@ -138,7 +110,7 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
   // Create Elysia server
   const app = new Elysia()
     // Health check endpoint with detailed status
-    .get('/health', () => {
+    .get('/api/assessment/health', () => {
       const memUsage = process.memoryUsage();
       return {
         status: 'ok',
@@ -161,8 +133,8 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
         },
       };
     })
-    // Preview endpoint - fast, stores data for browser preview
-    .post('/api/preview', async ({ body }) => {
+    // Preview endpoint - stores data and redirects to report page
+    .post('/api/assessment/mbti/preview', async ({ body }) => {
       logger.info('Received preview request');
       logger.verbose('Request body:', body);
       
@@ -181,12 +153,49 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
         });
       }
       
-      return response;
+      // Redirect to the report page (303: POST -> GET redirect)
+      const previewUrl = response.data?.results?.url;
+      if (previewUrl) {
+        return new Response(null, {
+          status: 303,
+          headers: { 'Location': previewUrl },
+        });
+      }
+      
+      return new Response(JSON.stringify({ error: 'No preview URL generated' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
     })
-    
+
+    // Link endpoint - stores data and returns JSON with preview URL (no redirect)
+    .post('/api/assessment/mbti/link', async ({ body }) => {
+      logger.info('Received link request');
+      logger.verbose('Request body:', body);
+      
+      const response = await handlePreviewRequest(
+        body,
+        previewStore,
+        actualPort,
+        verbose,
+        devMode
+      );
+      
+      if (response.status === 'error') {
+        return new Response(JSON.stringify(response), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      
+      // Return JSON response directly (no redirect)
+      return new Response(JSON.stringify(response), {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    })
     // Export endpoint - generates PNG/PDF files with concurrency control
-    .post('/api/export', async ({ body }) => {
-      logger.info('Received export request');
+    .post('/api/assessment/mbti/export', async ({ body }) => {
       logger.verbose('Request body:', body);
 
       // Check if we've reached the max concurrent exports
@@ -239,7 +248,7 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
     })
     
     // Legacy report endpoint - combines preview + export in one call
-    .post('/api/report', async ({ body }) => {
+    .post('/api/assessment/mbti/report', async ({ body }) => {
       logger.info('Received report request');
       logger.verbose('Request body:', body);
       
@@ -337,36 +346,15 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
   // Start server
   app.listen(actualPort, () => {
     logger.info(`\ud83d\ude80 Server running at http://localhost:${actualPort}`);
-    logger.info(`\ud83d\udccb Health check: GET http://localhost:${actualPort}/health`);
-    logger.info(`\ud83d\udccb Preview endpoint: POST http://localhost:${actualPort}/api/preview`);
-    logger.info(`\ud83d\udccb Export endpoint: POST http://localhost:${actualPort}/api/export`);
+    logger.info(`📋 Health check: GET http://localhost:${actualPort}/api/assessment/health`);
+    logger.info(`📋 Preview endpoint: POST http://localhost:${actualPort}/api/assessment/mbti/preview`);
+    logger.info(`🔗 Link endpoint: POST http://localhost:${actualPort}/api/assessment/mbti/link`);
+    logger.info(`📋 Export endpoint: POST http://localhost:${actualPort}/api/assessment/mbti/export`);
+    logger.info(`📋 Report endpoint: POST http://localhost:${actualPort}/api/assessment/mbti/report`);
     
     if (devMode) {
       // Start Vite dev server for development mode
       startVite();
-    }
-
-    // Start file watcher if watch mode is enabled
-    if (shouldWatch) {
-      logger.info('👀 Watching for file changes...');
-      const watcher = watch(inputPath, {
-        persistent: true,
-        ignoreInitial: true,
-      });
-
-      watcher.on('change', async (path) => {
-        logger.info(`📝 File changed: ${path}`);
-        try {
-          await Bun.write(targetPath, Bun.file(path));
-          logger.info('✅ Data reloaded');
-        } catch (error) {
-          logger.error('Failed to reload data:', error);
-        }
-      });
-
-      watcher.on('error', (error) => {
-        logger.error('Watcher error:', error);
-      });
     }
   });
 
@@ -391,26 +379,13 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
 
     logger.info(`\ud83c\udfa8 Vite dev server running at http://localhost:${vitePort}`);
   }
-
-// Graceful shutdown
-const shutdown = async () => {
+  // Graceful shutdown
+  const shutdown = async () => {
     logger.info('Shutting down server...');
     clearInterval(cleanupInterval);
-    
-    // Clean up copied data file
-    const targetFile = Bun.file(targetPath);
-    if (await targetFile.exists()) {
-      try {
-        await targetFile.unlink();
-        logger.verbose(`🧹 Cleaned up: ${targetPath}`);
-      } catch (error) {
-        logger.verbose(`Failed to cleanup ${targetPath}:`, error);
-      }
-    }
-    
     await app.stop();
     process.exit(0);
-};
+  };
 
   process.on('SIGINT', shutdown);
   process.on('SIGTERM', shutdown);
