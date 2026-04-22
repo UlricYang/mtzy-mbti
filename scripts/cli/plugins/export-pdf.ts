@@ -22,7 +22,7 @@ export const exportPdfPlugin: ExportPlugin = {
       const page = await browserContext.newPage();
 
       const serverUrl = `http://localhost:${context.serverPort}`;
-      logger.verbose(`Navigating to: ${serverUrl}`);
+      logger.debug(`Navigating to: ${serverUrl}`);
       await page.goto(serverUrl, {
         waitUntil: 'networkidle',
         timeout: 60000
@@ -59,7 +59,7 @@ export const exportPdfPlugin: ExportPlugin = {
       logger.info('📄 Generating PDF document...');
 
       const pageHeight = await page.evaluate(() => document.documentElement.scrollHeight);
-      logger.verbose(`Page height: ${pageHeight}px`);
+      logger.debug(`Page height: ${pageHeight}px`);
 
       const pdfFileName = generateOutputFilenameWithTimestamp(tag, timestamp, 'pdf');
       const pdfPath = resolve(output, pdfFileName);

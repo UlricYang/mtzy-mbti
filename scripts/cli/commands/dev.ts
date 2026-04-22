@@ -2,41 +2,32 @@ import { spawn } from 'child_process';
 import { resolve, basename } from 'path';
 import { watch } from 'chokidar';
 import { DevOptions } from '../lib/types';
-import { createLogger } from '../lib/logger';
+import { cliLogger } from '../lib/logger';
 import { ensureDir, resolveInputPath } from '../lib/file-utils';
 
 export async function devCommand(options: DevOptions): Promise<void> {
-  const logger = createLogger(options.verbose, 'dev');
   const { input, output, port, tag, watch: shouldWatch } = options;
 
-  logger.info('🚀 Starting development server...');
-  logger.verbose(`Input: ${input}`);
-  logger.verbose(`Output: ${output}`);
-  logger.verbose(`Port: ${port}`);
-  logger.verbose(`Tag: ${tag}`);
-  logger.verbose(`Watch: ${shouldWatch}`);
+  cliLogger.info('Starting development server...');
+  cliLogger.debug('Input: {input}, Output: {output}, Port: {port}, Tag: {tag}', { input, output, port, tag });
 
-  // 解析输入路径
   const { type, paths } = resolveInputPath(input);
   const inputPath = paths[0];
   
-  // 确保public目录存在
   const publicDir = 'public';
   ensureDir(publicDir);
 
-  // 复制数据文件到public目录
   const dataFileName = basename(inputPath);
   const targetPath = resolve(publicDir, dataFileName);
   
   try {
     await Bun.write(targetPath, Bun.file(inputPath));
-    logger.info(`📋 Copied data to: ${targetPath}`);
+    cliLogger.info('Copied data to: {targetPath}', { targetPath });
   } catch (error) {
-    logger.error('Failed to copy data file:', error);
+    cliLogger.error('Failed to copy data file: {error}', { error: error instanceof Error ? error.message : String(error) });
     process.exit(1);
   }
 
-  // 启动Vite开发服务器
   const env = {
     ...process.env,
     VITE_DATA_PATH: dataFileName,
@@ -50,20 +41,19 @@ export async function devCommand(options: DevOptions): Promise<void> {
   });
 
   vite.on('error', (err) => {
-    logger.error('Failed to start dev server:', err);
+    cliLogger.error('Failed to start dev server: {error}', { error: err.message });
     process.exit(1);
   });
 
   vite.on('close', (code) => {
     if (code !== 0 && code !== null) {
-      logger.error(`Dev server exited with code ${code}`);
+      cliLogger.error('Dev server exited with code {code}', { code });
       process.exit(code ?? 1);
     }
   });
 
-  // 监听文件变化
   if (shouldWatch) {
-    logger.info('👀 Watching for file changes...');
+    cliLogger.info('Watching for file changes...');
     
     const watcher = watch(inputPath, {
       persistent: true,
@@ -71,32 +61,31 @@ export async function devCommand(options: DevOptions): Promise<void> {
     });
 
     watcher.on('change', async (path) => {
-      logger.info(`📝 File changed: ${path}`);
+      cliLogger.info('File changed: {path}', { path });
       try {
         await Bun.write(targetPath, Bun.file(path));
-        logger.info('✅ Data reloaded');
+        cliLogger.info('Data reloaded');
       } catch (error) {
-        logger.error('Failed to reload data:', error);
+        cliLogger.error('Failed to reload data: {error}', { error: error instanceof Error ? error.message : String(error) });
       }
     });
 
     watcher.on('error', (error) => {
-      logger.error('Watcher error:', error);
+      cliLogger.error('Watcher error: {error}', { error: error.message });
     });
   }
 
-  // 清理复制的文件
   const cleanup = async () => {
-    logger.info('\n👋 Shutting down...');
+    cliLogger.info('Shutting down...');
     vite.kill('SIGINT');
     
     const targetFile = Bun.file(targetPath);
     if (await targetFile.exists()) {
       try {
         await targetFile.unlink();
-        logger.verbose(`🧹 Cleaned up: ${targetPath}`);
+        cliLogger.debug('Cleaned up: {targetPath}', { targetPath });
       } catch (error) {
-        logger.verbose(`Failed to cleanup ${targetPath}:`, error);
+        cliLogger.debug('Failed to cleanup {targetPath}: {error}', { targetPath, error: error instanceof Error ? error.message : String(error) });
       }
     }
     

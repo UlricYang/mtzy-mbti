@@ -37,7 +37,7 @@ export const exportPngPlugin: ExportPlugin = {
       const page = await browserContext.newPage();
 
       const serverUrl = `http://localhost:${context.serverPort}`;
-      logger.verbose(`Navigating to: ${serverUrl}`);
+      logger.debug(`Navigating to: ${serverUrl}`);
       await page.goto(serverUrl, {
         waitUntil: 'networkidle',
         timeout: 60000
@@ -72,7 +72,7 @@ export const exportPngPlugin: ExportPlugin = {
       await page.waitForTimeout(500);
 
       logger.info('🖼️  Generating PNG image...');
-      logger.verbose(`Quality: ${quality}, Scale factor: ${getDeviceScaleFactor(quality)}`);
+      logger.debug(`Quality: ${quality}, Scale factor: ${getDeviceScaleFactor(quality)}`);
 
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
       await page.waitForTimeout(500);
@@ -82,7 +82,7 @@ export const exportPngPlugin: ExportPlugin = {
       const pageWidth = await page.evaluate(() => document.documentElement.scrollWidth);
       const pageHeight = await page.evaluate(() => document.documentElement.scrollHeight);
 
-      logger.verbose(`Page dimensions: ${pageWidth}x${pageHeight}px`);
+      logger.debug(`Page dimensions: ${pageWidth}x${pageHeight}px`);
 
       const pngFileName = generateOutputFilenameWithTimestamp(tag, timestamp, 'png');
       const pngPath = resolve(output, pngFileName);

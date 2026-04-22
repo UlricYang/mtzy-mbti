@@ -1,6 +1,7 @@
 #!/usr/bin/env bun
 
 import { Command } from 'commander';
+import { initLogger } from './lib/logger';
 import { devCommand } from './commands/dev';
 import { exportCommand } from './commands/export';
 import { serverCommand } from './commands/server';
@@ -21,7 +22,10 @@ program
   .requiredOption('-t, --tag <string>', '报告标识符')
   .option('-w, --watch', '监听输入文件变化，自动重新加载', false)
   .option('-v, --verbose', '显示详细日志', false)
-  .action(devCommand);
+  .action(async (options) => {
+    await initLogger({ verbose: options.verbose });
+    await devCommand(options);
+  });
 
 program
   .command('export')
@@ -32,7 +36,10 @@ program
   .option('-f, --format <formats>', '输出格式，逗号分隔（pdf,png,webp,html）', 'pdf,png,webp,html')
   .option('-q, --quality <level>', '图片质量（standard: 144dpi, high: 216dpi, print: 288dpi）', 'standard')
   .option('-v, --verbose', '显示详细日志', false)
-  .action(exportCommand);
+  .action(async (options) => {
+    await initLogger({ verbose: options.verbose });
+    await exportCommand(options);
+  });
 
 program
   .command('server')
@@ -43,6 +50,7 @@ program
   .option('-v, --verbose', '显示详细日志', false)
   .option('--dev', '以开发模式运行（启动Vite开发服务器）', false)
   .action(async (options) => {
+    await initLogger({ verbose: options.verbose });
     const serverOptions = {
       output: options.output,
       port: parseInt(options.port, 10),
