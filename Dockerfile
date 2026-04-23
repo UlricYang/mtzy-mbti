@@ -5,32 +5,37 @@ FROM oven/bun:1.2 AS base
 
 # Install Playwright dependencies and Chromium
 RUN apt-get update && apt-get install -y \
-libnss3 \
-libnspr4 \
-libatk1.0-0 \
-libatk-bridge2.0-0 \
-libcups2 \
-libdrm2 \
-libxkbcommon0 \
-libxcomposite1 \
-libxdamage1 \
-libxfixes3 \
-libxrandr2 \
-libgbm1 \
-libasound2 \
-libpango-1.0-0 \
-libcairo2 \
-libatspi2.0-0 \
-libxshmfence1 \
-fonts-liberation \
-fonts-noto-color-emoji \
+  libglib2.0-0 \
+  libnss3 \
+  libnspr4 \
+  libatk1.0-0 \
+  libatk-bridge2.0-0 \
+  libcups2 \
+  libdrm2 \
+  libxkbcommon0 \
+  libxcomposite1 \
+  libxdamage1 \
+  libxfixes3 \
+  libxrandr2 \
+  libgbm1 \
+  libasound2 \
+  libpango-1.0-0 \
+  libcairo2 \
+  libatspi2.0-0 \
+  libxshmfence1 \
+  fonts-liberation \
+  fonts-noto-color-emoji \
   fontconfig \
-xvfb \
-curl \
-gnupg \
-ca-certificates \
-&& rm -rf /var/lib/apt/lists/*
+  unzip \
+  curl
 
+# Download and install Maple Mono NF CN font (with Nerd Font icons and Chinese support)
+RUN mkdir -p /usr/local/share/fonts/maple && \
+  curl -L -o /tmp/maple-font.zip \
+    https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN-unhinted.zip && \
+  unzip /tmp/maple-font.zip -d /tmp/maple-font && \
+  cp /tmp/maple-font/*.ttf /usr/local/share/fonts/maple/ && \
+  rm -rf /tmp/maple-font.zip /tmp/maple-font
 
 # Rebuild font cache
 RUN fc-cache -f -v
