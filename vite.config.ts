@@ -1,11 +1,10 @@
 import { defineConfig, Plugin } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
-import { fileURLToPath } from 'url'
 import http from 'http'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-
+// Use process.cwd() for reliable directory resolution in containers
+const __dirname = process.cwd()
 // API server port (used for proxy when running with bun run server)
 const apiPort = process.env.VITE_API_PORT || '3000'
 

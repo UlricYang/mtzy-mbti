@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { PreviewRequest, PreviewResponse, PreviewStore, Results } from './types';
-import { formatTimestampForFilename } from './file-utils';
+import { formatTimestampForFilename, resolveContainerPath } from './file-utils';
 import { previewLogger } from './logger';
 
 /**
@@ -71,7 +71,7 @@ export async function handlePreviewRequest(
   logger.debug('File path: {filepath}', { filepath });
 
   // Step 2: Validate filepath exists
-  const absoluteFilePath = resolve(filepath);
+  const absoluteFilePath = resolveContainerPath(filepath);
   if (!existsSync(absoluteFilePath)) {
     logger.error('File not found: {path}', { path: absoluteFilePath });
     return {

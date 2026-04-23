@@ -1,17 +1,15 @@
 # Logs
 *.log
 lerna-debug.log*
-logs
 npm-debug.log*
 pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
 *.local
+data
 dist
 dist-ssr
-inputs
-log
 node_modules
 
 # Editor directories and files

@@ -22,8 +22,9 @@ program
   .requiredOption('-t, --tag <string>', '报告标识符')
   .option('-w, --watch', '监听输入文件变化，自动重新加载', false)
   .option('-v, --verbose', '显示详细日志', false)
+  .option('-l, --log-dir <path>', '日志目录路径', 'logs')
   .action(async (options) => {
-    await initLogger({ verbose: options.verbose });
+    await initLogger({ verbose: options.verbose, logDir: options.logDir });
     await devCommand(options);
   });
 
@@ -36,8 +37,9 @@ program
   .option('-f, --format <formats>', '输出格式，逗号分隔（pdf,png,webp,html）', 'pdf,png,webp,html')
   .option('-q, --quality <level>', '图片质量（standard: 144dpi, high: 216dpi, print: 288dpi）', 'standard')
   .option('-v, --verbose', '显示详细日志', false)
+  .option('-l, --log-dir <path>', '日志目录路径', 'logs')
   .action(async (options) => {
-    await initLogger({ verbose: options.verbose });
+    await initLogger({ verbose: options.verbose, logDir: options.logDir });
     await exportCommand(options);
   });
 
@@ -47,10 +49,11 @@ program
   .option('-o, --output <path>', '输出目录路径', './output')
   .option('-p, --port <number>', '服务器端口', '3000')
   .option('--vite-port <number>', 'Vite 预览服务器端口（默认为 API端口+1）')
+  .option('-l, --log-dir <path>', '日志目录路径', 'logs')
   .option('-v, --verbose', '显示详细日志', false)
   .option('--dev', '以开发模式运行（启动Vite开发服务器）', false)
   .action(async (options) => {
-    await initLogger({ verbose: options.verbose });
+    await initLogger({ verbose: options.verbose, logDir: options.logDir });
     const serverOptions = {
       output: options.output,
       port: parseInt(options.port, 10),

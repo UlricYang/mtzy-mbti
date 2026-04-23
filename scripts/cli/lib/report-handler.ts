@@ -4,7 +4,7 @@ import { existsSync } from 'fs';
 import { chromium, type Browser } from 'playwright';
 import { ReportRequest, ReportResponse, ReportResults, PreviewStore } from './types';
 import { reportLogger } from './logger';
-import { ensureDir, formatTimestampForFilename, findAvailablePort } from './file-utils';
+import { ensureDir, formatTimestampForFilename, findAvailablePort, resolveContainerPath } from './file-utils';
 import { exportPngPlugin } from '../plugins/export-png';
 import { exportPdfPlugin } from '../plugins/export-pdf';
 
@@ -87,7 +87,7 @@ export async function handleReportRequest(
   logger.debug('Output directory: {dir}', { dir: outputDir });
 
   // Step 2: Validate filepath exists
-  const absoluteFilePath = resolve(filepath);
+  const absoluteFilePath = resolveContainerPath(filepath);
   if (!existsSync(absoluteFilePath)) {
     logger.error('File not found: {path}', { path: absoluteFilePath });
     return {

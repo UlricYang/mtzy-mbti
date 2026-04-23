@@ -180,3 +180,34 @@ export async function findAvailablePort(startPort: number = 4000, maxAttempts: n
   
   throw new Error(`Could not find available port after ${maxAttempts} attempts`);
 }
+
+
+/**
+ * Container base path for Docker environments
+ * Can be configured via CONTAINER_BASE_PATH environment variable
+ * Default: /app (standard Docker working directory)
+ */
+const CONTAINER_BASE_PATH = process.env.CONTAINER_BASE_PATH || '/app';
+
+/**
+ * Resolve filepath for container environment
+ * 
+ * Behavior:
+ * - Absolute path starting with '/app': already container path, return as-is
+ * - Absolute path not starting with '/app': assume user knows what they're doing (return as-is)
+ * - Relative path: resolve to container base path (/app)
+ * 
+ * This supports Docker deployments where users pass relative paths
+ * like 'inputs/student-001.json' which get resolved to '/app/inputs/student-001.json'
+ * 
+ * @param filepath - The filepath from API request
+ * @returns Absolute path in container
+ */
+export function resolveContainerPath(filepath: string): string {
+  // Absolute path: return as-is (user responsibility)
+  if (filepath.startsWith('/')) {
+    return filepath;
+  }
+  // Relative path: resolve to container base
+  return resolve(CONTAINER_BASE_PATH, filepath);
+}

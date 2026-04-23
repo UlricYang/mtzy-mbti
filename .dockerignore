@@ -1,0 +1,57 @@
+# Dependencies
+node_modules
+bun.lock
+
+# Build output
+dist
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+.logs
+*.log
+npm-debug.log*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Test files
+tests
+coverage
+*.test.ts
+*.spec.ts
+
+# Documentation
+README.md
+CHANGELOG.md
+LICENSE
+
+# Docker files (avoid recursion)
+Dockerfile*
+docker-compose*
+.docker
+
+# Output files (will be mounted as volume)
+output
+
+# OpenCode configs
+.opencode
+.sisyphus
+
+# Temporary files
+*.tmp
+*.temp

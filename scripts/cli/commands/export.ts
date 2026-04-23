@@ -1,14 +1,105 @@
-import { spawn, execSync } from 'child_process';
+import { execSync, spawn } from 'child_process';
 import { resolve, basename } from 'path';
+import { existsSync } from 'fs';
 import { chromium, type Browser } from 'playwright';
 import { ExportOptions, ExportContext, OutputFormat } from '../lib/types';
 import { exportLogger } from '../lib/logger';
-import { ensureDir, resolveInputPath, parseFormats } from '../lib/file-utils';
+import { ensureDir, resolveInputPath, parseFormats, findAvailablePort } from '../lib/file-utils';
 import { exportPngPlugin } from '../plugins/export-png';
 import { exportPdfPlugin } from '../plugins/export-pdf';
 import { exportHtmlPlugin } from '../plugins/export-html';
 
 const plugins = [exportPngPlugin, exportPdfPlugin, exportHtmlPlugin];
+
+/**
+ * Get Content-Type header based on file extension
+ */
+function getContentType(filePath: string): string {
+  const ext = filePath.split('.').pop()?.toLowerCase() || '';
+  const contentTypes: Record<string, string> = {
+    'html': 'text/html',
+    'js': 'application/javascript',
+    'mjs': 'application/javascript',
+    'css': 'text/css',
+    'json': 'application/json',
+    'png': 'image/png',
+    'jpg': 'image/jpeg',
+    'jpeg': 'image/jpeg',
+    'gif': 'image/gif',
+    'svg': 'image/svg+xml',
+    'ico': 'image/x-icon',
+    'woff': 'font/woff',
+    'woff2': 'font/woff2',
+    'ttf': 'font/ttf',
+    'eot': 'application/vnd.ms-fontobject',
+  };
+  return contentTypes[ext] || 'application/octet-stream';
+}
+
+/**
+ * Creates a static file server for export that:
+ * 1. Serves files from dist/ directory
+ * 2. Handles /report/{userid}/{timestamp}/data endpoint for dynamic data
+ */
+function createExportServer(
+  port: number,
+  distDir: string,
+  data: Record<string, unknown>,
+  userid: string,
+  timestamp: number
+) {
+  const timestampStr = String(timestamp);
+  const server = Bun.serve({
+    port,
+    async fetch(req) {
+      const url = new URL(req.url);
+      const pathname = url.pathname;
+
+      // Handle data endpoint for preview mode
+      const dataMatch = pathname.match(/^\/report\/([^\/]+)\/([^\/]+)\/data$/);
+      if (dataMatch) {
+        return new Response(JSON.stringify(data), {
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
+      // Serve static files from dist/
+      let filePath = pathname;
+      if (filePath === '/' || filePath === '') {
+        filePath = '/index.html';
+      }
+
+      // Handle SPA routing for /report/{userid}/{timestamp}
+      const previewMatch = pathname.match(/^\/report\/([^\/]+)\/([^\/]+)(?:\/[^\/]*)?$/);
+      if (previewMatch && !pathname.includes('/data')) {
+        filePath = '/index.html';
+      }
+
+      // Strip leading slash for correct path resolution
+      const relativePath = filePath.startsWith('/') ? filePath.slice(1) : filePath;
+      const fullPath = resolve(distDir, relativePath);
+      const file = Bun.file(fullPath);
+
+      if (await file.exists()) {
+        return new Response(file, {
+          headers: { 'Content-Type': getContentType(filePath) }
+        });
+      }
+
+      // Fallback to index.html for SPA
+      const indexFile = Bun.file(resolve(distDir, 'index.html'));
+      if (await indexFile.exists()) {
+        return new Response(indexFile, {
+          headers: { 'Content-Type': 'text/html' }
+        });
+      }
+
+      return new Response('Not Found', { status: 404 });
+    },
+  });
+
+  return server;
+}
 
 export async function exportCommand(options: ExportOptions): Promise<void> {
   const { input, output, tag, format, verbose, quality } = options;
@@ -36,47 +127,66 @@ export async function exportCommand(options: ExportOptions): Promise<void> {
     process.exit(1);
   }
 
-  exportLogger.info('Building project...');
-  try {
-    execSync('bun run build', {
-      stdio: 'inherit',
-      env: {
-        ...process.env,
-        VITE_DATA_PATH: dataFileName,
-      },
-    });
-    exportLogger.info('Build completed');
-  } catch (error) {
-    exportLogger.error('Build failed');
-    process.exit(1);
+  // Skip build in container environment where /app/dist exists (pre-built)
+  // This ensures CLI uses the same pre-built dist as Web service
+  const isContainer = existsSync('/app/dist');
+  if (!isContainer) {
+    exportLogger.info('Building project...');
+    try {
+      execSync('bun run build', {
+        stdio: 'inherit',
+        env: {
+          ...process.env,
+          VITE_DATA_PATH: dataFileName,
+        },
+      });
+      exportLogger.info('Build completed');
+    } catch (error) {
+      exportLogger.error('Build failed');
+      process.exit(1);
+    }
+  } else {
+    exportLogger.info('Using pre-built dist from container...');
   }
 
   const formats = parseFormats(format);
   exportLogger.debug('Formats to generate: {formats}', { formats: formats.join(', ') });
 
-  exportLogger.info('Starting preview server...');
-  const server = spawn('bunx', ['vite', 'preview', '--port', '4173'], {
-    stdio: 'pipe',
-    shell: true,
-  });
+  // Find available port and start export server
+  exportLogger.info('Finding available port...');
+  const serverPort = await findAvailablePort(4000);
+  exportLogger.info('Starting export server on port {port}...', { port: serverPort });
 
-  await new Promise(resolve => setTimeout(resolve, 2000));
+  // Use dist directory
+  const distDir = existsSync('/app/dist') ? resolve('/app', 'dist') : resolve('dist');
+
+  // Read and parse data for dynamic serving
+  const jsonData = JSON.parse(await Bun.file(inputPath).text());
+  const timestamp = Date.now();
+  const exportServer = createExportServer(serverPort, distDir, jsonData, tag, timestamp);
+
+  // Wait for server to start
+  await new Promise(resolve => setTimeout(resolve, 500));
 
   let browser: Browser | undefined;
   const results: Record<OutputFormat, { success: boolean; path?: string; error?: string }> = {} as any;
-
   try {
-    browser = await chromium.launch({ headless: true });
-
+    // Use Playwright's bundled Chromium in headless mode
+    // Simple config works best - complex args cause issues in container
+    exportLogger.info('Launching Chromium...');
+    browser = await chromium.launch({
+      headless: true,
+    });
     const context: ExportContext = {
       input: inputPath,
       output,
       tag,
-      timestamp: Date.now(),
+      timestamp,
       quality: imageQuality,
       verbose,
       browser,
-      server,
+      server: null as any,  // Not used with Bun.serve
+      serverPort,
       dataFileName,
     };
 
@@ -99,7 +209,10 @@ export async function exportCommand(options: ExportOptions): Promise<void> {
   }
 
   exportLogger.debug('Cleaning up...');
-  server.kill();
+
+  exportLogger.debug('Cleaning up...');
+  exportServer.stop();
+  exportLogger.debug('Export server stopped');
 
   const targetFile = Bun.file(targetPath);
   if (await targetFile.exists()) {

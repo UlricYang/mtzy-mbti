@@ -36,9 +36,10 @@ export const exportPngPlugin: ExportPlugin = {
 
       const page = await browserContext.newPage();
 
-      const serverUrl = `http://localhost:${context.serverPort}`;
-      logger.debug(`Navigating to: ${serverUrl}`);
-      await page.goto(serverUrl, {
+      // Navigate to preview URL which triggers dynamic data loading
+      const previewUrl = `http://localhost:${context.serverPort}/report/${context.tag}/${context.timestamp}`;
+      logger.debug(`Navigating to: ${previewUrl}`);
+      await page.goto(previewUrl, {
         waitUntil: 'networkidle',
         timeout: 60000
       });
@@ -46,6 +47,7 @@ export const exportPngPlugin: ExportPlugin = {
       await page.waitForSelector('main', { timeout: 30000 });
       await page.waitForTimeout(getScreenshotWaitTime(quality));
 
+      // PNG supports most CSS effects - only fix problematic text gradients
       const pdfFixStyles = `
         .text-gradient-screen,
         .text-gradient-screen-alt,
@@ -58,13 +60,6 @@ export const exportPngPlugin: ExportPlugin = {
           background-clip: unset !important;
           -webkit-text-fill-color: #667eea !important;
           color: #667eea !important;
-        }
-        * {
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
-          filter: none !important;
-          mix-blend-mode: normal !important;
-          -webkit-font-smoothing: antialiased !important;
         }
       `;
 
