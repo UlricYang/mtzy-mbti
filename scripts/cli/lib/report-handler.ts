@@ -3,6 +3,7 @@ import { resolve, basename } from 'path';
 import { existsSync } from 'fs';
 import { chromium, type Browser } from 'playwright';
 import { ReportRequest, ReportResponse, ReportResults, PreviewStore } from './types';
+import { normalizeMbtiData } from './data-normalizer';
 import { reportLogger } from './logger';
 import { ensureDir, formatTimestampForFilename, findAvailablePort, resolveContainerPath } from './file-utils';
 import { exportPngPlugin } from '../plugins/export-png';
@@ -64,7 +65,8 @@ export async function handleReportRequest(
   previewStore: PreviewStore,
   serverPort: number,  // Changed from vitePort for unified server
   verbose: boolean = false,
-  devMode: boolean = false
+  devMode: boolean = false,
+  host?: string
 ): Promise<ReportResponse> {
   const logger = reportLogger;
 
@@ -102,6 +104,7 @@ export async function handleReportRequest(
   try {
     const fileContent = await Bun.file(absoluteFilePath).text();
     jsonData = JSON.parse(fileContent);
+    jsonData = normalizeMbtiData(jsonData);
     
     if (!validateJsonStructure(jsonData)) {
       logger.error('Invalid data: missing required fields');
@@ -217,7 +220,10 @@ export async function handleReportRequest(
     // In dev mode, preview URL should use Vite port (serverPort + 1)
     // In production mode, preview URL uses the same server port
     const previewPort = devMode ? serverPort + 1 : serverPort;
-    const previewUrl = `http://localhost:${previewPort}/report/${userid}/${formattedTimestamp}`;
+    
+    // Determine hostname from Host header or fallback to localhost
+    const hostname = host ? host.split(':')[0] : 'localhost';
+    const previewUrl = `http://${hostname}:${previewPort}/report/${userid}/${formattedTimestamp}`;
     const storeKey = `${userid}-${formattedTimestamp}`;
     
     previewStore.set(storeKey, {

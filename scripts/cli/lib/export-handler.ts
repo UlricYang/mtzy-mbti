@@ -1,11 +1,12 @@
 import { resolve } from 'path';
-import { existsSync } from 'fs';
 import { ExportRequest, ExportResponse, ExportResults, ExportContext } from './types';
 import { exportLogger } from './logger';
-import { ensureDir, findAvailablePort, resolveContainerPath } from './file-utils';
+import { ensureDir, reserveAvailablePort, resolveContainerPath, fileExistsAsync } from './file-utils';
 import { exportPngPlugin } from '../plugins/export-png';
 import { exportPdfPlugin } from '../plugins/export-pdf';
-import { chromium, type Browser } from 'playwright';
+import { chromium } from 'playwright';
+import type { Browser } from 'playwright';
+import { normalizeMbtiData } from './data-normalizer';
 
 /**
  * Validates JSON data structure
@@ -69,6 +70,7 @@ function createExportServer(
       // Handle data endpoint for preview mode
       const dataMatch = pathname.match(/^\/report\/([^\/]+)\/([^\/]+)\/data$/);
       if (dataMatch) {
+        console.log(`[STATIC SERVER] Data request: ${pathname}`);
         return new Response(JSON.stringify(data), {
           headers: { 'Content-Type': 'application/json' }
         });
@@ -83,6 +85,7 @@ function createExportServer(
       // Handle SPA routing for /report/{userid}/{timestamp}
       const previewMatch = pathname.match(/^\/report\/([^\/]+)\/([^\/]+)(?:\/[^\/]*)?$/);
       if (previewMatch && !pathname.includes('/data')) {
+        console.log(`[STATIC SERVER] SPA route, serving index.html: ${pathname}`);
         filePath = '/index.html';
       }
 
@@ -90,14 +93,18 @@ function createExportServer(
       // resolve('/app/dist', '/assets/index.js') returns '/assets/index.js' (absolute path wins)
       const relativePath = filePath.startsWith('/') ? filePath.slice(1) : filePath;
       const fullPath = resolve(distDir, relativePath);
+      console.log(`[STATIC SERVER] Request: ${pathname} -> ${fullPath}`);
+      
       const file = Bun.file(fullPath);
 
       if (await file.exists()) {
+        console.log(`[STATIC SERVER] File exists: ${fullPath}`);
         return new Response(file, {
           headers: { 'Content-Type': getContentType(filePath) }
         });
       }
-
+      
+      console.log(`[STATIC SERVER] File NOT found: ${fullPath}`);
       // Fallback to index.html for SPA
       const indexFile = Bun.file(resolve(distDir, 'index.html'));
       if (await indexFile.exists()) {
@@ -120,7 +127,8 @@ function createExportServer(
 export async function handleExportRequest(
   request: unknown,
   outputDir: string,
-  verbose: boolean = false
+  verbose: boolean = false,
+  sharedBrowser?: Browser
 ): Promise<ExportResponse> {
   const logger = exportLogger;
   const timestamp = Date.now();
@@ -155,26 +163,23 @@ export async function handleExportRequest(
   const userid = req.userid as string;
   const filepath = req.filepath as string;
   const absoluteFilePath = resolveContainerPath(filepath);
+  
+  console.log(`[DEBUG] handleExportRequest called: userid=${userid}, filepath=${filepath}, absoluteFilePath=${absoluteFilePath}`);
 
   logger.info('Exporting report for student: {userid}', { userid });
   logger.debug('File path: {path}', { path: absoluteFilePath });
   logger.debug('Output directory: {dir}', { dir: outputDir });
 
-  // Step 2: Validate file exists
-  if (!existsSync(absoluteFilePath)) {
-    logger.error('File not found: {path}', { path: absoluteFilePath });
-    return {
-      status: 'error',
-      message: `File not found: ${absoluteFilePath}`,
-      data: null,
-    };
-  }
-
-  // Step 3: Read and validate JSON structure
+  // Step 2: Read and validate JSON directly (skip existence check due to Bun quirk)
   let jsonData: Record<string, unknown>;
   try {
-    const fileContent = await Bun.file(absoluteFilePath).text();
+    const file = Bun.file(absoluteFilePath);
+    const fileContent = await file.text();
     jsonData = JSON.parse(fileContent);
+    logger.info('File read successfully: {path}', { path: absoluteFilePath });
+
+    // Normalize mbti data format for React app
+    jsonData = normalizeMbtiData(jsonData);
 
     if (!validateJsonStructure(jsonData)) {
       logger.error('Invalid data: missing required fields');
@@ -187,10 +192,10 @@ export async function handleExportRequest(
     logger.debug('JSON structure validated');
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    logger.error('JSON parsing failed: {error}', { error: errorMsg });
+    logger.error('File read/parse failed: {error}', { error: errorMsg });
     return {
       status: 'error',
-      message: `Invalid JSON: ${errorMsg}`,
+      message: `File not found or invalid JSON: ${errorMsg}`,
       data: null,
     };
   }
@@ -198,18 +203,29 @@ export async function handleExportRequest(
   // Ensure output directory exists
   ensureDir(outputDir);
 
-  // Step 4: Find available port and start static file server for export
+  // Step 4: Reserve available port atomically and start static file server for export
   // Uses Bun.serve to serve dist/ files and handle dynamic data endpoint
-  logger.info('Finding available port...');
-  const serverPort = await findAvailablePort(4000);
-  logger.info('Starting static server on port {port}...', { port: serverPort });
+  // Atomic reservation prevents race conditions when multiple requests arrive simultaneously
+  logger.info('Reserving available port...');
+  const portHolder = await reserveAvailablePort(4000);
+  const serverPort = portHolder.port;
+  logger.info('Port {port} reserved, preparing static server...', { port: serverPort });
+
+  // CRITICAL: Release port BEFORE creating real server
+  // The temp server is holding the port; release it first, then bind immediately
+  portHolder.releasePort();
+  logger.debug('Port reservation released');
+
+  // Small delay to ensure OS has fully released the port
+  await new Promise(resolve => setTimeout(resolve, 100));
 
   // Use dist directory (works for both Docker and local)
-  const distDir = existsSync('/app/dist') ? resolve('/app', 'dist') : resolve('dist');
+  const distDir = (await fileExistsAsync('/app/dist')) ? resolve('/app', 'dist') : resolve('dist');
   const exportServer = createExportServer(serverPort, distDir, jsonData, userid, timestamp);
+  logger.info('Static server started on port {port}', { port: serverPort });
 
-  // Wait for server to start
-  await new Promise(resolve => setTimeout(resolve, 500));
+  // Wait for server to be ready
+  await new Promise(resolve => setTimeout(resolve, 200));
 
   // Initialize results - actual paths will be set by plugins
   const results: ExportResults = {
@@ -219,9 +235,19 @@ export async function handleExportRequest(
   };
 
   let browser: Browser | undefined;
+  let ownsBrowser = false;
 
   try {
-    browser = await chromium.launch({ headless: true });
+    if (sharedBrowser && sharedBrowser.isConnected()) {
+      // Use shared browser instance
+      browser = sharedBrowser;
+      logger.debug('Using shared browser instance');
+    } else {
+      // Fallback: launch our own browser
+      browser = await chromium.launch({ headless: true });
+      ownsBrowser = true;
+      logger.debug('Launched dedicated browser instance');
+    }
 
     // Run PNG export
     logger.info('Generating PNG...');
@@ -279,8 +305,9 @@ export async function handleExportRequest(
       data: null,
     };
   } finally {
-    if (browser) {
+    if (browser && ownsBrowser) {
       await browser.close();
+      logger.debug('Closed dedicated browser instance');
     }
 
     // Stop Bun.serve server

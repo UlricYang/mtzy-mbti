@@ -28,10 +28,14 @@ RUN apt-get update && apt-get install -y \
   fontconfig \
   unzip \
   curl
+# Install Xvfb for headless browser support in Docker
+RUN apt-get update && apt-get install -y \
+  xvfb \
+  && rm -rf /var/lib/apt/lists/*
 
 # Download and install Maple Mono NF CN font (with Nerd Font icons and Chinese support)
 RUN mkdir -p /usr/local/share/fonts/maple && \
-  curl -L -o /tmp/maple-font.zip \
+  curl --http1.1 -L -o /tmp/maple-font.zip \
     https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN-unhinted.zip && \
   unzip /tmp/maple-font.zip -d /tmp/maple-font && \
   cp /tmp/maple-font/*.ttf /usr/local/share/fonts/maple/ && \
@@ -50,7 +54,8 @@ FROM base AS deps
 # Copy package files
 COPY package.json bun.lock* ./
 
-# Install dependencies
+# Install dependencies (skip Puppeteer browser download - we use Playwright)
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 RUN bun install --frozen-lockfile
 
 # Install Playwright browsers
@@ -85,6 +90,10 @@ COPY --from=builder --chown=bunuser:nodejs /app/package.json ./
 COPY --from=builder --chown=bunuser:nodejs /app/scripts ./scripts
 COPY --from=builder --chown=bunuser:nodejs /app/public ./public
 COPY --from=builder --chown=bunuser:nodejs /app/src ./src
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 COPY --from=builder --chown=bunuser:nodejs /app/index.html ./
 COPY --from=builder --chown=bunuser:nodejs /app/vite.config.ts ./
 COPY --from=builder --chown=bunuser:nodejs /app/tsconfig.json ./
@@ -100,8 +109,8 @@ RUN mkdir -p /app/data/input /app/data/output /app/data/log && chown -R bunuser:
 
 # Give bunuser write permission to entire /app directory (needed for vite config loading)
 RUN chown -R bunuser:nodejs /app
-# Set environment variables
-ENV NODE_ENV=production
+# Set environment variables for Docker detection and Playwright
+ENV RUNNING_IN_DOCKER=true
 ENV PLAYWRIGHT_BROWSERS_PATH=/app/.playwright
 # Expose ports
 # 3000: API server
@@ -111,6 +120,6 @@ EXPOSE 3000 3001
 # Switch to non-root user
 USER bunuser
 
-# Default command: run web server
-ENTRYPOINT ["bun", "run", "scripts/cli/index.ts"]
-CMD ["server", "-p", "3000", "-o", "/app/data/output"]
+# Default command: run web server with Xvfb
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ["bun", "scripts/cli/index.ts", "server", "-p", "3000", "-o", "/app/data/output"]

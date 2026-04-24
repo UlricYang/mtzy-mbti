@@ -2,6 +2,7 @@ import { resolve } from 'path';
 import { existsSync } from 'fs';
 import { PreviewRequest, PreviewResponse, PreviewStore, Results } from './types';
 import { formatTimestampForFilename, resolveContainerPath } from './file-utils';
+import { normalizeMbtiData } from './data-normalizer';
 import { previewLogger } from './logger';
 
 /**
@@ -49,7 +50,8 @@ export async function handlePreviewRequest(
   previewStore: PreviewStore,
   serverPort: number,
   verbose: boolean = false,
-  devMode: boolean = false
+  devMode: boolean = false,
+  host?: string
 ): Promise<PreviewResponse> {
   const logger = previewLogger;
 
@@ -86,6 +88,7 @@ export async function handlePreviewRequest(
   try {
     const fileContent = await Bun.file(absoluteFilePath).text();
     jsonData = JSON.parse(fileContent);
+    jsonData = normalizeMbtiData(jsonData);
     
     if (!validateJsonStructure(jsonData)) {
       logger.error('Invalid data: missing required fields');
@@ -113,7 +116,10 @@ export async function handlePreviewRequest(
   // In dev mode, preview URL should use Vite port (serverPort + 1)
   // In production mode, preview URL uses the same server port
   const previewPort = devMode ? serverPort + 1 : serverPort;
-  const previewUrl = `http://localhost:${previewPort}/report/${userid}/${formattedTimestamp}`;
+  
+  // Determine hostname from Host header or fallback to localhost
+  const hostname = host ? host.split(':')[0] : 'localhost';
+  const previewUrl = `http://${hostname}:${previewPort}/report/${userid}/${formattedTimestamp}`;
   
   previewStore.set(storeKey, {
     userid,

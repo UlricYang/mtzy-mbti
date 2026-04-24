@@ -39,11 +39,34 @@ export const exportPngPlugin: ExportPlugin = {
       // Navigate to preview URL which triggers dynamic data loading
       const previewUrl = `http://localhost:${context.serverPort}/report/${context.tag}/${context.timestamp}`;
       logger.debug(`Navigating to: ${previewUrl}`);
+      
+      // Capture console logs for debugging
+      page.on('console', msg => {
+        console.log(`[BROWSER CONSOLE] ${msg.type()}: ${msg.text()}`);
+      });
+      page.on('pageerror', error => {
+        console.log(`[BROWSER ERROR] ${error.message}`);
+      });
+      
       await page.goto(previewUrl, {
         waitUntil: 'networkidle',
         timeout: 60000
       });
 
+      // Debug: log page content
+      const pageContent = await page.content();
+      logger.info(`Page content length: ${pageContent.length} bytes`);
+      
+      // Debug: save page HTML
+      const debugHtmlPath = resolve(output, `debug-${tag}-${timestamp}.html`);
+      await Bun.write(debugHtmlPath, pageContent);
+      logger.info(`Debug HTML saved: ${debugHtmlPath}`);
+      
+      // Debug: take screenshot for debugging
+      const debugScreenshotPath = resolve(output, `debug-${tag}-${timestamp}.png`);
+      await page.screenshot({ path: debugScreenshotPath, fullPage: false });
+      logger.info(`Debug screenshot saved: ${debugScreenshotPath}`);
+      
       await page.waitForSelector('main', { timeout: 30000 });
       await page.waitForTimeout(getScreenshotWaitTime(quality));
 

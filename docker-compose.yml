@@ -1,6 +1,9 @@
 services:
   # Web服务 - 提供HTTP API
   web:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: mtzy-mbti:latest
     container_name: mtzy-mbti-web
     ports:
@@ -8,12 +11,14 @@ services:
     volumes:
       # 挂载主机目录 - 用户可直接访问输入输出文件
       - ./data:/app/data
-    command: ["server", "-p", "3000", "-o", "/app/data/output", "-l", "/app/data/log"]
     environment:
       - NODE_ENV=production
     restart: unless-stopped
   # CLI服务 - 用于一次性导出任务
   cli:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: mtzy-mbti:latest
     container_name: mtzy-mbti-cli
     volumes:
