@@ -1,13 +1,103 @@
-import { spawn } from 'child_process';
 import { resolve, basename } from 'path';
 import { existsSync } from 'fs';
 import { chromium, type Browser } from 'playwright';
 import { ReportRequest, ReportResponse, ReportResults, PreviewStore } from './types';
 import { normalizeMbtiData } from './data-normalizer';
 import { reportLogger } from './logger';
-import { ensureDir, formatTimestampForFilename, findAvailablePort, resolveContainerPath } from './file-utils';
+import { ensureDir, formatTimestampForFilename, reserveAvailablePort, resolveContainerPath, fileExistsAsync } from './file-utils';
 import { exportPngPlugin } from '../plugins/export-png';
 import { exportPdfPlugin } from '../plugins/export-pdf';
+
+/**
+ * Get Content-Type header based on file extension
+ */
+function getContentType(filePath: string): string {
+  const ext = filePath.split('.').pop()?.toLowerCase() || '';
+  const contentTypes: Record<string, string> = {
+    'html': 'text/html',
+    'js': 'application/javascript',
+    'mjs': 'application/javascript',
+    'css': 'text/css',
+    'json': 'application/json',
+    'png': 'image/png',
+    'jpg': 'image/jpeg',
+    'jpeg': 'image/jpeg',
+    'gif': 'image/gif',
+    'svg': 'image/svg+xml',
+    'ico': 'image/x-icon',
+    'woff': 'font/woff',
+    'woff2': 'font/woff2',
+    'ttf': 'font/ttf',
+    'eot': 'application/vnd.ms-fontobject',
+  };
+  return contentTypes[ext] || 'application/octet-stream';
+}
+
+/**
+ * Creates a static file server for export that:
+ * 1. Serves files from dist/ directory
+ * 2. Handles /report/{userid}/{timestamp}/data endpoint for dynamic data
+ */
+function createExportServer(
+  port: number,
+  distDir: string,
+  data: Record<string, unknown>,
+  userid: string,
+  timestamp: number
+) {
+  const timestampStr = String(timestamp);
+  const server = Bun.serve({
+    port,
+    async fetch(req) {
+      const url = new URL(req.url);
+      const pathname = url.pathname;
+
+      // Handle data endpoint for preview mode
+      const dataMatch = pathname.match(/^\/report\/([^\/]+)\/([^\/]+)\/data$/);
+      if (dataMatch) {
+        return new Response(JSON.stringify(data), {
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
+      // Serve static files from dist/
+      let filePath = pathname;
+      if (filePath === '/' || filePath === '') {
+        filePath = '/index.html';
+      }
+
+      // Handle SPA routing for /report/{userid}/{timestamp}
+      const previewMatch = pathname.match(/^\/report\/([^\/]+)\/([^\/]+)(?:\/[^\/]*)?$/);
+      if (previewMatch && !pathname.includes('/data')) {
+        filePath = '/index.html';
+      }
+
+      // Strip leading slash for correct path resolution
+      const relativePath = filePath.startsWith('/') ? filePath.slice(1) : filePath;
+      const fullPath = resolve(distDir, relativePath);
+
+      const file = Bun.file(fullPath);
+
+      if (await file.exists()) {
+        return new Response(file, {
+          headers: { 'Content-Type': getContentType(filePath) }
+        });
+      }
+
+      // Fallback to index.html for SPA
+      const indexFile = Bun.file(resolve(distDir, 'index.html'));
+      if (await indexFile.exists()) {
+        return new Response(indexFile, {
+          headers: { 'Content-Type': 'text/html' }
+        });
+      }
+
+      return new Response('Not Found', { status: 404 });
+    },
+  });
+
+  return server;
+}
 
 /**
  * Validates that the JSON file has required structure
@@ -148,25 +238,32 @@ export async function handleReportRequest(
     };
   }
 
-  // Start a temporary Vite DEV server for export (not preview!)
-  // Dev server respects VITE_DATA_PATH env var for dynamic data loading
-  // Each report session uses its own port to support concurrent users
-  logger.info('Finding available port...');
-  const devServerPort = await findAvailablePort(4000);
-  logger.info('Starting Vite dev server on port {port}...', { port: devServerPort });
-  const previewServer = spawn('bunx', ['vite', '--port', String(devServerPort), '--strictPort'], {
-    stdio: 'pipe',
-    shell: true,
-    env: {
-      ...process.env,
-      VITE_DATA_PATH: dataFileName,
-    },
-  });
+  // Use Bun.serve static server for export (same approach as export-handler.ts)
+  // This is more reliable than spawning Vite dev server
+  logger.info('Reserving available port...');
+  const portHolder = await reserveAvailablePort(4000);
+  const devServerPort = portHolder.port;
+  logger.info('Port {port} reserved, preparing static server...', { port: devServerPort });
 
-  // Wait for dev server to start (dev server takes longer than preview)
-  await new Promise(resolve => setTimeout(resolve, 5000));
+  // CRITICAL: Release port BEFORE creating real server
+  portHolder.releasePort();
+  logger.debug('Port reservation released');
 
+  // Small delay to ensure OS has fully released the port
+  await new Promise(resolve => setTimeout(resolve, 100));
+
+  // Use dist directory (works for both Docker and local)
+  const distDir = (await fileExistsAsync('/app/dist')) ? resolve('/app', 'dist') : resolve('dist');
+  // Generate timestamp early for export server
   const timestamp = generateTimestamp();
+
+  // Start the static server with reserved port
+  const exportServer = createExportServer(devServerPort, distDir, jsonData, userid, timestamp);
+  logger.info('Static server started on port {port}', { port: devServerPort });
+
+  // Wait for server to be ready
+  await new Promise(resolve => setTimeout(resolve, 200));
+
   const formattedTimestamp = formatTimestampForFilename(timestamp);
   const results: ReportResults = {
     url: '',
@@ -174,7 +271,7 @@ export async function handleReportRequest(
     pdf: '',
   };
 
-  let browser: Browser | undefined;
+let browser: Browser | undefined;
 
   try {
     browser = await chromium.launch({ headless: true });
@@ -189,7 +286,7 @@ export async function handleReportRequest(
       quality: 'standard' as const,
       verbose,
       browser,
-      server: previewServer,
+      server: null as any,  // Not used with Bun.serve
       dataFileName,
       serverPort: devServerPort,
     };
@@ -261,14 +358,9 @@ export async function handleReportRequest(
       await browser.close();
     }
     
-    // Wait for server to exit before releasing port
-    await new Promise<void>((resolve) => {
-      previewServer.on('exit', () => resolve());
-      previewServer.kill();
-      // Timeout after 3 seconds if exit event doesn't fire
-      setTimeout(() => resolve(), 3000);
-    });
-    logger.debug('Vite server stopped');
+    // Stop Bun.serve server
+    exportServer.stop();
+    logger.debug('Static server stopped');
     
     // Cleanup copied data file
     try {
