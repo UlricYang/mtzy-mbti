@@ -3,16 +3,14 @@ import { Badge } from '@/components/ui/badge';
 import { BlurFade } from '@/components/ui/blur-fade';
 import { SectionTitle } from '@/components/ui/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { prepareBarChartData } from '@/lib/data-loader';
+import { prepareBarChartData, VALUE_COLORS } from '@/lib/data-loader';
 import type { TestData } from '@/types';
 import { BarChart3, Scale } from 'lucide-react';
-
 interface ValuesSectionProps {
   data: TestData
 }
 
 
-const SCORE_COLORS = ['#CD5C5C', '#FF7F50', '#FFBF00', '#3CB371', '#48D1CC', '#7B68EE']
 
 export function ValuesSection({ data }: ValuesSectionProps) {
   const barData = prepareBarChartData(data)
@@ -20,7 +18,6 @@ export function ValuesSection({ data }: ValuesSectionProps) {
 
   const sortedValues = Object.entries(studentValue)
     .sort(([, a], [, b]) => b.score - a.score)
-
   return (
     <section className="py-16 px-4 bg-gradient-to-b from-muted/20 to-muted/30">
       <div className="max-w-6xl mx-auto space-y-8">
@@ -67,15 +64,15 @@ export function ValuesSection({ data }: ValuesSectionProps) {
                     <div className="flex items-center gap-4 mb-4">
                       <div 
                         className="w-5 h-5 rounded-full flex-shrink-0" 
-                        style={{ backgroundColor: SCORE_COLORS[index] }}
+                        style={{ backgroundColor: VALUE_COLORS[index] }}
                       />
                       <span className="font-semibold text-xl">{name}</span>
                       <Badge 
                         variant="secondary" 
                         className="ml-auto text-lg"
                         style={{ 
-                          backgroundColor: `${SCORE_COLORS[index]}20`,
-                          color: SCORE_COLORS[index],
+                          backgroundColor: `${VALUE_COLORS[index]}20`,
+                          color: VALUE_COLORS[index],
                         }}
                       >
                         {item.score}分
@@ -90,8 +87,8 @@ export function ValuesSection({ data }: ValuesSectionProps) {
                             variant="outline"
                             className="text-base px-3 py-1"
                             style={{ 
-                              borderColor: SCORE_COLORS[index],
-                              color: SCORE_COLORS[index],
+                              borderColor: VALUE_COLORS[index],
+                              color: VALUE_COLORS[index],
                             }}
                           >
                             {major}

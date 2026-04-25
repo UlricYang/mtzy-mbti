@@ -13,7 +13,7 @@ services:
       - ./data:/app/data
     environment:
       - NODE_ENV=production
-    restart: unless-stopped
+    # restart: unless-stopped
   # CLI服务 - 用于一次性导出任务
   cli:
     build:

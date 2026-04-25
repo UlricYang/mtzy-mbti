@@ -53,20 +53,6 @@ export const exportPngPlugin: ExportPlugin = {
         timeout: 60000
       });
 
-      // Debug: log page content
-      const pageContent = await page.content();
-      logger.info(`Page content length: ${pageContent.length} bytes`);
-      
-      // Debug: save page HTML
-      const debugHtmlPath = resolve(output, `debug-${tag}-${timestamp}.html`);
-      await Bun.write(debugHtmlPath, pageContent);
-      logger.info(`Debug HTML saved: ${debugHtmlPath}`);
-      
-      // Debug: take screenshot for debugging
-      const debugScreenshotPath = resolve(output, `debug-${tag}-${timestamp}.png`);
-      await page.screenshot({ path: debugScreenshotPath, fullPage: false });
-      logger.info(`Debug screenshot saved: ${debugScreenshotPath}`);
-      
       await page.waitForSelector('main', { timeout: 30000 });
       await page.waitForTimeout(getScreenshotWaitTime(quality));
 

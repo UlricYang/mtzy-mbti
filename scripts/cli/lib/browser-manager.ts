@@ -52,12 +52,12 @@ class BrowserManager {
     // and avoids Xvfb/crashpad issues in Docker containers
     const browser = await chromium.launch({
       headless: true,
+      executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || undefined,
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
         '--disable-gpu',
-        '--disable-software-rasterizer',
         ...(isDocker ? [
           '--disable-blink-features=AutomationControlled',
           '--disable-features=IsolateOrigins,site-per-process',

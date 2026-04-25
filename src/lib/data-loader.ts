@@ -96,20 +96,18 @@ export function prepareRadarChartData(data: TestData) {
   }))
 }
 
-const VALUE_COLORS_MAP: Record<string, string> = {
-  '科学型': '#CD5C5C',
-  '经济型': '#FF7F50',
-  '社会型': '#FFBF00',
-  '政治型': '#3CB371',
-  '审美型': '#48D1CC',
-  '精神型': '#7B68EE',
-}
+// Value colors - shared with ValuesSection (sorted by score, positional)
+export const VALUE_COLORS = ['#CD5C5C', '#FF7F50', '#FFBF00', '#3CB371', '#48D1CC', '#7B68EE'] as const
 
 export function prepareBarChartData(data: TestData) {
-  return Object.entries(data.student_value).map(([name, item]) => ({
+  // Sort by score descending to match ValuesSection detail cards order
+  const sorted = Object.entries(data.student_value)
+    .sort(([, a], [, b]) => b.score - a.score)
+  
+  return sorted.map(([name, item], index) => ({
     name,
     value: item.score,
-    fill: VALUE_COLORS_MAP[name] || '#667eea',
+    fill: VALUE_COLORS[index % VALUE_COLORS.length],
   }))
 }
 

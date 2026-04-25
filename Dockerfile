@@ -1,10 +1,12 @@
 # ============================================
-# Stage 1: Base image with Playwright
+# Stage 1: Build + Install Playwright
 # ============================================
-FROM oven/bun:1.2 AS base
+FROM oven/bun:1.2-slim AS builder
 
-# Install Playwright dependencies and Chromium
-RUN apt-get update && apt-get install -y \
+WORKDIR /app
+
+# Install Playwright dependencies (minimal)
+RUN apt-get update && apt-get install -y --no-install-recommends \
   libglib2.0-0 \
   libnss3 \
   libnspr4 \
@@ -25,101 +27,102 @@ RUN apt-get update && apt-get install -y \
   libxshmfence1 \
   fonts-liberation \
   fonts-noto-color-emoji \
-  fontconfig \
-  unzip \
-  curl
-# Install Xvfb for headless browser support in Docker
-RUN apt-get update && apt-get install -y \
-  xvfb \
   && rm -rf /var/lib/apt/lists/*
 
-# Download and install Maple Mono NF CN font (with Nerd Font icons and Chinese support)
-RUN mkdir -p /usr/local/share/fonts/maple && \
-  curl --http1.1 -L -o /tmp/maple-font.zip \
-    https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN-unhinted.zip && \
-  unzip /tmp/maple-font.zip -d /tmp/maple-font && \
-  cp /tmp/maple-font/*.ttf /usr/local/share/fonts/maple/ && \
-  rm -rf /tmp/maple-font.zip /tmp/maple-font
-
-# Rebuild font cache
-RUN fc-cache -f -v
-
-WORKDIR /app
-
-# ============================================
-# Stage 2: Install dependencies
-# ============================================
-FROM base AS deps
-
-# Copy package files
+# Copy dependencies
 COPY package.json bun.lock* ./
-
-# Install dependencies (skip Puppeteer browser download - we use Playwright)
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 RUN bun install --frozen-lockfile
 
-# Install Playwright browsers
-RUN bunx playwright install chromium --with-deps
+# Install Playwright Chromium (bundled version, not system)
+RUN bunx playwright install chromium
 
-# ============================================
-# Stage 3: Build production
-# ============================================
-FROM deps AS builder
-
-# Copy source code
+# Copy source and build
 COPY . .
-
-# Build frontend
 RUN bun run build
 
 # ============================================
-# Stage 4: Production image
+# Stage 2: Runtime (Debian slim)
 # ============================================
-FROM base AS runner
+FROM debian:bookworm-slim AS runner
+
+# Install runtime deps (minimal, no chromium package)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+  ca-certificates \
+  curl \
+  unzip \
+  libglib2.0-0 \
+  libnss3 \
+  libnspr4 \
+  libatk1.0-0 \
+  libatk-bridge2.0-0 \
+  libcups2 \
+  libdrm2 \
+  libxkbcommon0 \
+  libxcomposite1 \
+  libxdamage1 \
+  libxfixes3 \
+  libxrandr2 \
+  libgbm1 \
+  libasound2 \
+  libpango-1.0-0 \
+  libpangoft2-1.0-0 \
+  libharfbuzz0b \
+  libfreetype6 \
+  libcairo2 \
+  libatspi2.0-0 \
+  libxshmfence1 \
+  fonts-liberation \
+  fonts-noto-color-emoji \
+  fontconfig \
+  && rm -rf /var/lib/apt/lists/*
+
+# Install bun binary only
+RUN curl -fsSL https://bun.sh/install | bash && \
+  mv /root/.bun/bin/bun /usr/local/bin/bun && \
+  rm -rf /root/.bun
+
+# Download LxgwWenKai font (霞鹜文楷)
+RUN mkdir -p /usr/local/share/fonts/lxgw-wenkai && \
+  curl --http1.1 -L -o /tmp/lxgw-wenkai.ttf \
+    https://github.com/lxgw/LxgwWenKai/releases/download/v1.522/LxgwWenKai.ttf && \
+  curl --http1.1 -L -o /tmp/lxgw-wenkai-bold.ttf \
+    https://github.com/lxgw/LxgwWenKai/releases/download/v1.522/LxgwWenKai-Bold.ttf && \
+  cp /tmp/lxgw-wenkai*.ttf /usr/local/share/fonts/lxgw-wenkai/ && \
+  rm -rf /tmp/lxgw-wenkai*.ttf && \
+  fc-cache -f && \
+  chmod -R 755 /usr/local/share/fonts/lxgw-wenkai && \
+  chmod -R 644 /var/cache/fontconfig
 
 WORKDIR /app
 
-# Create non-root user
+# Create user
 RUN groupadd --system --gid 1001 nodejs \
     && useradd --system --uid 1001 --gid nodejs bunuser
 
-# Copy built files and dependencies
-COPY --from=builder --chown=bunuser:nodejs /app/dist ./dist
-COPY --from=builder --chown=bunuser:nodejs /app/node_modules ./node_modules
-COPY --from=builder --chown=bunuser:nodejs /app/package.json ./
-COPY --from=builder --chown=bunuser:nodejs /app/scripts ./scripts
-COPY --from=builder --chown=bunuser:nodejs /app/public ./public
-COPY --from=builder --chown=bunuser:nodejs /app/src ./src
-# Copy entrypoint script
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-COPY --from=builder --chown=bunuser:nodejs /app/index.html ./
-COPY --from=builder --chown=bunuser:nodejs /app/vite.config.ts ./
-COPY --from=builder --chown=bunuser:nodejs /app/tsconfig.json ./
-COPY --from=builder --chown=bunuser:nodejs /app/tsconfig.node.json ./
-
-# Copy Playwright browsers to app directory (accessible by bunuser)
-COPY --from=deps /root/.cache/ms-playwright /app/.playwright
+# Copy Playwright browsers from builder
+COPY --from=builder /root/.cache/ms-playwright /app/.playwright
 RUN chown -R bunuser:nodejs /app/.playwright
 
-# Create data directory structure for Docker volumes
-# Single mount point: /app/data contains input/, output/, and log/
-RUN mkdir -p /app/data/input /app/data/output /app/data/log && chown -R bunuser:nodejs /app/data
+# Copy only necessary files
+COPY --from=builder --chown=bunuser:nodejs /app/dist ./dist
+COPY --from=builder --chown=bunuser:nodejs /app/public ./public
+COPY --from=builder --chown=bunuser:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=bunuser:nodejs /app/package.json ./
+COPY --chown=bunuser:nodejs scripts/cli ./scripts/cli
+COPY --chown=bunuser:nodejs docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Give bunuser write permission to entire /app directory (needed for vite config loading)
-RUN chown -R bunuser:nodejs /app
-# Set environment variables for Docker detection and Playwright
+# Create data directories (input, output, logs)
+RUN mkdir -p /app/data/input /app/data/output /app/data/logs && chown -R bunuser:nodejs /app/data
+
+# Environment - use Playwright bundled Chromium
 ENV RUNNING_IN_DOCKER=true
 ENV PLAYWRIGHT_BROWSERS_PATH=/app/.playwright
-# Expose ports
-# 3000: API server
-# 3001: Vite preview server
-EXPOSE 3000 3001
 
-# Switch to non-root user
+EXPOSE 3000
+
 USER bunuser
 
-# Default command: run web server with Xvfb
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["bun", "scripts/cli/index.ts", "server", "-p", "3000", "-o", "/app/data/output"]
+CMD ["bun", "scripts/cli/index.ts", "server", "-p", "3000", "-o", "/app/data/output", "-l", "/app/data/logs"]
