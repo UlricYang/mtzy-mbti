@@ -14,6 +14,7 @@ services:
     environment:
       - NODE_ENV=production
     # restart: unless-stopped
+
   # CLI服务 - 用于一次性导出任务
   cli:
     build:
@@ -34,4 +35,4 @@ services:
 # 挂载说明:
 # ./data/input  - 放入JSON输入文件
 # ./data/output - 生成的PDF/PNG文件
-# ./data/log    - 应用日志
+# ./data/logs    - 应用日志

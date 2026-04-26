@@ -8,7 +8,7 @@ import { ensureDir, resolveInputPath, parseFormats, findAvailablePort } from '..
 import { exportPngPlugin } from '../plugins/export-png';
 import { exportPdfPlugin } from '../plugins/export-pdf';
 import { exportHtmlPlugin } from '../plugins/export-html';
-
+import { normalizeMbtiData } from '../lib/data-normalizer';
 const plugins = [exportPngPlugin, exportPdfPlugin, exportHtmlPlugin];
 
 /**
@@ -161,10 +161,11 @@ export async function exportCommand(options: ExportOptions): Promise<void> {
   const distDir = existsSync('/app/dist') ? resolve('/app', 'dist') : resolve('dist');
 
   // Read and parse data for dynamic serving
-  const jsonData = JSON.parse(await Bun.file(inputPath).text());
+  const jsonData = normalizeMbtiData(JSON.parse(await Bun.file(inputPath).text()));
   const timestamp = Date.now();
-  const exportServer = createExportServer(serverPort, distDir, jsonData, tag, timestamp);
 
+  // Create and start the export server
+  const exportServer = createExportServer(serverPort, distDir, jsonData, 'export', timestamp);
   // Wait for server to start
   await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -210,9 +211,10 @@ export async function exportCommand(options: ExportOptions): Promise<void> {
 
   exportLogger.debug('Cleaning up...');
 
-  exportLogger.debug('Cleaning up...');
-  exportServer.stop();
-  exportLogger.debug('Export server stopped');
+  if (exportServer) {
+    exportServer.stop();
+    exportLogger.debug('Export server stopped');
+  }
 
   const targetFile = Bun.file(targetPath);
   if (await targetFile.exists()) {
