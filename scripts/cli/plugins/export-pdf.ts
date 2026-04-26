@@ -21,9 +21,10 @@ export const exportPdfPlugin: ExportPlugin = {
 
       const page = await browserContext.newPage();
 
-      const serverUrl = `http://localhost:${context.serverPort}`;
-      logger.debug(`Navigating to: ${serverUrl}`);
-      await page.goto(serverUrl, {
+      // Navigate to preview URL which triggers dynamic data loading
+      const previewUrl = `http://localhost:${context.serverPort}/report/${context.tag}/${context.timestamp}`;
+      logger.debug(`Navigating to: ${previewUrl}`);
+      await page.goto(previewUrl, {
         waitUntil: 'networkidle',
         timeout: 60000
       });
@@ -32,6 +33,7 @@ export const exportPdfPlugin: ExportPlugin = {
       await page.waitForTimeout(getPdfWaitTime());
 
       const pdfFixStyles = `
+        /* Only fix text gradients for PDF - they don't render well in print */
         .text-gradient-screen,
         .text-gradient-screen-alt,
         .gradient-text,
@@ -43,13 +45,6 @@ export const exportPdfPlugin: ExportPlugin = {
           background-clip: unset !important;
           -webkit-text-fill-color: #667eea !important;
           color: #667eea !important;
-        }
-        * {
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
-          filter: none !important;
-          mix-blend-mode: normal !important;
-          -webkit-font-smoothing: antialiased !important;
         }
       `;
 

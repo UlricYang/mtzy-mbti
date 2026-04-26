@@ -11,6 +11,7 @@ import { handlePreviewRequest } from '../lib/preview-handler';
 import { handleExportRequest } from '../lib/export-handler';
 import { validateBuild } from '../lib/build-validator';
 import { createStaticConfig } from '../lib/static-config';
+import { browserManager } from '../lib/browser-manager';
 
 const CONFIG = {
   PREVIEW_TTL: 32 * 60 * 1000,
@@ -74,6 +75,11 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
   serverLogger.info('Starting web service on port {port}', { port: actualPort });
   serverLogger.debug('Output directory: {outputDir}, Mode: {mode}', { outputDir, mode: devMode ? 'development' : 'production' });
 
+  // Initialize shared browser instance for export requests
+  serverLogger.info('Initializing shared browser for exports...');
+  await browserManager.init();
+  serverLogger.debug('Shared browser initialized successfully');
+
   const previewStore: PreviewStore = new Map();
   const exportQueue: ExportTask[] = [];
 
@@ -105,7 +111,7 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
         },
       };
     })
-    .post('/api/assessment/mbti/preview', async ({ body }) => {
+    .post('/api/assessment/mbti/preview', async ({ body, headers }) => {
       const requestId = generateRequestId();
       const ctx = setRequestContext(requestId, (body as Record<string, unknown>)?.userid as string);
       
@@ -113,12 +119,14 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
       httpLogger.debug('Request body: {body}', { body, requestId });
       
       return requestContext.run(ctx, async () => {
+        const host = (headers as Record<string, string>)?.host;
         const response = await handlePreviewRequest(
           body,
           previewStore,
           actualPort,
           verbose,
-          devMode
+          devMode,
+          host
         );
         
         if (response.status === 'error') {
@@ -143,7 +151,7 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
       });
     })
 
-    .post('/api/assessment/mbti/link', async ({ body }) => {
+    .post('/api/assessment/mbti/link', async ({ body, headers }) => {
       const requestId = generateRequestId();
       const ctx = setRequestContext(requestId, (body as Record<string, unknown>)?.userid as string);
       
@@ -151,12 +159,14 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
       httpLogger.debug('Request body: {body}', { body, requestId });
       
       return requestContext.run(ctx, async () => {
+        const host = (headers as Record<string, string>)?.host;
         const response = await handlePreviewRequest(
           body,
           previewStore,
           actualPort,
           verbose,
-          devMode
+          devMode,
+          host
         );
         
         if (response.status === 'error') {
@@ -193,10 +203,12 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
       const taskId = `export-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
       return requestContext.run(ctx, async () => {
+        const browser = await browserManager.getBrowser();
         const exportPromise = handleExportRequest(
           body,
           outputDir,
-          verbose
+          verbose,
+          browser
         );
 
         const task: ExportTask = { id: taskId, promise: exportPromise };
@@ -224,7 +236,7 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
       });
     })
     
-    .post('/api/assessment/mbti/report', async ({ body }) => {
+    .post('/api/assessment/mbti/report', async ({ body, headers }) => {
       const requestId = generateRequestId();
       const ctx = setRequestContext(requestId, (body as Record<string, unknown>)?.userid as string);
       
@@ -232,13 +244,15 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
       httpLogger.debug('Request body: {body}', { body, requestId });
       
       return requestContext.run(ctx, async () => {
+        const host = (headers as Record<string, string>)?.host;
         const response = await handleReportRequest(
           body,
           outputDir,
           previewStore,
           actualPort,
           verbose,
-          devMode
+          devMode,
+          host
         );
         
         if (response.status === 'error') {
@@ -353,6 +367,7 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
   const shutdown = async () => {
     serverLogger.info('Shutting down server...');
     clearInterval(cleanupInterval);
+    await browserManager.close();
     await app.stop();
     process.exit(0);
   };

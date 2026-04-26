@@ -556,6 +556,74 @@ theme: {
 
 ---
 
+## 🐳 Docker 部署
+
+使用 Docker 可以简化部署流程，无需安装 Bun 和其他依赖。
+
+### 构建 Docker 镜像
+
+```bash
+docker build -t mtzy-mbti:latest .
+```
+
+### 使用 CLI Wrapper 脚本
+
+项目提供了简化 Docker 命令的 CLI wrapper 脚本：
+
+```bash
+# 导出报告
+sh scripts/mbti.sh export --input inputs.json --tag student-001
+
+# 导出指定格式
+sh scripts/mbti.sh export --input inputs.json --tag student-001 --format pdf
+
+# 启动 Web 服务
+sh scripts/mbti.sh server --port 8080
+
+# 停止服务
+sh scripts/mbti.sh stop
+```
+
+**CLI Wrapper 优势:**
+- 自动挂载 `./data` 目录到容器
+- 简化参数：只需输入文件名（相对于 `data/input/`）
+- 输出文件自动保存到 `data/output/`
+
+### 数据目录结构
+
+```
+./data/
+├── input/     # 输入 JSON 文件
+├── output/    # 生成的 PDF/PNG 文件
+└── logs/      # 应用日志
+```
+
+### Docker 原始命令
+
+如需直接使用 Docker 命令：
+
+```bash
+# CLI 导出
+docker run --rm -v ./data:/app/data mtzy-mbti:latest \
+  bun scripts/cli/index.ts export \
+  -i /app/data/input/inputs.json \
+  -o /app/data/output \
+  -t my-report \
+  -f pdf,png \
+  -l /app/data/logs
+
+# Web 服务
+docker run -d -p 3000:3000 -v ./data:/app/data mtzy-mbti:latest \
+  bun scripts/cli/index.ts server -p 3000 -o /app/data/output -l /app/data/logs
+
+# API 调用示例
+curl -X POST http://localhost:3000/api/assessment/mbti/export \
+  -H "Content-Type: application/json" \
+  -d '{"userid":"test","filepath":"/app/data/input/inputs.json"}'
+```
+
+---
+
 ## 📦 部署
 
 ### 静态托管

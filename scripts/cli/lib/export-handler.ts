@@ -1,12 +1,12 @@
-import { spawn } from 'child_process';
 import { resolve } from 'path';
-import { existsSync } from 'fs';
-import { ExportRequest, ExportResponse, ExportResults } from './types';
+import { ExportRequest, ExportResponse, ExportResults, ExportContext } from './types';
 import { exportLogger } from './logger';
-import { ensureDir, findAvailablePort } from './file-utils';
+import { ensureDir, reserveAvailablePort, resolveContainerPath, fileExistsAsync } from './file-utils';
 import { exportPngPlugin } from '../plugins/export-png';
 import { exportPdfPlugin } from '../plugins/export-pdf';
-import { chromium, type Browser } from 'playwright';
+import { chromium } from 'playwright';
+import type { Browser } from 'playwright';
+import { normalizeMbtiData } from './data-normalizer';
 
 /**
  * Validates JSON data structure
@@ -22,13 +22,113 @@ function validateJsonStructure(data: unknown): boolean {
 }
 
 /**
+ * Get Content-Type header based on file extension
+ */
+function getContentType(filePath: string): string {
+  const ext = filePath.split('.').pop()?.toLowerCase() || '';
+  const contentTypes: Record<string, string> = {
+    'html': 'text/html',
+    'js': 'application/javascript',
+    'mjs': 'application/javascript',
+    'css': 'text/css',
+    'json': 'application/json',
+    'png': 'image/png',
+    'jpg': 'image/jpeg',
+    'jpeg': 'image/jpeg',
+    'gif': 'image/gif',
+    'svg': 'image/svg+xml',
+    'ico': 'image/x-icon',
+    'woff': 'font/woff',
+    'woff2': 'font/woff2',
+    'ttf': 'font/ttf',
+    'eot': 'application/vnd.ms-fontobject',
+  };
+  return contentTypes[ext] || 'application/octet-stream';
+}
+
+/**
+ * Creates a static file server for export that:
+/**
+ * Creates a static file server for export that:
+ * 1. Serves files from dist/ directory
+ * 2. Handles /report/{userid}/{timestamp}/data endpoint for dynamic data
+ */
+function createExportServer(
+  port: number,
+  distDir: string,
+  data: Record<string, unknown>,
+  userid: string,
+  timestamp: number
+) {
+  const timestampStr = String(timestamp);
+  const server = Bun.serve({
+    port,
+    async fetch(req) {
+      const url = new URL(req.url);
+      const pathname = url.pathname;
+
+      // Handle data endpoint for preview mode
+      const dataMatch = pathname.match(/^\/report\/([^\/]+)\/([^\/]+)\/data$/);
+      if (dataMatch) {
+        console.log(`[STATIC SERVER] Data request: ${pathname}`);
+        return new Response(JSON.stringify(data), {
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+
+      // Serve static files from dist/
+      let filePath = pathname;
+      if (filePath === '/' || filePath === '') {
+        filePath = '/index.html';
+      }
+
+      // Handle SPA routing for /report/{userid}/{timestamp}
+      const previewMatch = pathname.match(/^\/report\/([^\/]+)\/([^\/]+)(?:\/[^\/]*)?$/);
+      if (previewMatch && !pathname.includes('/data')) {
+        console.log(`[STATIC SERVER] SPA route, serving index.html: ${pathname}`);
+        filePath = '/index.html';
+      }
+
+      // Strip leading slash for correct path resolution
+      // resolve('/app/dist', '/assets/index.js') returns '/assets/index.js' (absolute path wins)
+      const relativePath = filePath.startsWith('/') ? filePath.slice(1) : filePath;
+      const fullPath = resolve(distDir, relativePath);
+      console.log(`[STATIC SERVER] Request: ${pathname} -> ${fullPath}`);
+      
+      const file = Bun.file(fullPath);
+
+      if (await file.exists()) {
+        console.log(`[STATIC SERVER] File exists: ${fullPath}`);
+        return new Response(file, {
+          headers: { 'Content-Type': getContentType(filePath) }
+        });
+      }
+      
+      console.log(`[STATIC SERVER] File NOT found: ${fullPath}`);
+      // Fallback to index.html for SPA
+      const indexFile = Bun.file(resolve(distDir, 'index.html'));
+      if (await indexFile.exists()) {
+        return new Response(indexFile, {
+          headers: { 'Content-Type': 'text/html' }
+        });
+      }
+
+      return new Response('Not Found', { status: 404 });
+    },
+  });
+
+  return server;
+}
+
+/**
  * Export handler - generates PNG/PDF files directly from file
  * Independent of preview - accepts filepath directly
  */
 export async function handleExportRequest(
   request: unknown,
   outputDir: string,
-  verbose: boolean = false
+  verbose: boolean = false,
+  sharedBrowser?: Browser
 ): Promise<ExportResponse> {
   const logger = exportLogger;
   const timestamp = Date.now();
@@ -41,9 +141,9 @@ export async function handleExportRequest(
       data: null,
     };
   }
-  
+
   const req = request as Record<string, unknown>;
-  
+
   if (!req.userid || typeof req.userid !== 'string') {
     return {
       status: 'error',
@@ -51,7 +151,7 @@ export async function handleExportRequest(
       data: null,
     };
   }
-  
+
   if (!req.filepath || typeof req.filepath !== 'string') {
     return {
       status: 'error',
@@ -59,31 +159,28 @@ export async function handleExportRequest(
       data: null,
     };
   }
-  
+
   const userid = req.userid as string;
   const filepath = req.filepath as string;
-  const absoluteFilePath = resolve(filepath);
+  const absoluteFilePath = resolveContainerPath(filepath);
   
+  console.log(`[DEBUG] handleExportRequest called: userid=${userid}, filepath=${filepath}, absoluteFilePath=${absoluteFilePath}`);
+
   logger.info('Exporting report for student: {userid}', { userid });
   logger.debug('File path: {path}', { path: absoluteFilePath });
   logger.debug('Output directory: {dir}', { dir: outputDir });
-  
-  // Step 2: Validate file exists
-  if (!existsSync(absoluteFilePath)) {
-    logger.error('File not found: {path}', { path: absoluteFilePath });
-    return {
-      status: 'error',
-      message: `File not found: ${absoluteFilePath}`,
-      data: null,
-    };
-  }
-  
-  // Step 3: Read and validate JSON structure
+
+  // Step 2: Read and validate JSON directly (skip existence check due to Bun quirk)
   let jsonData: Record<string, unknown>;
   try {
-    const fileContent = await Bun.file(absoluteFilePath).text();
+    const file = Bun.file(absoluteFilePath);
+    const fileContent = await file.text();
     jsonData = JSON.parse(fileContent);
-    
+    logger.info('File read successfully: {path}', { path: absoluteFilePath });
+
+    // Normalize mbti data format for React app
+    jsonData = normalizeMbtiData(jsonData);
+
     if (!validateJsonStructure(jsonData)) {
       logger.error('Invalid data: missing required fields');
       return {
@@ -95,10 +192,10 @@ export async function handleExportRequest(
     logger.debug('JSON structure validated');
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
-    logger.error('JSON parsing failed: {error}', { error: errorMsg });
+    logger.error('File read/parse failed: {error}', { error: errorMsg });
     return {
       status: 'error',
-      message: `Invalid JSON: ${errorMsg}`,
+      message: `File not found or invalid JSON: ${errorMsg}`,
       data: null,
     };
   }
@@ -106,43 +203,29 @@ export async function handleExportRequest(
   // Ensure output directory exists
   ensureDir(outputDir);
 
-  // Step 4: Write data to temporary file for export
-  const publicDir = 'public';
-  ensureDir(publicDir);
-  
-  const dataFileName = `temp-${userid}-${timestamp}.json`;
-  const targetPath = resolve(publicDir, dataFileName);
+  // Step 4: Reserve available port atomically and start static file server for export
+  // Uses Bun.serve to serve dist/ files and handle dynamic data endpoint
+  // Atomic reservation prevents race conditions when multiple requests arrive simultaneously
+  logger.info('Reserving available port...');
+  const portHolder = await reserveAvailablePort(4000);
+  const serverPort = portHolder.port;
+  logger.info('Port {port} reserved, preparing static server...', { port: serverPort });
 
-  try {
-    await Bun.write(targetPath, JSON.stringify(jsonData));
-    logger.debug('Wrote temp data to: {path}', { path: targetPath });
-  } catch (error) {
-    const errorMsg = error instanceof Error ? error.message : String(error);
-    logger.error('Failed to write temp data: {error}', { error: errorMsg });
-    return {
-      status: 'error',
-      message: `Failed to prepare data: ${errorMsg}`,
-      data: null,
-    };
-  }
+  // CRITICAL: Release port BEFORE creating real server
+  // The temp server is holding the port; release it first, then bind immediately
+  portHolder.releasePort();
+  logger.debug('Port reservation released');
 
-  // Step 5: Find available port and start temporary Vite DEV server for export (not preview!)
-  // Dev server respects VITE_DATA_PATH env var for dynamic data loading
-  // Each export session uses its own port to support concurrent users
-  logger.info('Finding available port...');
-  const serverPort = await findAvailablePort(4000);
-  logger.info('Starting Vite dev server on port {port}...', { port: serverPort });
-  const previewServer = spawn('bunx', ['vite', '--port', String(serverPort), '--strictPort'], {
-    stdio: 'pipe',
-    shell: true,
-    env: {
-      ...process.env,
-      VITE_DATA_PATH: dataFileName,
-    },
-  });
+  // Small delay to ensure OS has fully released the port
+  await new Promise(resolve => setTimeout(resolve, 100));
 
-  // Wait for dev server to start (dev server takes longer than preview)
-  await new Promise(resolve => setTimeout(resolve, 5000));
+  // Use dist directory (works for both Docker and local)
+  const distDir = (await fileExistsAsync('/app/dist')) ? resolve('/app', 'dist') : resolve('dist');
+  const exportServer = createExportServer(serverPort, distDir, jsonData, userid, timestamp);
+  logger.info('Static server started on port {port}', { port: serverPort });
+
+  // Wait for server to be ready
+  await new Promise(resolve => setTimeout(resolve, 200));
 
   // Initialize results - actual paths will be set by plugins
   const results: ExportResults = {
@@ -152,25 +235,35 @@ export async function handleExportRequest(
   };
 
   let browser: Browser | undefined;
+  let ownsBrowser = false;
 
   try {
-    browser = await chromium.launch({ headless: true });
+    if (sharedBrowser && sharedBrowser.isConnected()) {
+      // Use shared browser instance
+      browser = sharedBrowser;
+      logger.debug('Using shared browser instance');
+    } else {
+      // Fallback: launch our own browser
+      browser = await chromium.launch({ headless: true });
+      ownsBrowser = true;
+      logger.debug('Launched dedicated browser instance');
+    }
 
     // Run PNG export
     logger.info('Generating PNG...');
-    const exportContext = {
-      input: targetPath,
+    const exportContext: ExportContext = {
+      input: absoluteFilePath,
       output: outputDir,
       tag: userid,
       timestamp,
       quality: 'standard' as const,
       verbose,
       browser,
-      server: previewServer,
-      dataFileName,
+      server: null as any,  // Not used with Bun.serve
+      dataFileName: '',
       serverPort,
     };
-    
+
     const pngResult = await exportPngPlugin.execute(exportContext);
     if (!pngResult.success) {
       logger.error('PNG generation failed: {error}', { error: pngResult.error });
@@ -192,7 +285,7 @@ export async function handleExportRequest(
     }
 
     logger.info('Export completed');
-    
+
     return {
       status: 'success',
       message: null,
@@ -205,35 +298,20 @@ export async function handleExportRequest(
   } catch (error) {
     const errorMsg = error instanceof Error ? error.message : String(error);
     logger.error('Export failed: {error}', { error: errorMsg });
-    
+
     return {
       status: 'error',
       message: `Export failed: ${errorMsg}`,
       data: null,
     };
   } finally {
-    if (browser) {
+    if (browser && ownsBrowser) {
       await browser.close();
+      logger.debug('Closed dedicated browser instance');
     }
-    
-    // Wait for server to exit before releasing port
-    await new Promise<void>((resolve) => {
-      previewServer.on('exit', () => resolve());
-      previewServer.kill();
-      // Timeout after 3 seconds if exit event doesn't fire
-      setTimeout(() => resolve(), 3000);
-    });
-    logger.debug('Vite server stopped');
-    
-    // Cleanup temp data file
-    try {
-      const targetFile = Bun.file(targetPath);
-      if (await targetFile.exists()) {
-        await targetFile.unlink();
-        logger.debug('Cleaned up: {path}', { path: targetPath });
-      }
-    } catch {
-      logger.debug('Failed to cleanup {path}', { path: targetPath });
-    }
+
+    // Stop Bun.serve server
+    exportServer.stop();
+    logger.debug('Static server stopped');
   }
 }

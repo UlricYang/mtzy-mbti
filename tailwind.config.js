@@ -19,6 +19,9 @@ export default {
   		}
   	},
   	extend: {
+  		fontFamily: {
+  			sans: ['"LXGW WenKai"', '"霞鹜文楷"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+  		},
   		colors: {
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',

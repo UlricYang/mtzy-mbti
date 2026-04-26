@@ -11,8 +11,20 @@ export function ensureDir(dir: string): void {
 /**
  * 检查文件是否存在
  */
+/**
+ * 检查文件是否存在 (同步, 兼容旧代码)
+ * @deprecated Use fileExistsAsync() for better Bun compatibility
+ */
 export function fileExists(path: string): boolean {
   return existsSync(path);
+}
+
+/**
+ * 检查文件是否存在 (异步, Bun原生实现)
+ * 在Docker容器中更可靠
+ */
+export async function fileExistsAsync(path: string): Promise<boolean> {
+  return await Bun.file(path).exists();
 }
 
 /**
@@ -154,22 +166,45 @@ export function formatTimestampForFilename(timestamp: number): string {
 export function generateOutputFilenameWithTimestamp(tag: string, timestamp: number, format: 'pdf' | 'png' | 'webp' | 'html'): string {
   return `report-${tag}-${formatTimestampForFilename(timestamp)}.${format}`;
 }
+/**
+ * Port holder that keeps a temporary server alive to reserve the port atomically.
+ * Call releasePort() when the real server is ready to take over.
+ */
+export interface PortHolder {
+  port: number;
+  releasePort: () => void;
+}
 
 /**
- * Find an available port starting from the specified port (Bun native implementation)
+ * Find an available port and reserve it atomically.
+ * Keeps a temporary server alive to prevent race conditions in concurrent environments.
+ * 
+ * Usage:
+ * ```ts
+ * const holder = await reserveAvailablePort(4000);
+ * // Port is now reserved - no other request can grab it
+ * const realServer = createServer(holder.port);
+ * holder.releasePort(); // Release after real server is running
+ * ```
+ * 
  * @param startPort - Port to start searching from (default: 4000)
  * @param maxAttempts - Maximum number of ports to try (default: 100)
- * @returns Promise that resolves to an available port number
+ * @returns PortHolder with port number and releasePort function
  */
-export async function findAvailablePort(startPort: number = 4000, maxAttempts: number = 100): Promise<number> {
+export async function reserveAvailablePort(startPort: number = 4000, maxAttempts: number = 100): Promise<PortHolder> {
   for (let port = startPort; port < startPort + maxAttempts; port++) {
     try {
+      // Create temp server to reserve port - keep it alive!
       const server = Bun.serve({
         port,
         fetch: () => new Response('OK'),
       });
-      server.stop();
-      return port;
+      
+      // Return port holder with release function
+      return {
+        port,
+        releasePort: () => server.stop(),
+      };
     } catch (err) {
       // Port in use, try next
       if (port === startPort + maxAttempts - 1) {
@@ -179,4 +214,92 @@ export async function findAvailablePort(startPort: number = 4000, maxAttempts: n
   }
   
   throw new Error(`Could not find available port after ${maxAttempts} attempts`);
+}
+
+/**
+ * Find an available port starting from the specified port (Bun native implementation)
+ * @deprecated Use reserveAvailablePort() instead for concurrent-safe port allocation
+ * @param startPort - Port to start searching from (default: 4000)
+ * @param maxAttempts - Maximum number of ports to try (default: 100)
+ * @returns Promise that resolves to an available port number
+ */
+export async function findAvailablePort(startPort: number = 4000, maxAttempts: number = 100): Promise<number> {
+  const holder = await reserveAvailablePort(startPort, maxAttempts);
+  holder.releasePort(); // Immediately release for backwards compatibility
+  return holder.port;
+}
+
+
+/**
+ * Container input directory for Docker environments
+ * Default: /app/data/input (standard Docker input mount point)
+ */
+const CONTAINER_INPUT_DIR = process.env.CONTAINER_INPUT_DIR || '/app/data/input';
+
+/**
+ * Container base path for Docker environments
+ * Default: /app/data (standard Docker data mount point)
+ */
+const CONTAINER_BASE_PATH = process.env.CONTAINER_BASE_PATH || '/app/data';
+
+/**
+ * Detect if running inside a Docker container
+ */
+function isRunningInDocker(): boolean {
+  // Check for Docker-specific indicators
+  if (process.env.RUNNING_IN_DOCKER === 'true') return true;
+  
+  // Check for .dockerenv file (most reliable)
+  try {
+    if (require('fs').existsSync('/.dockerenv')) {
+      return true;
+    }
+  } catch {
+    // Ignore errors
+  }
+  // Check if /app/data/input exists (Docker mount point)
+  try {
+    const fs = require('fs');
+    return fs.existsSync('/app/data/input');
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Resolve filepath for container environment
+ * 
+ * Behavior:
+ * - Absolute path: return as-is (user knows what they're doing)
+ * - Simple filename (no path separators): resolve to input directory
+ *   e.g., 'inputs.json' -> '/app/data/input/inputs.json' (Docker) or './data/input/inputs.json' (local)
+ * - Relative path (with separators): resolve to container base
+ *   e.g., 'data/student.json' -> '/app/data/student.json' (Docker) or './data/student.json' (local)
+ * 
+ * This simplifies API usage - users can just pass 'inputs.json' instead of
+ * the full container path '/app/data/input/inputs.json'
+ * 
+ * @param filepath - The filepath from API request (can be filename, relative path, or absolute path)
+ * @returns Absolute path
+ */
+export function resolveContainerPath(filepath: string): string {
+  // Absolute path: return as-is (user responsibility)
+  if (filepath.startsWith('/')) {
+    return filepath;
+  }
+  
+  // Detect if running in Docker
+  const inDocker = isRunningInDocker();
+  const baseDir = inDocker ? CONTAINER_INPUT_DIR : resolve(process.cwd(), 'data', 'input');
+  const baseBase = inDocker ? CONTAINER_BASE_PATH : resolve(process.cwd(), 'data');
+  
+  // Simple filename (no path separators): resolve to input directory
+  // e.g., 'inputs.json' -> '/app/data/input/inputs.json' or './data/input/inputs.json'
+  if (!filepath.includes('/') && !filepath.includes('\\')) {
+    return resolve(baseDir, filepath);
+  }
+  
+  // Relative path with separators: resolve to container base
+  // e.g., 'data/student.json' -> '/app/data/student.json' or './data/student.json'
+  return resolve(baseBase, filepath);
 }

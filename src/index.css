@@ -1,3 +1,21 @@
+
+@font-face {
+  font-family: "LXGW WenKai";
+  src: url("/fonts/LXGWWenKai-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "LXGW WenKai";
+  src: url("/fonts/LXGWWenKai-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -56,10 +74,11 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground;
+body {
+@apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
-  }
+    font-family: "LXGW WenKai", "霞鹜文楷", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
 }
 
 @layer utilities {
