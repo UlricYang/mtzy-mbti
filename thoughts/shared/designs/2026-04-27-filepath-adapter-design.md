@@ -374,10 +374,200 @@ External API adapter logs failure but doesn't retry (follows existing error hand
 
 ### Adapter Priority Table
 
-| Adapter            | Priority | Config Variable                  |
-| ------------------ | -------- | -------------------------------- |
-| `direct`           | 100      | Always available                 |
-| `external_api`     | 10       | `FILEPATH_API_CONFIGS`           |
+| `external_api`     | 10       | `apis` in config file             |
+
+---
+
+## Configuration Management (c12)
+
+### Why c12?
+
+Using [unjs/c12](https://github.com/unjs/c12) for smart configuration loading:
+
+**Benefits**:
+- Multiple config file formats support (`.ts`, `.json`, `.yaml`, `.toml`)
+- Config inheritance via `extends`
+- Environment-specific configuration (`$development`, `$production`)
+- `.env` file support with interpolation
+- No hardcoded environment variables
+
+### Configuration Files
+
+| File                    | Format   | Purpose                        |
+| ----------------------- | -------- | ------------------------------ |
+| `filepath.config.ts`      | TypeScript | Main config file              |
+| `.filepathrc`             | JSON      | Alternative config            |
+| `.filepathrc.json`        | JSON      | RC file format                |
+| `filepath.config.dev.ts`  | TypeScript | Development overrides         |
+| `filepath.config.prod.ts` | TypeScript | Production overrides          |
+
+### Configuration Structure
+
+**filepath.config.ts**:
+```typescript
+import type { FilepathConfig } from './filepath/types';
+
+export default <FilepathConfig>{
+  // Enabled adapters (order determines priority)
+  adapters: ['direct', 'external_api'],
+
+  // External API configurations
+  apis: {
+    primary: {
+      url: 'https://api.example.com/filepath',
+      token: 'token-xxx',
+      timeout: 5000,
+    },
+    backup: {
+      url: 'https://backup-api.example.com/filepath',
+      token: 'token-yyy',
+      timeout: 10000,
+    },
+  },
+
+  // Default API to use
+  defaultApi: 'primary',
+
+  // Cache settings
+  cache: {
+    enabled: true,
+    ttl: 86400, // 24 hours in seconds
+  },
+
+  // Health monitoring
+  healthCheck: {
+    enabled: true,
+    interval: 60000, // Check every minute
+  },
+
+  // Environment-specific overrides
+  $development: {
+    cache: {
+      enabled: false, // Disable cache in dev
+    },
+  },
+
+  $production: {
+    healthCheck: {
+      interval: 30000, // More frequent checks in prod
+    },
+  },
+};
+```
+
+### Loading Configuration
+
+**scripts/cli/lib/filepath/config-loader.ts**:
+```typescript
+import { loadConfig } from 'c12';
+import type { FilepathConfig } from './types';
+
+export async function loadFilepathConfig(): Promise<FilepathConfig> {
+  const { config } = await loadConfig<FilepathConfig>({
+    name: 'filepath',
+    configFile: 'filepath.config',
+    rcFile: '.filepathrc',
+    globalRc: true, // Load from home directory too
+    dotenv: true, // Support .env file
+  });
+
+  return config;
+}
+```
+
+### Config Inheritance (extends)
+
+**filepath.config.ts**:
+```typescript
+export default {
+  extends: './base-config', // or 'gh:org/repo' for remote
+  apis: {
+    // Override primary API
+    primary: {
+      url: 'https://custom-api.example.com/filepath',
+    },
+  },
+};
+```
+
+### Environment Variables via .env
+
+**.env**:
+```
+FILEPATH_API_TOKEN=secret-token-xxx
+FILEPATH_DEFAULT_API=primary
+```
+
+**filepath.config.ts** (using env interpolation):
+```typescript
+export default {
+  apis: {
+    primary: {
+      url: 'https://api.example.com/filepath',
+      token: process.env.FILEPATH_API_TOKEN!,
+    },
+  },
+  defaultApi: process.env.FILEPATH_DEFAULT_API || 'primary',
+};
+```
+
+### Configuration Types
+
+**scripts/cli/lib/filepath/types.ts**:
+```typescript
+export interface FilepathConfig {
+  adapters: string[];
+  apis: Record<string, APIConfig>;
+  defaultApi: string;
+  cache: CacheConfig;
+  healthCheck: HealthCheckConfig;
+
+  // Environment overrides
+  $development?: Partial<FilepathConfig>;
+  $production?: Partial<FilepathConfig>;
+  $test?: Partial<FilepathConfig>;
+}
+
+export interface APIConfig {
+  url: string;
+  token?: string;
+  timeout?: number;
+  headers?: Record<string, string>;
+}
+
+export interface CacheConfig {
+  enabled: boolean;
+  ttl: number;
+  maxSize?: number;
+}
+
+export interface HealthCheckConfig {
+  enabled: boolean;
+  interval: number;
+}
+```
+
+### Config Directory Support
+
+c12 supports `.config/` directory:
+```
+.config/filepath/
+├── config.ts        # Main config
+├── config.dev.ts    # Dev overrides
+├── config.prod.ts   # Prod overrides
+└── apis.json        # API configs only
+```
+
+### Dependency
+
+Add to package.json:
+```json
+{
+  "dependencies": {
+    "c12": "^4.0.0"
+  }
+}
+```
 
 ---
 
