@@ -359,24 +359,6 @@ External API adapter logs failure but doesn't retry (follows existing error hand
 
 ---
 
-## Configuration Summary
-
-### Environment Variables
-
-| Variable                      | Required | Default              |
-| ----------------------------- | -------- | -------------------- |
-| `FILEPATH_ADAPTERS`           | No       | `direct,external_api` |
-| `FILEPATH_API_CONFIGS`        | Conditional | - (JSON config for APIs) |
-| `FILEPATH_API_DEFAULT`        | No       | `primary`            |
-| `FILEPATH_API_TIMEOUT`        | No       | `5000`               |
-| `FILEPATH_CACHE_ENABLED`      | No       | `true`               |
-| `FILEPATH_CACHE_TTL`          | No       | `86400` (24h)        |
-
-### Adapter Priority Table
-
-| `external_api`     | 10       | `apis` in config file             |
-
----
 
 ## Configuration Management (c12)
 
@@ -609,20 +591,28 @@ interface ExportRequest {
 
 ## Implementation Phases
 
+### Phase 0: Configuration Setup (c12)
+- Install c12 dependency (`bun add c12`)
+- Create `filepath.config.ts` type definitions
+- Implement `loadFilepathConfig()` in `config-loader.ts`
+- Create default config file template
+- Add `.env` support documentation
+
 ### Phase 1: Core Infrastructure
-- Define interfaces (`FilepathQuery`, `FilepathResult`, `FilepathAdapter`)
+- Define interfaces (`FilepathQuery`, `FilepathResult`, `FilepathAdapter`, `FilepathConfig`)
 - Implement `FilepathResolver` with adapter chain
 - Implement `DirectAdapter`
 
 ### Phase 2: Multi-API Support
 - Implement `APIConfigRegistry` for named API configs
 - Implement `ExternalAPIAdapter` with POST method
-- Add environment configuration for multi-API
+- Load API configurations from c12 config
 
 ### Phase 3: Cache Layer
-- Implement `FilepathCache` with 24h TTL
+- Implement `FilepathCache` with configurable TTL (default 24h)
 - Add cache key generation logic
 - Add cache invalidation on TTL expiry
+- Support cache disable in development mode ($development override)
 
 ### Phase 4: Handler Integration
 - Update request types in `types.ts`
@@ -633,7 +623,7 @@ interface ExportRequest {
 - Implement `AdapterHealthMonitor`
 - Add health check endpoints
 - Add latency and error rate tracking
-
+- Support configurable health check interval
 ---
 
 ## References
