@@ -109,6 +109,8 @@ COPY --from=builder --chown=bunuser:nodejs /app/dist ./dist
 COPY --from=builder --chown=bunuser:nodejs /app/public ./public
 COPY --from=builder --chown=bunuser:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=bunuser:nodejs /app/package.json ./
+# Filepath resolver config (for dynamic filepath resolution)
+COPY --from=builder --chown=bunuser:nodejs /app/filepath.config.ts ./
 COPY --chown=bunuser:nodejs scripts/cli ./scripts/cli
 COPY --chown=bunuser:nodejs docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
@@ -119,6 +121,12 @@ RUN mkdir -p /app/data/input /app/data/output /app/data/logs && chown -R bunuser
 # Environment - use Playwright bundled Chromium
 ENV RUNNING_IN_DOCKER=true
 ENV PLAYWRIGHT_BROWSERS_PATH=/app/.playwright
+
+# Filepath Resolver - set these at runtime via docker run -e:
+#   FILEPATH_API_URL - External API endpoint for filepath resolution
+#   API_TOKEN - Bearer token for external API authentication
+# Example:
+#   docker run -e FILEPATH_API_URL=http://api.example.com/filepath -e API_TOKEN=secret ...
 
 EXPOSE 3000
 

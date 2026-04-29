@@ -1,4 +1,6 @@
 import { resolve } from 'path';
+import { FilepathResolver } from './filepath/resolver';
+
 import { existsSync } from 'fs';
 import { PreviewRequest, PreviewResponse, PreviewStore, Results } from './types';
 import { formatTimestampForFilename, resolveContainerPath } from './file-utils';
@@ -32,9 +34,7 @@ function validateRequest(request: unknown): { valid: boolean; error?: string } {
     return { valid: false, error: 'Missing required field: userid' };
   }
   
-  if (!req.filepath || typeof req.filepath !== 'string') {
-    return { valid: false, error: 'Missing required field: filepath' };
-  }
+  // filepath is optional - will be resolved later if missing
   
   return { valid: true };
 }
@@ -51,7 +51,8 @@ export async function handlePreviewRequest(
   serverPort: number,
   verbose: boolean = false,
   devMode: boolean = false,
-  host?: string
+  host?: string,
+  resolver?: FilepathResolver
 ): Promise<PreviewResponse> {
   const logger = previewLogger;
 
@@ -67,11 +68,37 @@ export async function handlePreviewRequest(
   }
 
   const req = request as PreviewRequest;
-  const { userid, filepath } = req;
+  const { userid } = req;
+  let { filepath } = req;
 
   logger.info('Creating preview for student: {userid}', { userid });
-  logger.debug('File path: {filepath}', { filepath });
 
+  // Resolve filepath if missing and resolver is available
+  if (!filepath && resolver) {
+    const resolution = await resolver.resolve({ userid });
+    if (!resolution.success) {
+      logger.error('Failed to resolve filepath: {error}', { error: resolution.error.error });
+      return {
+        status: 'error',
+        message: resolution.error.error,
+        data: null,
+      };
+    }
+    filepath = resolution.data.filepath;
+    logger.debug('Resolved filepath: {filepath}', { filepath });
+  }
+
+  // Validate we have a filepath at this point
+  if (!filepath) {
+    logger.error('No filepath provided and no resolver available');
+    return {
+      status: 'error',
+      message: 'No filepath provided and no resolver available',
+      data: null,
+    };
+  }
+
+  logger.debug('File path: {filepath}', { filepath });
   // Step 2: Validate filepath exists
   const absoluteFilePath = resolveContainerPath(filepath);
   if (!existsSync(absoluteFilePath)) {

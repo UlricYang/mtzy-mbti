@@ -1,9 +1,6 @@
 services:
   # Web服务 - 提供HTTP API
   web:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: mtzy-mbti:latest
     container_name: mtzy-mbti-web
     ports:
@@ -13,13 +10,12 @@ services:
       - ./data:/app/data
     environment:
       - NODE_ENV=production
-    # restart: unless-stopped
+      # Filepath Resolver配置（从.env读取，有默认值）
+      - FILEPATH_API_URL=${FILEPATH_API_URL:-http://localhost:8080/api/filepath}
+      - API_TOKEN=${API_TOKEN:-}
 
   # CLI服务 - 用于一次性导出任务
   cli:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: mtzy-mbti:latest
     container_name: mtzy-mbti-cli
     volumes:
@@ -29,6 +25,9 @@ services:
     command: ["--help"]
     environment:
       - NODE_ENV=production
+      # CLI继承filepath resolver配置
+      - FILEPATH_API_URL=${FILEPATH_API_URL:-http://localhost:8080/api/filepath}
+      - API_TOKEN=${API_TOKEN:-}
     # CLI容器运行后自动退出
     restart: "no"
 
