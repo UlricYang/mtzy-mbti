@@ -2,6 +2,7 @@ import { resolve, basename } from 'path';
 import { existsSync } from 'fs';
 import { chromium, type Browser } from 'playwright';
 import { ReportRequest, ReportResponse, ReportResults, PreviewStore } from './types';
+import type { FilepathResolver } from './filepath/resolver';
 import { normalizeMbtiData } from './data-normalizer';
 import { reportLogger } from './logger';
 import { ensureDir, formatTimestampForFilename, reserveAvailablePort, resolveContainerPath, fileExistsAsync } from './file-utils';
@@ -126,10 +127,6 @@ function validateRequest(request: unknown): { valid: boolean; error?: string } {
     return { valid: false, error: 'Missing required field: userid' };
   }
   
-  if (!req.filepath || typeof req.filepath !== 'string') {
-    return { valid: false, error: 'Missing required field: filepath' };
-  }
-  
   return { valid: true };
 }
 
@@ -153,10 +150,11 @@ export async function handleReportRequest(
   request: unknown,
   outputDir: string,
   previewStore: PreviewStore,
-  serverPort: number,  // Changed from vitePort for unified server
+  serverPort: number,
   verbose: boolean = false,
   devMode: boolean = false,
-  host?: string
+  host?: string,
+  resolver?: FilepathResolver,
 ): Promise<ReportResponse> {
   const logger = reportLogger;
 
@@ -172,7 +170,34 @@ export async function handleReportRequest(
   }
 
   const req = request as ReportRequest;
-  const { userid, filepath } = req;
+  const { userid } = req;
+  let filepath = req.filepath;
+
+  if (!filepath && resolver) {
+    const resolution = await resolver.resolve({ userid });
+    if (!resolution.success) {
+      logger.error('Filepath resolution failed: {error}', { error: resolution.error.error });
+      return {
+        status: 'error',
+        message: resolution.error.error,
+        data: null,
+      };
+    }
+    filepath = resolution.data.filepath;
+    logger.debug('Resolved filepath: {filepath} from {source}', { 
+      filepath, 
+      source: resolution.data.source 
+    });
+  }
+
+  if (!filepath) {
+    logger.error('Missing required field: filepath');
+    return {
+      status: 'error',
+      message: 'Missing required field: filepath',
+      data: null,
+    };
+  }
 
   logger.info('Processing report for student: {userid}', { userid });
   logger.debug('File path: {filepath}', { filepath });

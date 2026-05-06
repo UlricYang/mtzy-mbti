@@ -1,4 +1,5 @@
 import { resolve } from 'path';
+import { FilepathResolver } from './filepath/resolver';
 import { ExportRequest, ExportResponse, ExportResults, ExportContext } from './types';
 import { exportLogger } from './logger';
 import { ensureDir, reserveAvailablePort, resolveContainerPath, fileExistsAsync } from './file-utils';
@@ -128,7 +129,8 @@ export async function handleExportRequest(
   request: unknown,
   outputDir: string,
   verbose: boolean = false,
-  sharedBrowser?: Browser
+  sharedBrowser?: Browser,
+  resolver?: FilepathResolver
 ): Promise<ExportResponse> {
   const logger = exportLogger;
   const timestamp = Date.now();
@@ -152,16 +154,29 @@ export async function handleExportRequest(
     };
   }
 
-  if (!req.filepath || typeof req.filepath !== 'string') {
+  const userid = req.userid as string;
+
+  let filepath: string;
+  if (req.filepath && typeof req.filepath === 'string') {
+    filepath = req.filepath as string;
+  } else if (resolver) {
+    const resolution = await resolver.resolve({ userid });
+    if (!resolution.success) {
+      return {
+        status: 'error',
+        message: `Failed to resolve filepath: ${resolution.error.error}`,
+        data: null,
+      };
+    }
+    filepath = resolution.data.filepath;
+    console.log(`[DEBUG] Resolved filepath via ${resolution.data.adapter}: ${filepath}`);
+  } else {
     return {
       status: 'error',
-      message: 'Missing required field: filepath',
+      message: 'Missing required field: filepath (and no resolver configured)',
       data: null,
     };
   }
-
-  const userid = req.userid as string;
-  const filepath = req.filepath as string;
   const absoluteFilePath = resolveContainerPath(filepath);
   
   console.log(`[DEBUG] handleExportRequest called: userid=${userid}, filepath=${filepath}, absoluteFilePath=${absoluteFilePath}`);

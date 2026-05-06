@@ -12,6 +12,7 @@ import { handleExportRequest } from '../lib/export-handler';
 import { validateBuild } from '../lib/build-validator';
 import { createStaticConfig } from '../lib/static-config';
 import { browserManager } from '../lib/browser-manager';
+import { FilepathResolver } from '../lib/filepath/resolver';
 
 const CONFIG = {
   PREVIEW_TTL: 32 * 60 * 1000,
@@ -75,10 +76,13 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
   serverLogger.info('Starting web service on port {port}', { port: actualPort });
   serverLogger.debug('Output directory: {outputDir}, Mode: {mode}', { outputDir, mode: devMode ? 'development' : 'production' });
 
-  // Initialize shared browser instance for export requests
   serverLogger.info('Initializing shared browser for exports...');
   await browserManager.init();
   serverLogger.debug('Shared browser initialized successfully');
+
+  serverLogger.info('Initializing FilepathResolver...');
+  const resolver = await FilepathResolver.createFromConfig();
+  serverLogger.info('FilepathResolver initialized with adapters: {adapters}', { adapters: resolver.getAdapterNames() });
 
   const previewStore: PreviewStore = new Map();
   const exportQueue: ExportTask[] = [];
@@ -88,6 +92,13 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
   }, CONFIG.CLEANUP_INTERVAL);
 
   const app = new Elysia()
+    .get('/api/filepath/health', () => {
+      return {
+        status: 'ok',
+        adapters: resolver.getAdapterNames(),
+        health: resolver.getAdapterHealth(),
+      };
+    })
     .get('/api/assessment/health', () => {
       const memUsage = process.memoryUsage();
       return {
@@ -126,7 +137,8 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
           actualPort,
           verbose,
           devMode,
-          host
+          host,
+          resolver
         );
         
         if (response.status === 'error') {
@@ -166,7 +178,8 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
           actualPort,
           verbose,
           devMode,
-          host
+          host,
+          resolver
         );
         
         if (response.status === 'error') {
@@ -208,7 +221,8 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
           body,
           outputDir,
           verbose,
-          browser
+          browser,
+          resolver
         );
 
         const task: ExportTask = { id: taskId, promise: exportPromise };
@@ -252,7 +266,8 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
           actualPort,
           verbose,
           devMode,
-          host
+          host,
+          resolver
         );
         
         if (response.status === 'error') {
@@ -296,7 +311,6 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
       return 'index.html not found';
     })
     
-
     .get('/report/:userid/:timestamp/data', ({ params }) => {
       const { userid, timestamp } = params;
       const storeKey = `${userid}-${timestamp}`;
@@ -367,6 +381,7 @@ export async function serverCommand(options: ServerOptions): Promise<void> {
   const shutdown = async () => {
     serverLogger.info('Shutting down server...');
     clearInterval(cleanupInterval);
+    resolver.stopCacheCleanup();
     await browserManager.close();
     await app.stop();
     process.exit(0);

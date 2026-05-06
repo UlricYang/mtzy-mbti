@@ -80,7 +80,10 @@ export interface ExportPlugin {
  */
 export interface PreviewRequest {
   userid: string;
-  filepath: string;
+  filepath?: string;
+  data_type?: string;
+  report_id?: string;
+  api_name?: string;
 }
 
 /**
@@ -117,7 +120,10 @@ export interface PreviewResponseData {
  */
 export interface ExportRequest {
   userid: string;
-  filepath: string;
+  filepath?: string;
+  data_type?: string;
+  report_id?: string;
+  api_name?: string;
 }
 
 /**
@@ -155,7 +161,10 @@ export interface ExportResults {
  */
 export interface ReportRequest {
   userid: string;
-  filepath: string;
+  filepath?: string;
+  data_type?: string;
+  report_id?: string;
+  api_name?: string;
 }
 
 /**
