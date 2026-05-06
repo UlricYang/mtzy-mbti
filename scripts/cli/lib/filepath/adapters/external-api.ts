@@ -1,17 +1,23 @@
-import type {
-  FilepathAdapter,
-  FilepathQuery,
-  FilepathResolution,
-  FilepathResult,
-  APIConfig,
-  AdapterHealth,
-} from '../types';
-import { FilepathCache } from '../cache';
+import { mkdir, rename } from 'fs/promises';
+import { join } from 'path';
 import { APIConfigRegistry } from '../api-config';
+import { FilepathCache } from '../cache';
+import {
+    AdapterHealth,
+    type FilepathAdapter,
+    type FilepathQuery,
+    type FilepathResolution,
+    type FilepathResult
+} from '../types';
 
 /**
  * ExternalAPIAdapter - Calls external API to resolve filepath
  * Priority: 10 (lowest - checked after direct adapter)
+ * 
+ * API Response Handling:
+ * - If response.data is a string: treated as file path, moved to ./data/input
+ * - If response.data is an object: treated as JSON data, written to ./data/input
+ * - If response.filepath is present: legacy format, returns filepath directly
  */
 export class ExternalAPIAdapter implements FilepathAdapter {
   private registry: APIConfigRegistry;
@@ -38,6 +44,98 @@ export class ExternalAPIAdapter implements FilepathAdapter {
 
   isAvailable(): boolean {
     return this.registry.hasAPIs();
+  }
+
+  /**
+   * Ensure input directory exists
+   */
+  private async ensureInputDir(): Promise<string> {
+    const inputDir = join(process.cwd(), 'data', 'input');
+    const dirExists = await Bun.file(inputDir).exists();
+    if (!dirExists) {
+      await mkdir(inputDir, { recursive: true });
+    }
+    return inputDir;
+  }
+
+  /**
+   * Generate unique filename based on query
+   */
+  private generateFilename(query: FilepathQuery): string {
+    const timestamp = Date.now();
+    const sanitizedUserId = query.userid.replace(/[^a-zA-Z0-9_-]/g, '_');
+    return `api-${sanitizedUserId}-${timestamp}.json`;
+  }
+
+  /**
+   * Handle API response data - unify to ./data/input directory
+   */
+  private async handleResponseData(
+    data: unknown,
+    query: FilepathQuery
+  ): Promise<{ success: true; filepath: string } | { success: false; error: string }> {
+    try {
+      const inputDir = await this.ensureInputDir();
+
+      // Case 1: API returns a string - treat as file path
+      if (typeof data === 'string') {
+        const sourcePath = data;
+        
+        // If it's already in the input directory, return as-is
+        if (sourcePath.startsWith(inputDir)) {
+          return { success: true, filepath: sourcePath };
+        }
+
+        // Move file to ./data/input
+        const filename = this.generateFilename(query);
+        const targetPath = join(inputDir, filename);
+        
+        const sourceFile = Bun.file(sourcePath);
+        const sourceExists = await sourceFile.exists();
+        if (!sourceExists) {
+          return { success: false, error: `Source file not found: ${sourcePath}` };
+        }
+
+        await rename(sourcePath, targetPath);
+        return { success: true, filepath: targetPath };
+      }
+
+      // Case 2: API returns an object with 'filepath' field (legacy format)
+      if (data && typeof data === 'object' && 'filepath' in data) {
+        const filepath = (data as { filepath: string }).filepath;
+        
+        // If it's already in the input directory, return as-is
+        if (filepath.startsWith(inputDir)) {
+          return { success: true, filepath };
+        }
+
+        // Move file to ./data/input
+        const filename = this.generateFilename(query);
+        const targetPath = join(inputDir, filename);
+        
+        const sourceFile = Bun.file(filepath);
+        const sourceExists = await sourceFile.exists();
+        if (!sourceExists) {
+          return { success: false, error: `Source file not found: ${filepath}` };
+        }
+
+        await rename(filepath, targetPath);
+        return { success: true, filepath: targetPath };
+      }
+
+      // Case 3: API returns JSON data directly - write to file
+      if (data && typeof data === 'object') {
+        const filename = this.generateFilename(query);
+        const targetPath = join(inputDir, filename);
+        
+        await Bun.write(targetPath, JSON.stringify(data, null, 2));
+      }
+
+      return { success: false, error: 'Unsupported API response format' };
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      return { success: false, error: `Failed to handle response data: ${errorMsg}` };
+    }
   }
 
   async resolveFilepath(query: FilepathQuery): Promise<FilepathResolution> {
@@ -103,18 +201,19 @@ export class ExternalAPIAdapter implements FilepathAdapter {
         };
       }
 
-      const data = await response.json();
+      const responseData = await response.json();
 
-      // Validate response format
-      if (!data.filepath) {
-        const errorMsg = 'API response missing filepath field';
+      // Handle response data - unify to ./data/input directory
+      const handleResult = await this.handleResponseData(responseData, query);
+      
+      if (!handleResult.success) {
         this.healthStats.errorCount++;
-        this.healthStats.lastError = errorMsg;
-
+        this.healthStats.lastError = handleResult.error;
+        
         return {
           success: false,
           error: {
-            error: errorMsg,
+            error: handleResult.error,
             adapter: this.getName(),
           },
         };
@@ -122,7 +221,7 @@ export class ExternalAPIAdapter implements FilepathAdapter {
 
       // Create result
       const result: FilepathResult = {
-        filepath: data.filepath,
+        filepath: handleResult.filepath,
         adapter: this.getName(),
         source: 'api',
         cached: false,
